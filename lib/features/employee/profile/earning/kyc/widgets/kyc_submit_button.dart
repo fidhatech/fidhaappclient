@@ -5,12 +5,14 @@ class KycSubmitButton extends StatelessWidget {
   final bool isEnabled;
   final bool isLoading;
   final VoidCallback onPressed;
+  final String text;
 
   const KycSubmitButton({
     super.key,
     required this.isEnabled,
     this.isLoading = false,
     required this.onPressed,
+    this.text = 'Submit',
   });
 
   @override
@@ -60,7 +62,7 @@ class KycSubmitButton extends StatelessWidget {
                     ),
                   )
                 : Text(
-                    'Submit',
+                    text,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,

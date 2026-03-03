@@ -11,6 +11,7 @@ import 'package:dating_app/features/employee/call/cubit/employee_call_cubit.dart
 import 'package:dating_app/features/employee/home/cubit/employee_cubit.dart';
 import 'package:dating_app/features/employee/profile/cubit/employee_account_cubit.dart';
 import 'package:dating_app/features/employee/profile/earning/screen/earning_screen.dart';
+import 'package:dating_app/features/employee/profile/screen/safety_support_screen.dart';
 import 'package:dating_app/features/employee/profile/screen/edit_profile_screen.dart';
 import 'package:dating_app/features/employee/profile/screen/widgets/profile_header.dart';
 import 'package:dating_app/features/employee/profile/screen/widgets/profile_option_tile.dart';
@@ -144,6 +145,36 @@ class EmployeeAccountScreen extends StatelessWidget {
                 );
               }
             }
+          },
+        ),
+        const SizedBox(height: 10),
+        ProfileOptionTile(
+          icon: Icons.privacy_tip_outlined,
+          title: "Privacy Policy",
+          onTap: () async {
+            final Uri url = Uri.parse(AppUrls.privacyPolicy);
+            if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+              if (context.mounted) {
+                showAppSnackbar(
+                  context,
+                  message: "Could not launch URL",
+                  icon: Icons.error,
+                );
+              }
+            }
+          },
+        ),
+        const SizedBox(height: 10),
+        ProfileOptionTile(
+          icon: Icons.security_outlined,
+          title: "Safety & Support",
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const SafetySupportScreen(),
+              ),
+            );
           },
         ),
         const SizedBox(height: 10),

@@ -83,4 +83,38 @@ class AppValidators {
 
     return null;
   }
+
+  // ---------------- IFSC ----------------
+  static String? ifsc(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return "IFSC code is required";
+    }
+
+    final ifsc = value.trim().toUpperCase();
+
+    // IFSC format: 4 letters, 0, 6 alphanumeric characters
+    final regex = RegExp(r"^[A-Z]{4}0[A-Z0-9]{6}$");
+    if (!regex.hasMatch(ifsc)) {
+      return "Please enter a valid IFSC code";
+    }
+
+    return null;
+  }
+
+  // ---------------- ACCOUNT NUMBER ----------------
+  static String? accountNumber(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return "Account number is required";
+    }
+
+    final account = value.trim();
+
+    // Account number format: 9-18 digits
+    final regex = RegExp(r"^[0-9]{9,18}$");
+    if (!regex.hasMatch(account)) {
+      return "Please enter a valid account number";
+    }
+
+    return null;
+  }
 }

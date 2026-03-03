@@ -66,7 +66,7 @@ class GlassInfoCard extends StatelessWidget {
             border: Border.all(width: borderWidth, color: borderColor),
           ),
           child: Column(
-            crossAxisAlignment: .start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(

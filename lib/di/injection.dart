@@ -7,6 +7,7 @@ import 'package:dating_app/features/user/features/promotion/cubit/popup_offer_cu
 import 'package:dating_app/features/employee/history/service/session_history.dart';
 import 'package:dating_app/features/onboarding/employ_screens/employ/cubit/employee_language_cubit/employee_language_cubit.dart';
 import 'package:dating_app/features/employee/session/cubit/employee_session_cubit.dart';
+import 'package:dating_app/features/employee/profile/earning/service/bank_service.dart';
 import 'package:dating_app/features/employee/service/employee_service.dart';
 import 'package:dating_app/features/payment/service/payment_service.dart';
 import 'package:dating_app/features/splash/user_auth/data/repositories/user_auth_repository.dart';
@@ -65,6 +66,7 @@ void init() {
   sl.registerLazySingleton<ClientCallService>(() => ClientCallService(sl()));
   sl.registerLazySingleton<WalletService>(() => WalletService(sl()));
   sl.registerLazySingleton<PaymentService>(() => PaymentService(sl()));
+  sl.registerLazySingleton<BankService>(() => BankService(sl()));
   sl.registerLazySingleton<ProfileService>(() => ProfileService());
   sl.registerLazySingleton<PopupOfferService>(() => PopupOfferService());
   sl.registerLazySingleton<UserDetailsRepository>(

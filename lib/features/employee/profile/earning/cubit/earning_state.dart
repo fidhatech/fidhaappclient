@@ -14,11 +14,16 @@ class EarningLoading extends EarningState {}
 class EarningLoaded extends EarningState {
   final double currentBalance;
   final EmployeeKycStatusModel kycStatus;
+  final BankAccountModel bankAccount;
 
-  const EarningLoaded({required this.currentBalance, required this.kycStatus});
+  const EarningLoaded({
+    required this.currentBalance,
+    required this.kycStatus,
+    required this.bankAccount,
+  });
 
   @override
-  List<Object?> get props => [currentBalance, kycStatus];
+  List<Object> get props => [currentBalance, kycStatus, bankAccount];
 }
 
 class EarningError extends EarningState {

@@ -3,6 +3,7 @@ import 'package:dating_app/core/constants/app_urls.dart';
 import 'package:dating_app/core/widgets/profile_dialogs/profile_dialogs.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:dating_app/config/theme/app_color.dart';
+import 'package:dating_app/features/employee/profile/screen/safety_support_screen.dart';
 import 'package:dating_app/features/user/features/user_profile/cubit/profile_cubit.dart';
 import 'package:dating_app/features/user/features/user_profile/presentation/widget/profile_options/profile_option_tile.dart';
 import 'package:dating_app/features/wallet/cubit/wallet_cubit.dart';
@@ -40,6 +41,28 @@ class ProfileOptionsList extends StatelessWidget {
           onTap: () async {
             final Uri url = Uri.parse(AppUrls.termsAndConditions);
             if (!await launchUrl(url)) {}
+          },
+        ),
+        const SizedBox(height: 8),
+        OptionTile(
+          icon: Icons.privacy_tip_outlined,
+          label: "Privacy Policy",
+          onTap: () async {
+            final Uri url = Uri.parse(AppUrls.privacyPolicy);
+            if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {}
+          },
+        ),
+        const SizedBox(height: 8),
+        OptionTile(
+          icon: Icons.security_outlined,
+          label: "Safety & Support",
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const SafetySupportScreen(),
+              ),
+            );
           },
         ),
         const SizedBox(height: 8),

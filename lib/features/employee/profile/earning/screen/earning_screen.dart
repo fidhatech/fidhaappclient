@@ -3,9 +3,13 @@ import 'package:dating_app/di/injection.dart';
 import 'package:dating_app/features/employee/profile/earning/cubit/earning_cubit.dart';
 import 'package:dating_app/features/employee/profile/earning/kyc/screen/kyc_verification_screen.dart';
 import 'package:dating_app/features/employee/profile/earning/models/kyc_status_model.dart';
+import 'package:dating_app/features/employee/profile/earning/service/bank_service.dart';
 import 'package:dating_app/features/employee/profile/earning/service/kyc_service.dart';
 import 'package:dating_app/features/employee/profile/earning/widgets/current_balance_card.dart';
 import 'package:dating_app/features/employee/profile/earning/widgets/kyc_status_card.dart';
+import 'package:dating_app/features/employee/profile/earning/models/bank_account_model.dart';
+import 'package:dating_app/features/employee/profile/earning/screen/add_bank_account_screen.dart';
+import 'package:dating_app/features/employee/profile/earning/widgets/bank_account_card.dart';
 import 'package:dating_app/features/employee/profile/earning/widgets/withdraw_money_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,8 +20,10 @@ class EarningScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          EarningCubit(kycService: KycService(sl()))..loadEarningData(),
+      create: (context) => EarningCubit(
+        kycService: KycService(sl()),
+        bankService: BankService(sl()),
+      )..loadEarningData(),
       child: GradientScaffold(
         appBar: AppBar(
           title: const Text(
@@ -114,6 +120,28 @@ class EarningScreen extends StatelessWidget {
                           ),
                         );
                         // Reload earning data after returning from KYC screen
+                        if (context.mounted) {
+                          context.read<EarningCubit>().loadEarningData();
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    BankAccountCard(
+                      bankAccount: context
+                          .select<EarningCubit, BankAccountModel>((cubit) {
+                            final state = cubit.state;
+                            if (state is EarningLoaded) {
+                              return state.bankAccount;
+                            }
+                            return BankAccountModel.empty();
+                          }),
+                      onAddBankTap: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const AddBankAccountScreen(),
+                          ),
+                        );
                         if (context.mounted) {
                           context.read<EarningCubit>().loadEarningData();
                         }

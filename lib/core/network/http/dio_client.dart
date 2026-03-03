@@ -7,6 +7,7 @@ import 'package:dating_app/core/globals/keys.dart';
 import 'package:dating_app/core/storage/secure_storage.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class DioClient {
   static Dio? _dio;
@@ -28,6 +29,19 @@ class DioClient {
       ),
     );
 
+    // Add PrettyDioLogger
+    dio.interceptors.add(
+      PrettyDioLogger(
+        requestHeader: true,
+        requestBody: true,
+        responseBody: true,
+        responseHeader: false,
+        error: true,
+        compact: true,
+        maxWidth: 90,
+      ),
+    );
+
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
@@ -37,22 +51,10 @@ class DioClient {
             options.headers['Authorization'] = 'Bearer $accessToken';
           }
 
-          final authHead = options.headers['Authorization'];
-          final maskedAuth = authHead != null && authHead.toString().length > 15
-              ? "${authHead.toString().substring(0, 15)}..."
-              : authHead;
-
-          log('📡 Dio ➡️ ${options.method} ${options.uri} | Auth: $maskedAuth');
-          if (options.data != null) {
-            log('   📦 Data: ${options.data}');
-          }
-
           handler.next(options);
         },
 
         onResponse: (response, handler) {
-          log('⬅ ${response.statusCode} ${response.data}');
-
           handler.next(response);
         },
 
@@ -144,6 +146,19 @@ class DioClient {
 
               final refreshDio = Dio(BaseOptions(baseUrl: ApiConstants.apiUrl));
 
+              // Add logger to refreshDio as well for debugging purposes
+              refreshDio.interceptors.add(
+                PrettyDioLogger(
+                  requestHeader: true,
+                  requestBody: true,
+                  responseBody: true,
+                  responseHeader: false,
+                  error: true,
+                  compact: true,
+                  maxWidth: 90,
+                ),
+              );
+
               final refreshResponse = await refreshDio.post(
                 refreshUrl,
                 data: {'refreshToken': refreshToken},
@@ -179,13 +194,6 @@ class DioClient {
               _isRefreshing = false;
             }
           }
-
-          log('❌ Dio Error:');
-          log('➡️ Url: ${error.requestOptions.uri}');
-          log('➡️ Method: ${error.requestOptions.method}');
-          log('❌ Status Code: ${error.response?.statusCode}');
-          log('❌ Message: ${error.message}');
-          log('❌ Response Data: ${error.response?.data}');
 
           handler.next(error);
         },
