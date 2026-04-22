@@ -29,8 +29,14 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
   String? selectedGender = 'Male';
   String? selectedAvatar;
 
+  bool get _isFemaleSelected =>
+      (selectedGender ?? '').toLowerCase() == 'female';
+
   @override
   Widget build(BuildContext context) {
+    final double safeBottomInset = MediaQuery.of(context).viewPadding.bottom;
+    final double bottomPanelBaseHeight = screenHeightPercentage(context, 0.30);
+
     return GradientScaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -46,7 +52,7 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
                 padding: EdgeInsets.only(
                   left: controlWidth(context, 17),
                   right: controlWidth(context, 17),
-                  bottom: screenHeightPercentage(context, 0.30),
+                  bottom: bottomPanelBaseHeight + safeBottomInset,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,15 +75,21 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
                     ),
 
                     SizedBox(height: controlHeight(context, 40)),
-                    GenderAvatarSelector(
-                      gender: selectedGender,
-                      selectedAvatar: selectedAvatar,
-                      onAvatarSelected: (avatar) {
-                        setState(() {
-                          selectedAvatar = avatar;
-                        });
-                      },
-                    ),
+                    if (!_isFemaleSelected)
+                      GenderAvatarSelector(
+                        gender: selectedGender,
+                        selectedAvatar: selectedAvatar,
+                        onAvatarSelected: (avatar) {
+                          setState(() {
+                            selectedAvatar = avatar;
+                          });
+                        },
+                      )
+                    else
+                      const Text(
+                        'Avatar selection is disabled for female users. You can set your profile photo later in profile edit.',
+                        style: TextStyle(color: Colors.white70, fontSize: 13),
+                      ),
                     SizedBox(height: controlHeight(context, 20)),
                   ],
                 ),
@@ -87,7 +99,8 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
                 alignment: Alignment.bottomCenter,
                 child: Container(
                   width: double.infinity,
-                  height: screenHeightPercentage(context, 0.30),
+                  height: bottomPanelBaseHeight + safeBottomInset,
+                  padding: EdgeInsets.only(bottom: safeBottomInset),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
@@ -154,15 +167,19 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
                               'By continuing, you agree to our Terms & Conditions',
                           onBottomTextTap: () =>
                               UrlHelper.launchURL(AppUrls.termsAndConditions),
-                          isEnabled:
-                              selectedGender != null && selectedAvatar != null,
+                          isEnabled: _isFemaleSelected
+                              ? selectedGender != null
+                              : (selectedGender != null &&
+                                    selectedAvatar != null),
                           onTap: () {
                             if (selectedGender != null &&
-                                selectedAvatar != null) {
+                                (_isFemaleSelected || selectedAvatar != null)) {
                               context.read<OnboardingBloc>().add(
                                 GenderAvatarSubmitted(
                                   gender: selectedGender!,
-                                  avatar: selectedAvatar!,
+                                  avatar: _isFemaleSelected
+                                      ? ''
+                                      : selectedAvatar!,
                                 ),
                               );
                             }

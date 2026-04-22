@@ -3,8 +3,15 @@ import 'package:flutter/material.dart';
 
 class WithdrawMoneyCard extends StatelessWidget {
   final double availableBalance;
+  final Future<void> Function(int amount) onWithdraw;
+  final bool isSubmitting;
 
-  const WithdrawMoneyCard({super.key, required this.availableBalance});
+  const WithdrawMoneyCard({
+    super.key,
+    required this.availableBalance,
+    required this.onWithdraw,
+    this.isSubmitting = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +46,7 @@ class WithdrawMoneyCard extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            'Available: \$${availableBalance.toStringAsFixed(2)}',
+            'Available: ₹${availableBalance.toStringAsFixed(2)}',
             style: TextStyle(
               color: Colors.white.withOpacity(0.7),
               fontSize: 14,
@@ -60,9 +67,8 @@ class WithdrawMoneyCard extends StatelessWidget {
                     ),
                     child: WithdrawAmountView(
                       availableBalance: availableBalance,
-                      onWithdraw: (amount) {
-                        // TODO: Wire up to cubit later
-                      },
+                      onWithdraw: onWithdraw,
+                      isSubmitting: isSubmitting,
                     ),
                   ),
                 );

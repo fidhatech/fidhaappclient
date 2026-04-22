@@ -26,6 +26,8 @@ class HorizontalFriendsList extends StatelessWidget {
         separatorBuilder: (context, index) => const SizedBox(width: 16),
         itemBuilder: (context, index) {
           final friend = friends[index];
+          final displayName = friend.name.trim().isEmpty ? 'Unknown User' : friend.name;
+          final avatarUrl = friend.avatar ?? '';
 
           return InkWell(
             onTap: () {
@@ -36,16 +38,16 @@ class HorizontalFriendsList extends StatelessWidget {
               );
             },
             child: ContactGridCard(
-              name: friend.name,
+              name: displayName,
               age: friend.age.toString(),
-              imageUrl: friend.avatar!,
+              imageUrl: avatarUrl,
               cardWidth: 0.40,
               onVideo: () {
                 log("triggered");
                 context.read<ClientCallCubit>().initiateCall(
                   friend.empId,
-                  friend.name,
-                  friend.avatar!,
+                  displayName,
+                  avatarUrl,
                   CallType.video,
                 );
               },
@@ -53,13 +55,15 @@ class HorizontalFriendsList extends StatelessWidget {
                 log("triggered");
                 context.read<ClientCallCubit>().initiateCall(
                   friend.empId,
-                  friend.name,
-                  friend.avatar!,
+                  displayName,
+                  avatarUrl,
                   CallType.audio,
                 );
               },
               isAudioEnabled: friend.isAudioEnabled,
               isVideoEnabled: friend.isVideoEnabled,
+              isOnline: friend.status == null || friend.status == 'online',
+              isBusy: friend.status == 'busy',
             ),
           );
         },

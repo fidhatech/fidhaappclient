@@ -1,6 +1,7 @@
 import 'package:dating_app/config/theme/app_theme.dart';
 
 import 'package:dating_app/features/splash/screens/splash_screen.dart';
+import 'package:dating_app/core/services/firebase_analytics_service.dart';
 import 'package:dating_app/core/services/socket_session_manager.dart';
 
 import 'package:flutter/material.dart';
@@ -28,12 +29,13 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           title: 'Fidha',
           theme: AppTheme.main,
+          navigatorObservers: [FirebaseAnalyticsService.observer],
           routes: AppRoutes.getRoutes(),
           home: const SplashScreen(),
           builder: (context, child) {
             return Stack(
               children: [
-                if (child != null) child,
+                ?child,
                 if (networkState.status == NetworkStatus.offline)
                   const Positioned.fill(child: OfflineScreen()),
               ],

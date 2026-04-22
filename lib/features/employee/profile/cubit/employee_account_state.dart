@@ -18,7 +18,7 @@ class EmployeeAccountLoaded extends EmployeeAccountState {
   const EmployeeAccountLoaded({required this.name, this.avatarUrl});
 
   @override
-  List<Object> get props => [name, if (avatarUrl != null) avatarUrl!];
+  List<Object> get props => [name, ?avatarUrl];
 }
 
 class EmployeeAccountError extends EmployeeAccountState {

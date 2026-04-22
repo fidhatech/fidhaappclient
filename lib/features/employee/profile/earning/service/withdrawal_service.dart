@@ -49,9 +49,23 @@ class WithdrawalService {
       );
 
       if (response.statusCode == 200) {
-        final List<dynamic> data = response.data['data'] ?? [];
-        log('$_tag Fetched ${data.length} history items');
-        return data.map((e) => WithdrawalHistoryItem.fromJson(e)).toList();
+        final dynamic rawData = response.data['data'];
+        List<dynamic> items = const [];
+
+        if (rawData is List) {
+          items = rawData;
+        } else if (rawData is Map<String, dynamic>) {
+          final nested = rawData['withdrawals'];
+          if (nested is List) {
+            items = nested;
+          }
+        }
+
+        log('$_tag Fetched ${items.length} history items');
+        return items
+            .whereType<Map<String, dynamic>>()
+            .map(WithdrawalHistoryItem.fromJson)
+            .toList();
       } else {
         log('$_tag Fetch history failed: ${response.statusCode}');
         throw DioException(

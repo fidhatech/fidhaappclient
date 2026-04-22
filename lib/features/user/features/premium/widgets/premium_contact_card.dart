@@ -19,6 +19,7 @@ class PremiumContactCard extends StatelessWidget {
     this.isAudioEnabled = true,
     this.isVideoEnabled = true,
     this.isOnline = true,
+    this.isBusy = false,
     this.audioCallRate,
     this.videoCallRate,
   });
@@ -29,6 +30,7 @@ class PremiumContactCard extends StatelessWidget {
   final bool isAudioEnabled;
   final bool isVideoEnabled;
   final bool isOnline;
+  final bool isBusy;
 
   void _showDisabledSnackbar(BuildContext context) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -53,7 +55,9 @@ class PremiumContactCard extends StatelessWidget {
           color: Colors.grey[900],
           border: isOnline
               ? Border.all(color: const Color(0xFF2E7D32), width: 1.5)
-              : null,
+              : isBusy
+                  ? Border.all(color: Colors.yellow, width: 1.5)
+                  : null,
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.3),
@@ -64,10 +68,15 @@ class PremiumContactCard extends StatelessWidget {
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(18),
-          child: Opacity(
-            opacity: isOnline ? 1.0 : 0.6,
-            child: Stack(
-              children: [
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final compactLayout =
+                  constraints.maxHeight <= 250 || constraints.maxWidth <= 165;
+
+              return Opacity(
+                opacity: isOnline ? 1.0 : isBusy ? 0.85 : 0.6,
+                child: Stack(
+                  children: [
                 Positioned.fill(
                   child: imageUrl.isNotEmpty
                       ? CachedNetworkImage(
@@ -107,21 +116,21 @@ class PremiumContactCard extends StatelessWidget {
                 ),
 
                 Positioned(
-                  left: 12,
-                  right: 12,
-                  bottom: 12,
+                  left: compactLayout ? 8 : 12,
+                  right: compactLayout ? 8 : 12,
+                  bottom: compactLayout ? 10 : 12,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Row(
                         children: [
-                          Flexible(
+                          Expanded(
                             child: Text(
                               '$name, $age',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 16,
+                                fontSize: compactLayout ? 13 : 16,
                                 fontWeight: FontWeight.bold,
                                 shadows: [
                                   Shadow(
@@ -135,41 +144,56 @@ class PremiumContactCard extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          if (isOnline)
+                          if (isOnline || isBusy)
                             Container(
-                              margin: const EdgeInsets.only(left: 6),
-                              width: 8,
-                              height: 8,
-                              decoration: const BoxDecoration(
-                                color: Color(0xFF4CAF50),
+                              margin: const EdgeInsets.only(left: 3),
+                              width: compactLayout ? 7 : 8,
+                              height: compactLayout ? 7 : 8,
+                              decoration: BoxDecoration(
+                                color: isOnline
+                                    ? const Color(0xFF4CAF50)
+                                    : Colors.yellow,
                                 shape: BoxShape.circle,
                               ),
                             ),
                         ],
                       ),
 
-                      const SizedBox(height: 10),
+                      SizedBox(height: compactLayout ? 6 : 10),
 
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildActionButton(
-                            context,
-                            icon: Icons.videocam_rounded,
-                            isActive: isVideoEnabled && isOnline,
-                            isExplicitlyDisabled: !isVideoEnabled,
-                            onTap: onVideoCall,
-                            color: const Color(0xFF2E7D32),
-                            rate: videoCallRate,
+                          Expanded(
+                            flex: 3,
+                            child: _buildActionButton(
+                              context,
+                              icon: Icons.videocam_rounded,
+                              label: 'Video',
+                              isPrimary: true,
+                              isCompact: compactLayout,
+                              isActive: isVideoEnabled && isOnline,
+                              isExplicitlyDisabled: !isVideoEnabled,
+                              onTap: onVideoCall,
+                              color: const Color(0xFF2E7D32),
+                              rate: compactLayout ? null : videoCallRate,
+                            ),
                           ),
-                          const SizedBox(width: 10),
-                          _buildActionButton(
-                            context,
-                            icon: Icons.phone_rounded,
-                            isActive: isAudioEnabled && isOnline,
-                            isExplicitlyDisabled: !isAudioEnabled,
-                            onTap: onAudioCall,
-                            color: const Color(0xFF1565C0),
-                            rate: audioCallRate,
+                          SizedBox(width: compactLayout ? 3 : 6),
+                          Expanded(
+                            flex: 1,
+                            child: _buildActionButton(
+                              context,
+                              icon: Icons.phone_rounded,
+                              label: null,
+                              isPrimary: true,
+                              isCompact: true,
+                              isActive: isAudioEnabled && isOnline,
+                              isExplicitlyDisabled: !isAudioEnabled,
+                              onTap: onAudioCall,
+                              color: const Color(0xFF1565C0),
+                              rate: null, // no room for rate chip at 25% width
+                            ),
                           ),
                         ],
                       ),
@@ -187,21 +211,25 @@ class PremiumContactCard extends StatelessWidget {
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.black.withValues(alpha: 0.6),
+                        color: isBusy
+                            ? Colors.yellow.withValues(alpha: 0.2)
+                            : Colors.black.withValues(alpha: 0.6),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: const Text(
-                        'Offline',
+                      child: Text(
+                        isBusy ? 'Busy' : 'Offline',
                         style: TextStyle(
-                          color: Colors.white70,
+                          color: isBusy ? Colors.yellow : Colors.white70,
                           fontSize: 10,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
                   ),
-              ],
-            ),
+                  ],
+                ),
+              );
+            },
           ),
         ),
       ),
@@ -211,6 +239,9 @@ class PremiumContactCard extends StatelessWidget {
   Widget _buildActionButton(
     BuildContext context, {
     required IconData icon,
+    String? label,
+    bool isPrimary = false,
+    bool isCompact = false,
     required bool isActive,
     required bool isExplicitlyDisabled,
     VoidCallback? onTap,
@@ -230,12 +261,20 @@ class PremiumContactCard extends StatelessWidget {
                 : null,
             borderRadius: BorderRadius.circular(30),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              width: isPrimary ? double.infinity : null,
+              constraints: isCompact
+                ? const BoxConstraints(minHeight: 42)
+                : null,
+              padding: isCompact
+                ? const EdgeInsets.symmetric(horizontal: 6, vertical: 10)
+                : isPrimary
+                  ? const EdgeInsets.symmetric(horizontal: 12, vertical: 11)
+                : const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
               decoration: BoxDecoration(
                 color: isActive
                     ? color.withValues(alpha: 0.9)
                     : Colors.white.withValues(alpha: 0.05),
-                borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(isCompact ? 18 : 30),
                 border: Border.all(
                   color: isActive
                       ? Colors.white.withValues(alpha: 0.2)
@@ -246,40 +285,68 @@ class PremiumContactCard extends StatelessWidget {
                     ? [
                         BoxShadow(
                           color: color.withValues(alpha: 0.4),
-                          blurRadius: 6,
+                          blurRadius: isPrimary ? 8 : 6,
                           offset: const Offset(0, 2),
                         ),
                       ]
                     : null,
               ),
-              child: Icon(
-                icon,
-                color: isActive ? Colors.white : Colors.white12,
-                size: 18,
+              child: Row(
+                mainAxisSize: isPrimary ? MainAxisSize.max : MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    icon,
+                    color: isActive ? Colors.white : Colors.white12,
+                    size: isCompact ? 16 : isPrimary ? 20 : 16,
+                  ),
+                  if (label != null) ...[
+                    SizedBox(width: isCompact ? 4 : 5),
+                    Flexible(
+                      child: Text(
+                        label,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false,
+                        style: TextStyle(
+                          color: isActive ? Colors.white : Colors.white24,
+                          fontSize: isCompact ? 12 : isPrimary ? 13 : 11,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
               ),
             ),
           ),
         ),
         if (rate != null && isActive) ...[
           const SizedBox(height: 4),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.monetization_on_rounded,
-                size: 8,
-                color: Colors.amberAccent.withValues(alpha: 0.8),
+          SizedBox(
+            width: double.infinity,
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.monetization_on_rounded,
+                    size: 8,
+                    color: Colors.amberAccent.withValues(alpha: 0.8),
+                  ),
+                  const SizedBox(width: 2),
+                  Text(
+                    '$rate/min',
+                    style: TextStyle(
+                      color: Colors.white.withValues(alpha: 0.6),
+                      fontSize: 9,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(width: 2),
-              Text(
-                '$rate/min',
-                style: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.6),
-                  fontSize: 9,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
+            ),
           ),
         ],
       ],

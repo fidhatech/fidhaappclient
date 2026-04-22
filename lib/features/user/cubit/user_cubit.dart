@@ -13,6 +13,7 @@ class UserCubit extends Cubit<UserState> {
   final HomeRepository repository;
   final NetworkStatusCubit networkStatusCubit;
   StreamSubscription? _networkSubscription;
+  bool _isFetching = false;
   static const String _tag = '[UserCubit]';
 
   UserCubit({required this.repository, required this.networkStatusCubit})
@@ -31,8 +32,10 @@ class UserCubit extends Cubit<UserState> {
     });
   }
 
-  void fetchUser() async {
+  void fetchUser({bool showLoader = true}) async {
     log("fetchcalled");
+
+    if (_isFetching) return;
 
     if (networkStatusCubit.state.status == NetworkStatus.offline) {
       emit(ErrorState("No Internet Connection"));
@@ -40,7 +43,10 @@ class UserCubit extends Cubit<UserState> {
     }
 
     if (isClosed) return;
-    emit(UserLoading());
+    _isFetching = true;
+    if (showLoader || state is UserInitial) {
+      emit(UserLoading());
+    }
     try {
       final data = await repository.fetchHome();
       log('UserCubit: fetched data: ${data.name}');
@@ -48,6 +54,19 @@ class UserCubit extends Cubit<UserState> {
     } catch (e) {
       log('UserCubit: error $e');
       if (!isClosed) emit(ErrorState(e.toString()));
+    } finally {
+      _isFetching = false;
+    }
+  }
+
+  void syncCoins(int coins) {
+    final currentState = state;
+    if (currentState is! UserLoaded) return;
+
+    if (currentState.userModel.coins == coins) return;
+
+    if (!isClosed) {
+      emit(UserLoaded(currentState.userModel.copyWith(coins: coins)));
     }
   }
 

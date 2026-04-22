@@ -34,22 +34,48 @@ class EmployeeModel extends Equatable {
   });
 
   factory EmployeeModel.fromJson(Map<String, dynamic> json) {
+    List<String>? parseStringList(dynamic value) {
+      if (value is List) {
+        final parsed = value
+            .map((e) => e?.toString() ?? '')
+            .where((e) => e.isNotEmpty)
+            .toList();
+        return parsed.isEmpty ? null : parsed;
+      }
+
+      if (value is String && value.isNotEmpty) {
+        return [value];
+      }
+
+      return null;
+    }
+
+    String? parseAvatar(dynamic value) {
+      if (value is String && value.isNotEmpty) return value;
+      if (value is List && value.isNotEmpty) {
+        final first = value.first?.toString() ?? '';
+        return first.isEmpty ? null : first;
+      }
+      return null;
+    }
+
+    final rawName = (json['name'] ?? '').toString().trim();
+    final safeName = rawName.isEmpty ? 'Unknown User' : rawName;
+
     return EmployeeModel(
       empId: json['empId'] ?? json['_id'] ?? '',
-      name: json['name'] ?? '',
+      name: safeName,
       age: json['age'] ?? 0,
       isPrime: json["isPrime"],
-      profileImages: json["profileImages"] != null
-          ? List<String>.from(json["profileImages"])
-          : json["profile_image"] != null
-          ? List<String>.from(json["profile_image"])
-          : null,
+      profileImages:
+          parseStringList(json["profileImages"]) ??
+          parseStringList(json["profile_image"]),
       interests: json["interest"] != null
           ? List<String>.from(json["interest"])
           : json["interests"] != null
           ? List<String>.from(json["interests"])
           : [],
-      avatar: json["avatar"],
+      avatar: parseAvatar(json["avatar"]),
       isAudioEnabled: json['callPreference']?['isAudioEnabled'] ?? false,
       isVideoEnabled: json['callPreference']?['isVideoEnabled'] ?? false,
       audioCallRate: json['callRate']?['audioCallRate'],
@@ -91,7 +117,8 @@ class EmployeeModel extends Equatable {
       audioCallRate: audioCallRate ?? this.audioCallRate,
       videoCallRate: videoCallRate ?? this.videoCallRate,
       status: status ?? this.status,
-      language: language ?? language,
+      language: language ?? this.language,
+      about: about ?? this.about,
     );
   }
 

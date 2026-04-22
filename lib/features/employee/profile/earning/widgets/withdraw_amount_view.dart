@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 
 class WithdrawAmountView extends StatefulWidget {
   final double availableBalance;
-  final Function(int) onWithdraw;
+  final Future<void> Function(int) onWithdraw;
+  final bool isSubmitting;
 
   const WithdrawAmountView({
     super.key,
     required this.availableBalance,
     required this.onWithdraw,
+    this.isSubmitting = false,
   });
 
   @override
@@ -20,6 +22,7 @@ class _WithdrawAmountViewState extends State<WithdrawAmountView> {
   final int _platformFee = 5;
   int? _amount;
   String? _errorText;
+  bool _isSubmitting = false;
 
   @override
   void initState() {
@@ -149,19 +152,41 @@ class _WithdrawAmountViewState extends State<WithdrawAmountView> {
           ),
           const SizedBox(height: 24),
           ElevatedButton(
-            onPressed: (_amount != null && _errorText == null)
-                ? () {
-                    // MOCK SUBMISSION as per instructions
-                    // Logic to pass amount up would go here
-                    // widget.onWithdraw(_amount!);
+            onPressed:
+                (_amount != null &&
+                    _errorText == null &&
+                    !_isSubmitting &&
+                    !widget.isSubmitting)
+                ? () async {
+                    final amount = _amount;
+                    if (amount == null) return;
+                    final navigator = Navigator.of(context);
+                    final messenger = ScaffoldMessenger.of(context);
 
-                    // Show disabled feedback or mock logic
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("Withdrawals are coming soon!"),
-                      ),
-                    );
-                    Navigator.pop(context);
+                    setState(() {
+                      _isSubmitting = true;
+                    });
+
+                    try {
+                      await widget.onWithdraw(amount);
+                      if (!mounted) return;
+                      navigator.pop();
+                    } catch (error) {
+                      if (!mounted) return;
+                      messenger.showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            error.toString().replaceFirst('Exception: ', ''),
+                          ),
+                        ),
+                      );
+                    } finally {
+                      if (mounted) {
+                        setState(() {
+                          _isSubmitting = false;
+                        });
+                      }
+                    }
                   }
                 : null,
             style: ElevatedButton.styleFrom(
@@ -172,9 +197,11 @@ class _WithdrawAmountViewState extends State<WithdrawAmountView> {
               ),
               disabledBackgroundColor: Colors.grey[300],
             ),
-            child: const Text(
-              "Request Withdrawal",
-              style: TextStyle(
+            child: Text(
+              (_isSubmitting || widget.isSubmitting)
+                  ? "Confirming..."
+                  : "Confirm Withdrawal",
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,

@@ -31,14 +31,16 @@ class PremiumCardsGrid extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
         final card = response.employees[index];
+        final displayName = card.name.trim().isEmpty ? 'Unknown User' : card.name;
         return PremiumContactCard(
-          name: card.name,
+          name: displayName,
           age: card.age.toString(),
           imageUrl:
               (card.profileImages != null && card.profileImages!.isNotEmpty)
               ? card.profileImages![0]
               : card.avatar ?? '',
           isOnline: card.status == 'online',
+          isBusy: card.status == 'busy',
           isAudioEnabled: card.isAudioEnabled,
           isVideoEnabled: card.isVideoEnabled,
           audioCallRate: card.audioCallRate,
@@ -53,7 +55,7 @@ class PremiumCardsGrid extends StatelessWidget {
           onAudioCall: () {
             context.read<ClientCallCubit>().initiateCall(
               card.empId,
-              card.name,
+              displayName,
               card.avatar ?? '',
               CallType.audio,
             );
@@ -61,7 +63,7 @@ class PremiumCardsGrid extends StatelessWidget {
           onVideoCall: () {
             context.read<ClientCallCubit>().initiateCall(
               card.empId,
-              card.name,
+              displayName,
               card.avatar ?? '',
               CallType.video,
             );

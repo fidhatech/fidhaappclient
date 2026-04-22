@@ -19,8 +19,8 @@ class BottomNavBarContent extends StatelessWidget {
   });
 
   static const List<Widget> _screens = [
-    HomeScreenTab(),
     PremiumScreenTab(),
+    HomeScreenTab(),
     HistoryScreenTab(),
     ProfileScreenTab(),
   ];

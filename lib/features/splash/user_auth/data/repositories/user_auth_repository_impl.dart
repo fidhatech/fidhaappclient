@@ -1,3 +1,4 @@
+import 'package:dating_app/core/services/firebase_notification_service.dart';
 import 'package:dating_app/core/storage/secure_storage.dart';
 import 'package:dating_app/features/splash/user_auth/data/datasources/auth_remote_datasource.dart';
 import 'package:dating_app/features/splash/user_auth/data/models/auth_response_model.dart';
@@ -20,6 +21,7 @@ class UserAuthRepositoryImpl implements UserAuthRepository {
       accessToken: result.accessToken,
       refreshToken: result.refreshToken,
     );
+    await FirebaseNotificationService.registerTokenWithBackend();
 
     return result;
   }

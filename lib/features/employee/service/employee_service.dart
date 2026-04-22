@@ -175,9 +175,25 @@ class EmployeeService {
   Future<void> updateProfile(Map<String, dynamic> data) async {
     try {
       log('$_tag Updating profile: $data');
+      final String? avatar = data['avatar'] as String?;
+      final bool isLocalFile =
+          avatar != null &&
+          avatar.isNotEmpty &&
+          !avatar.startsWith('http') &&
+          !avatar.startsWith('assets');
+
+      dynamic requestData;
+      if (isLocalFile) {
+        final formMap = Map<String, dynamic>.from(data);
+        formMap['avatar'] = await MultipartFile.fromFile(avatar);
+        requestData = FormData.fromMap(formMap);
+      } else {
+        requestData = data;
+      }
+
       final response = await _dio.patch(
         EmployeeConstants.endpointProfileUpdate,
-        data: data,
+        data: requestData,
       );
 
       if (response.statusCode == 200) {

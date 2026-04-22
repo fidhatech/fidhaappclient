@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1071891136226",
+    "project_id": "fidha-technologies",
+    "storage_bucket": "fidha-technologies.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1071891136226:android:c70b0241a219ca4d84e8bb",
+        "android_client_info": {
+          "package_name": "com.fidha.dating"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCD9xR7QqO80m0pRDlKdRgE-XEpQX2uZUQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1071891136226:android:83265baed1c4ce0284e8bb",
+        "android_client_info": {
+          "package_name": "fidha.app.com"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCD9xR7QqO80m0pRDlKdRgE-XEpQX2uZUQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

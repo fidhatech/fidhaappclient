@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'dart:developer';
+import 'package:dating_app/core/services/local_notification_service.dart';
 import 'package:dating_app/core/utils/handle_back_press.dart';
 import 'package:dating_app/features/call/call_waiting/widget/pulse_avatar.dart';
 import 'package:dating_app/features/call/incoming_call/widgets/incoming_call_button.dart';
@@ -29,6 +30,7 @@ class IncomingCallScreen extends StatelessWidget {
           context,
           onAction: () {
             log('IncomingCallScreen: Back button logic triggered reject');
+            LocalNotificationService.cancelIncomingCallNotification(callId);
             context.read<EmployeeCallCubit>().rejectCall(callId);
           },
           title: "Reject Call?",
@@ -119,6 +121,10 @@ class IncomingCallScreen extends StatelessWidget {
                                         log(
                                           'IncomingCallScreen: Reject tapped',
                                         );
+                                        LocalNotificationService
+                                            .cancelIncomingCallNotification(
+                                              callId,
+                                            );
                                         context
                                             .read<EmployeeCallCubit>()
                                             .rejectCall(callId);
@@ -137,6 +143,10 @@ class IncomingCallScreen extends StatelessWidget {
                                         log(
                                           'IncomingCallScreen: Accept tapped',
                                         );
+                                        LocalNotificationService
+                                            .cancelIncomingCallNotification(
+                                              callId,
+                                            );
                                         context
                                             .read<EmployeeCallCubit>()
                                             .acceptCall(callId);

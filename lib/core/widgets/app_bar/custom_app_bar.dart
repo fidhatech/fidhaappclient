@@ -4,7 +4,9 @@ import 'package:dating_app/core/widgets/app_bar/widgets/app_bar_content.dart';
 import 'package:dating_app/core/widgets/app_bar/widgets/app_bar_skeleton.dart';
 import 'package:dating_app/di/injection.dart';
 import 'package:dating_app/features/user/cubit/user_cubit.dart';
-import 'package:dating_app/features/user/features/navigation/cubit/navigator_cubit.dart';
+import 'package:dating_app/features/user/features/user_profile/cubit/profile_cubit.dart';
+import 'package:dating_app/features/user/features/user_profile/presentation/screens/edit_profile_screen.dart';
+import 'package:dating_app/features/user/features/user_profile/services/profile_service.dart';
 import 'package:dating_app/features/wallet/cubit/wallet_cubit.dart';
 import 'package:dating_app/features/wallet/screen/wallet_screen.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +32,24 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             image: state.userModel.avatar,
             name: state.userModel.name,
             coins: state.userModel.coins.toString(),
-            onProfileTap: () => context.read<NavigatorCubit>().changePage(3),
+            onProfileTap: () {
+              final userCubit = context.read<UserCubit>();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MultiBlocProvider(
+                    providers: [
+                      BlocProvider.value(value: userCubit),
+                      BlocProvider(
+                        create: (_) =>
+                            ProfileCubit(profileService: ProfileService()),
+                      ),
+                    ],
+                    child: const EditProfileScreen(),
+                  ),
+                ),
+              );
+            },
             onCoinTap: () {
               Navigator.push(
                 context,

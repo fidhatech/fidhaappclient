@@ -5,6 +5,8 @@ import 'package:dating_app/di/injection.dart';
 import 'package:dating_app/core/services/app_lifecycle_service.dart';
 import 'package:dating_app/core/services/local_notification_service.dart';
 import 'package:dating_app/core/services/firebase_notification_service.dart';
+import 'package:dating_app/core/services/firebase_analytics_service.dart';
+import 'package:dating_app/core/services/meta_app_events_service.dart';
 import 'package:dating_app/features/onboarding/bloc/onboarding_bloc.dart';
 import 'package:dating_app/features/splash/user_auth/domain/usecases/resend_otp_usecase.dart';
 import 'package:dating_app/features/splash/user_auth/domain/usecases/send_otp_usecase.dart';
@@ -20,7 +22,13 @@ Future<void> main() async {
 
   init();
   await LocalNotificationService.init();
+  await LocalNotificationService.restorePendingNotificationAction(
+    forceLaunchDetailsCheck: true,
+  );
   await FirebaseNotificationService.init();
+  await FirebaseAnalyticsService.init();
+  await MetaAppEventsService.init();
+  await MetaAppEventsService.logAppOpened();
   AppLifecycleService().init();
 
   SystemChrome.setSystemUIOverlayStyle(

@@ -14,9 +14,15 @@ final class UserLoading extends UserState {}
 final class ErrorState extends UserState {
   final String message;
   const ErrorState(this.message);
+
+  @override
+  List<Object> get props => [message];
 }
 
 final class UserLoaded extends UserState {
   final UserModel userModel;
   const UserLoaded(this.userModel);
+
+  @override
+  List<Object> get props => [userModel];
 }

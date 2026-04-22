@@ -1,11 +1,13 @@
 import 'package:dating_app/features/user/features/home/bloc/home_bloc.dart';
 import 'package:dating_app/features/user/features/home/bloc/home_event.dart';
 import 'package:dating_app/features/user/features/navigation/cubit/navigator_cubit.dart';
+import 'package:dating_app/features/user/features/call/cubit/client_call_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dating_app/features/user/cubit/user_cubit.dart';
 import 'package:dating_app/features/user/features/navigation/widgets/bottom_nav_bar_content.dart';
 import 'package:dating_app/core/widgets/socket/socket_error_listener.dart';
+import 'package:dating_app/core/services/firebase_notification_service.dart';
 
 import 'package:dating_app/core/widgets/offer_popup_card/offer_popup_card.dart';
 import 'package:dating_app/di/injection.dart';
@@ -24,11 +26,34 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   bool _isBuying = false;
+  DateTime? _lastCallStateToastAt;
+
+  void _showCallStateToastOnce(String message, {bool isError = false}) {
+    final now = DateTime.now();
+    final last = _lastCallStateToastAt;
+    if (last != null && now.difference(last).inMilliseconds < 1500) {
+      return;
+    }
+    _lastCallStateToastAt = now;
+
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: isError ? Colors.red : null,
+      ),
+    );
+  }
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      FirebaseNotificationService.checkAndRequestPermission(context);
+    });
   }
 
   @override
@@ -96,9 +121,11 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                             ) {
                               if (!context.mounted) return;
                               if (success) {
+                                context.read<NavigatorCubit>().changePage(0);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text("Payment Successful!"),
+                                    backgroundColor: Colors.green,
                                   ),
                                 );
                                 context.read<UserCubit>().fetchUser();
@@ -169,6 +196,21 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                   }
                 },
               ),
+              BlocListener<ClientCallCubit, ClientCallState>(
+                listener: (context, state) {
+                  if (state is ClientCallEnded || state is ClientCallError) {
+                    if (Navigator.canPop(context)) {
+                      Navigator.pop(context);
+                    }
+
+                    if (state is ClientCallError) {
+                      _showCallStateToastOnce(state.message, isError: true);
+                    } else {
+                      _showCallStateToastOnce('Call Ended');
+                    }
+                  }
+                },
+              ),
             ],
             child: BlocBuilder<NavigatorCubit, int>(
               builder: (context, state) {
@@ -176,6 +218,7 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                   child: BottomNavBarContent(
                     selectedIndex: state,
                     onTabChange: (index) {
+                      context.read<UserCubit>().fetchUser(showLoader: false);
                       context.read<NavigatorCubit>().changePage(index);
                     },
                   ),

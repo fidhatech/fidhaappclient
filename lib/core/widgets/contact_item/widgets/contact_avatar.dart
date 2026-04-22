@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 class ContactAvatar extends StatelessWidget {
   final String imageUrl;
   final bool isOnline;
+  final bool isBusy;
 
   const ContactAvatar({
     super.key,
     required this.imageUrl,
     this.isOnline = true,
+    this.isBusy = false,
   });
 
   @override
@@ -46,7 +48,7 @@ class ContactAvatar extends StatelessWidget {
                   ),
           ),
         ),
-        if (isOnline)
+        if (isOnline || isBusy)
           Positioned(
             bottom: 2,
             right: 2,
@@ -54,12 +56,13 @@ class ContactAvatar extends StatelessWidget {
               width: 14,
               height: 14,
               decoration: BoxDecoration(
-                color: Colors.greenAccent,
+                color: isOnline ? Colors.greenAccent : Colors.yellow,
                 shape: BoxShape.circle,
                 border: Border.all(color: Colors.black, width: 2),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.greenAccent.withValues(alpha: 0.5),
+                    color: (isOnline ? Colors.greenAccent : Colors.yellow)
+                        .withValues(alpha: 0.5),
                     blurRadius: 4,
                     spreadRadius: 1,
                   ),

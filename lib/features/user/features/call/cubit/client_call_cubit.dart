@@ -18,6 +18,60 @@ class ClientCallCubit extends Cubit<ClientCallState> {
   StreamSubscription? _joinSub;
   StreamSubscription? _endedSub;
   bool _isInitiating = false;
+  // Single cancellable timer for all "reset to idle after 2s" paths.
+  Timer? _resetTimer;
+
+  void _scheduleReset() {
+    _resetTimer?.cancel();
+    _resetTimer = Timer(const Duration(seconds: 2), () {
+      if (!isClosed) emit(ClientCallInitial());
+    });
+  }
+
+  void _cancelReset() {
+    _resetTimer?.cancel();
+    _resetTimer = null;
+  }
+
+  String? _extractBackendErrorMessage(Object error) {
+    if (error is! DioException) return null;
+    final payload = error.response?.data;
+    if (payload is! Map<String, dynamic>) return null;
+
+    final errorObj = payload['error'];
+    if (errorObj is Map<String, dynamic>) {
+      final message = errorObj['message'];
+      if (message is String) {
+        return message;
+      }
+    }
+
+    final message = payload['message'];
+    if (message is String) {
+      return message;
+    }
+    return null;
+  }
+
+  String _mapCallInitErrorMessage(String? code) {
+    switch (code) {
+      case 'INSUFFICIENT_COINS':
+      case 'INSUFFICIENT_COINS_FOR_MINIMUM_DURATION':
+        return 'Not enough coins to start this call.';
+      case 'EMPLOYEE_OFFLINE':
+        return 'She is currently offline.';
+      case 'CALL_TYPE_NOT_AVAILABLE':
+        return 'This call type is currently unavailable.';
+      case 'EMPLOYEE_BUSY':
+        return 'She is busy on another call.';
+      case 'USER_ALREADY_IN_CALL':
+        return 'You are already on a call.';
+      case 'USER_NOT_CONNECTED':
+        return 'Connection lost. Please try again.';
+      default:
+        return 'Call failed. Please try again.';
+    }
+  }
 
   ClientCallCubit(this._service, this._socketService)
     : super(ClientCallInitial()) {
@@ -37,10 +91,7 @@ class ClientCallCubit extends Cubit<ClientCallState> {
     _endedSub = _socketService.callEndedStream.listen((data) {
       if (state.status != CallStatus.idle && state.status != CallStatus.ended) {
         emit(ClientCallEnded(data['reason'] ?? 'rejected'));
-        Future.delayed(
-          const Duration(seconds: 2),
-          () => emit(ClientCallInitial()),
-        );
+        _scheduleReset();
       }
     });
   }
@@ -55,6 +106,16 @@ class ClientCallCubit extends Cubit<ClientCallState> {
       '[ClientCallCubit-${identityHashCode(this)}] initiateCall START - Current Status: ${state.status}',
     );
 
+    // If a previous call just ended and the 2s reset hasn't fired yet,
+    // clear that ended state immediately so the user can call again right away.
+    // Cancel any pending reset timer from a previous call so it can't
+    // fire mid-new-call and silently flip state back to idle.
+    _cancelReset();
+
+    if (state.status == CallStatus.ended) {
+      emit(ClientCallInitial());
+    }
+
     if (state.status != CallStatus.idle || _isInitiating) {
       log(
         ' [ClientCallCubit-${identityHashCode(this)}] IGNORING call - State not IDLE/Busy',
@@ -68,7 +129,6 @@ class ClientCallCubit extends Cubit<ClientCallState> {
         ' [ClientCallCubit-${identityHashCode(this)}] Setting status to INITIATING',
       );
       emit(ClientCallInitiating());
-      _isInitiating = false;
       log(
         '[ClientCallCubit-${identityHashCode(this)}] Status after emit: ${state.status}',
       );
@@ -88,33 +148,19 @@ class ClientCallCubit extends Cubit<ClientCallState> {
       );
     } catch (e) {
       log('[ClientCallCubit-${identityHashCode(this)}] Error: $e');
-      _isInitiating = false;
 
-      if (e is DioException && e.response?.data != null) {
-        try {
-          final data = e.response!.data;
-          if (data is Map<String, dynamic>) {
-            final errorObj = data['error'];
-            if (errorObj is Map<String, dynamic> &&
-                errorObj['message'] == 'INSUFFICIENT_COINS') {
-              emit(ClientCallInsufficientCoins());
-              Future.delayed(
-                const Duration(seconds: 2),
-                () => emit(ClientCallInitial()),
-              );
-              return;
-            }
-          }
-        } catch (parseError) {
-          log('Error parsing Dio error response: $parseError');
-        }
+      final backendMessage = _extractBackendErrorMessage(e);
+      if (backendMessage == 'INSUFFICIENT_COINS' ||
+          backendMessage == 'INSUFFICIENT_COINS_FOR_MINIMUM_DURATION') {
+        emit(ClientCallInsufficientCoins());
+        _scheduleReset();
+        return;
       }
 
-      emit(ClientCallError(e.toString()));
-      Future.delayed(
-        const Duration(seconds: 2),
-        () => emit(ClientCallInitial()),
-      );
+      emit(ClientCallError(_mapCallInitErrorMessage(backendMessage)));
+      _scheduleReset();
+    } finally {
+      _isInitiating = false;
     }
   }
 
@@ -131,17 +177,12 @@ class ClientCallCubit extends Cubit<ClientCallState> {
 
     log('[ClientCallCubit] Emitting ClientCallEnded state.');
     emit(ClientCallEnded('Canceled'));
-
-    Future.delayed(const Duration(seconds: 2), () {
-      if (!isClosed) {
-        log('[ClientCallCubit] Resetting to ClientCallInitial.');
-        emit(ClientCallInitial());
-      }
-    });
+    _scheduleReset();
   }
 
   @override
   Future<void> close() {
+    _resetTimer?.cancel();
     _joinSub?.cancel();
     _endedSub?.cancel();
     return super.close();

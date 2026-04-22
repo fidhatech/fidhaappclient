@@ -5,12 +5,15 @@ import 'package:dating_app/features/employee/profile/earning/kyc/screen/kyc_veri
 import 'package:dating_app/features/employee/profile/earning/models/kyc_status_model.dart';
 import 'package:dating_app/features/employee/profile/earning/service/bank_service.dart';
 import 'package:dating_app/features/employee/profile/earning/service/kyc_service.dart';
+import 'package:dating_app/features/employee/profile/earning/service/withdrawal_service.dart';
 import 'package:dating_app/features/employee/profile/earning/widgets/current_balance_card.dart';
 import 'package:dating_app/features/employee/profile/earning/widgets/kyc_status_card.dart';
 import 'package:dating_app/features/employee/profile/earning/models/bank_account_model.dart';
+import 'package:dating_app/features/employee/profile/earning/models/withdrawal_model.dart';
 import 'package:dating_app/features/employee/profile/earning/screen/add_bank_account_screen.dart';
 import 'package:dating_app/features/employee/profile/earning/widgets/bank_account_card.dart';
 import 'package:dating_app/features/employee/profile/earning/widgets/withdraw_money_card.dart';
+import 'package:dating_app/features/employee/profile/earning/widgets/withdrawal_history_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,6 +26,7 @@ class EarningScreen extends StatelessWidget {
       create: (context) => EarningCubit(
         kycService: KycService(sl()),
         bankService: BankService(sl()),
+        withdrawalService: WithdrawalService(sl()),
       )..loadEarningData(),
       child: GradientScaffold(
         appBar: AppBar(
@@ -96,10 +100,18 @@ class EarningScreen extends StatelessWidget {
               // Default to loaded state with initial values
               double balance = 0.0;
               EmployeeKycStatusModel kycStatus = EmployeeKycStatusModel.empty();
+              BankAccountModel bankAccount = BankAccountModel.empty();
+              List<WithdrawalHistoryItem> withdrawalHistory = const [];
+              bool isRequestingWithdrawal = false;
+              String? withdrawalError;
 
               if (state is EarningLoaded) {
                 balance = state.currentBalance;
                 kycStatus = state.kycStatus;
+                bankAccount = state.bankAccount;
+                withdrawalHistory = state.withdrawalHistory;
+                isRequestingWithdrawal = state.isRequestingWithdrawal;
+                withdrawalError = state.withdrawalError;
               }
 
               return SingleChildScrollView(
@@ -127,14 +139,7 @@ class EarningScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     BankAccountCard(
-                      bankAccount: context
-                          .select<EarningCubit, BankAccountModel>((cubit) {
-                            final state = cubit.state;
-                            if (state is EarningLoaded) {
-                              return state.bankAccount;
-                            }
-                            return BankAccountModel.empty();
-                          }),
+                      bankAccount: bankAccount,
                       onAddBankTap: () async {
                         await Navigator.push(
                           context,
@@ -148,7 +153,35 @@ class EarningScreen extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: 20),
-                    WithdrawMoneyCard(availableBalance: balance),
+                    const Text(
+                      'Withdrawal',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    WithdrawalHistoryList(
+                      history: withdrawalHistory,
+                      error: withdrawalError,
+                    ),
+                    const SizedBox(height: 20),
+                    WithdrawMoneyCard(
+                      availableBalance: balance,
+                      isSubmitting: isRequestingWithdrawal,
+                      onWithdraw: (amount) async {
+                        await context.read<EarningCubit>().requestWithdrawal(
+                          amount,
+                        );
+                        if (!context.mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Withdrawal requested successfully.'),
+                          ),
+                        );
+                      },
+                    ),
                     const SizedBox(height: 20),
                   ],
                 ),

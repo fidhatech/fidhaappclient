@@ -24,10 +24,14 @@ class VerticalFriendsList extends StatelessWidget {
       itemCount: friends.length,
       itemBuilder: (context, index) {
         final friend = friends[index];
+        final displayName = friend.name.trim().isEmpty ? 'Unknown User' : friend.name;
+        final avatarUrl = friend.avatar ?? '';
         final item = ContactItem(
-          name: friend.name,
+          name: displayName,
           age: friend.age.toString(),
-          imageUrl: friend.avatar!,
+          imageUrl: avatarUrl,
+          isOnline: friend.status == null || friend.status == 'online',
+          isBusy: friend.status == 'busy',
           isAudioAvailable: friend.isAudioEnabled,
           isVideoAvailable: friend.isVideoEnabled,
           audioCallRate: friend.audioCallRate,
@@ -35,16 +39,16 @@ class VerticalFriendsList extends StatelessWidget {
           onCall: () {
             context.read<ClientCallCubit>().initiateCall(
               friend.empId,
-              friend.name,
-              friend.avatar!,
+              displayName,
+              avatarUrl,
               CallType.audio,
             );
           },
           onVideoCall: () {
             context.read<ClientCallCubit>().initiateCall(
               friend.empId,
-              friend.name,
-              friend.avatar!,
+              displayName,
+              avatarUrl,
               CallType.video,
             );
           },

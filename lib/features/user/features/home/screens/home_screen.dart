@@ -45,6 +45,18 @@ class _HomeScreenTabState extends State<HomeScreenTab> {
 class _HomeScreenContent extends StatelessWidget {
   const _HomeScreenContent();
 
+  void _refreshUserBalanceAfterCall(BuildContext context) {
+    final userCubit = context.read<UserCubit>();
+    userCubit.fetchUser();
+
+    // Coin deduction/credit may arrive slightly after call-ended event.
+    // Trigger a second refresh to avoid stale app-bar balance.
+    Future.delayed(const Duration(seconds: 2), () {
+      if (!context.mounted) return;
+      userCubit.fetchUser();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<ClientCallCubit, ClientCallState>(
@@ -85,6 +97,7 @@ class _HomeScreenContent extends StatelessWidget {
                     appId: state.joinData.appId,
                     callId: state.joinData.roomId,
                     token: state.joinData.token,
+                    maxDurationSeconds: state.joinData.maxDurationSeconds,
 
                     userId: currentUserId,
                     userName: currentUserName,
@@ -102,35 +115,20 @@ class _HomeScreenContent extends StatelessWidget {
         } else if (state is ClientCallInsufficientCoins) {
           if (Navigator.canPop(context)) Navigator.pop(context);
 
-          showInsufficientCoinsConfirmationDialog(context).then((confirmed) {
-            if (confirmed && context.mounted) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => BlocProvider(
-                    create: (context) => sl<WalletCubit>()..loadWalletData(),
-                    child: const WalletScreen(),
-                  ),
-                ),
-              );
-            }
-          });
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BlocProvider(
+                create: (context) => sl<WalletCubit>()..loadWalletData(),
+                child: const WalletScreen(),
+              ),
+            ),
+          );
         } else if (state is ClientCallEnded || state is ClientCallError) {
           if (Navigator.canPop(context)) Navigator.pop(context);
 
-          String message = "Call Ended";
-          if (state is ClientCallError) {
-            message = "Call failed. Please try again.";
-          } else if (state is ClientCallEnded) {
-            message = "Call Ended";
-          }
-
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(message),
-              backgroundColor: state is ClientCallError ? Colors.red : null,
-            ),
-          );
+          _refreshUserBalanceAfterCall(context);
+          context.read<HomeBloc>().add(const Filter());
         }
       },
       child: GradientScaffold(
@@ -238,7 +236,7 @@ class _HomeScreenContent extends StatelessWidget {
                                           MediaQuery.of(
                                             context,
                                           ).padding.bottom +
-                                          20,
+                                          110,
                                     ),
                                 ],
                               ),

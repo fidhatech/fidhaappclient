@@ -25,6 +25,9 @@ class _SocketErrorListenerState extends State<SocketErrorListener> {
   String? _lastErrorMessage;
   bool _isOffline = false;
 
+  bool get _isAppInForeground =>
+      WidgetsBinding.instance.lifecycleState == AppLifecycleState.resumed;
+
   @override
   void initState() {
     super.initState();
@@ -57,6 +60,12 @@ class _SocketErrorListenerState extends State<SocketErrorListener> {
         _isOffline = !isConnected;
 
         if (!isConnected) {
+          if (!_isAppInForeground) {
+            log(
+              'Listener: Suppressing offline snackbar while app is backgrounded.',
+            );
+            return;
+          }
           _showErrorSnackBar("No Internet Connection");
         } else {
           // If connection is back, we clear ANY outstanding connection error message.
@@ -69,6 +78,20 @@ class _SocketErrorListenerState extends State<SocketErrorListener> {
   }
 
   void _handleError(String errorMessage) {
+    if (!_isAppInForeground) {
+      log(
+        'Listener: Suppressing socket error ($errorMessage) while app is backgrounded.',
+      );
+      return;
+    }
+
+    if (_shouldSuppressSocketSnackbar(errorMessage)) {
+      log(
+        'Listener: Suppressing transient socket error ($errorMessage) because auto-reconnect is already enabled.',
+      );
+      return;
+    }
+
     // IGNORE socket errors if we know we are offline.
     // The "No Internet Connection" snackbar is already showing or sufficient.
     if (_isOffline) {
@@ -102,7 +125,26 @@ class _SocketErrorListenerState extends State<SocketErrorListener> {
     _showErrorSnackBar(errorMessage);
   }
 
+  bool _shouldSuppressSocketSnackbar(String errorMessage) {
+    final normalizedMessage = errorMessage.trim().toLowerCase();
+    return normalizedMessage == 'disconnected from server' ||
+        normalizedMessage == 'cannot send data: socket not connected' ||
+        normalizedMessage.startsWith('connection error:') ||
+        normalizedMessage.startsWith('socket error:') ||
+        normalizedMessage.contains('timeout') ||
+        normalizedMessage.contains('socket connect error') ||
+        normalizedMessage.contains('socketexception') ||
+        normalizedMessage.contains('socketerror') ||
+        normalizedMessage.contains('failed host lookup') ||
+        normalizedMessage.contains('errno = 7');
+  }
+
   void _showErrorSnackBar(String errorMessage) {
+    if (!_isAppInForeground) {
+      log('Listener: Skipping snackbar because app is not in foreground.');
+      return;
+    }
+
     // Sanitize technical errors
     String displayMessage = errorMessage;
     if (errorMessage.toLowerCase().contains("timeout")) {

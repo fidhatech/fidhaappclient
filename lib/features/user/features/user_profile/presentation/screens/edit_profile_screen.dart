@@ -11,6 +11,7 @@ import 'package:dating_app/features/user/features/user_profile/cubit/profile_cub
 import 'package:dating_app/features/user/features/user_profile/presentation/widget/edit_profile_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 class EditProfileScreen extends StatelessWidget {
   const EditProfileScreen({super.key});
@@ -112,6 +113,7 @@ class _EditProfileFormContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<ProfileCubit>();
+    final isFemale = (state.gender ?? '').toLowerCase() == 'female';
 
     return Padding(
       padding: const EdgeInsets.all(24.0),
@@ -121,7 +123,11 @@ class _EditProfileFormContent extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  _AvatarSection(state: state, cubit: cubit),
+                  _AvatarSection(
+                    state: state,
+                    cubit: cubit,
+                    isFemale: isFemale,
+                  ),
                   const SizedBox(height: 30),
                   EditProfileTextField(
                     label: "Name",
@@ -132,6 +138,13 @@ class _EditProfileFormContent extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   _DatePickerField(state: state, cubit: cubit),
+                  const SizedBox(height: 20),
+                  EditProfileTextField(
+                    label: 'Bio',
+                    initialValue: state.about ?? '',
+                    onChanged: cubit.aboutChanged,
+                    icon: Icons.info_outline,
+                  ),
                 ],
               ),
             ),
@@ -153,13 +166,19 @@ class _EditProfileFormContent extends StatelessWidget {
 class _AvatarSection extends StatelessWidget {
   final ProfileEditing state;
   final ProfileCubit cubit;
+  final bool isFemale;
 
-  const _AvatarSection({required this.state, required this.cubit});
+  const _AvatarSection({
+    required this.state,
+    required this.cubit,
+    required this.isFemale,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _showAvatarPicker(context),
+      onTap: () =>
+          isFemale ? _showImagePicker(context) : _showAvatarPicker(context),
       child: CircleAvatar(
         radius: 50,
         backgroundColor: Colors.grey[200],
@@ -169,6 +188,45 @@ class _AvatarSection extends StatelessWidget {
             : null,
       ),
     );
+  }
+
+  void _showImagePicker(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (bottomSheetContext) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Choose from Gallery'),
+                onTap: () async {
+                  Navigator.pop(bottomSheetContext);
+                  await _pickImage(ImageSource.gallery);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Take Photo'),
+                onTap: () async {
+                  Navigator.pop(bottomSheetContext);
+                  await _pickImage(ImageSource.camera);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    final picker = ImagePicker();
+    final file = await picker.pickImage(source: source, imageQuality: 85);
+    if (file != null) {
+      cubit.avatarChanged(file.path);
+    }
   }
 
   ImageProvider? _getAvatarImage(String? path) {

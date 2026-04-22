@@ -70,14 +70,38 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         data.responseModel.employees,
       );
 
-      if (event.data.status == "online") {
-        bool exists = currentList.any((e) => e.empId == update.employeeId);
-        if (!exists) {
-          currentList.insert(0, update.employee!);
-        }
-      } else if (update.status == 'busy' || update.status == 'offline') {
-        currentList.removeWhere((e) => e.empId == update.employeeId);
+      final index = currentList.indexWhere((e) => e.empId == update.employeeId);
+
+      if (index != -1) {
+        // Update known employee status without removing from list.
+        currentList[index] = currentList[index].copyWith(status: update.status);
+      } else if (update.employee != null) {
+        // New employee appeared in realtime.
+        currentList.insert(
+          0,
+          update.employee!.copyWith(status: update.status),
+        );
+      } else {
+        // Status update arrived without employee data — re-request the list.
+        socketService.emit(SocketEvents.getNormalEmployees, {
+          'limit': 20,
+          'offset': 0,
+        });
+        return;
       }
+
+      const statusPriority = <String, int>{
+        'online': 0,
+        'busy': 1,
+        'offline': 2,
+      };
+
+      currentList.sort((a, b) {
+        final aRank = statusPriority[a.status ?? 'offline'] ?? 2;
+        final bRank = statusPriority[b.status ?? 'offline'] ?? 2;
+        return aRank.compareTo(bRank);
+      });
+
       emit(
         HomeLoaded(
           HomeResponseModel(

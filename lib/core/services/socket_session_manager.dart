@@ -84,11 +84,14 @@ class SocketSessionManager with WidgetsBindingObserver {
         _handleResume();
         break;
       case AppLifecycleState.paused:
-      // case AppLifecycleState.inactive: // Don't disconnect on inactive (e.g. permission dialogs, split screen)
-      case AppLifecycleState
-          .detached: // On detached we might want to kill it too
-      case AppLifecycleState.hidden: // Flutter 3.13+
+      case AppLifecycleState.hidden:
         _handlePause();
+        break;
+      case AppLifecycleState.detached:
+        _lastActiveAt = DateTime.now();
+        log(
+          '[SocketSessionManager] Detached state received. OS controls final process lifecycle.',
+        );
         break;
       default:
         // Ignore inactive state to prevent disconnects during calls/dialogs
@@ -99,7 +102,9 @@ class SocketSessionManager with WidgetsBindingObserver {
 
   void _handlePause() {
     _lastActiveAt = DateTime.now();
-    _disconnect();
+    log(
+      '[SocketSessionManager] App moved to background. Keeping socket connected.',
+    );
   }
 
   void _handleResume() {
@@ -114,17 +119,10 @@ class SocketSessionManager with WidgetsBindingObserver {
       '[SocketSessionManager] Inactive for ${inactiveDuration.inSeconds} seconds',
     );
 
-    // Always silently reconnect if significantly inactive
-    if (inactiveDuration.inMinutes >= 1) {
-      log(
-        '[SocketSessionManager] significant inactivity detected. Reconnecting socket silently.',
-      );
-      _disconnect();
-      _connect();
-    } else {
-      // Just ensure connected
-      _connect();
-    }
+    // Do not force-disconnect on resume. During active/accepting calls,
+    // tearing down the socket here can race with accept/join events and
+    // make the UI appear stuck. Just ensure a connection is present.
+    _connect();
   }
 
   /// Manually force a reconnect check (e.g. from Offline Screen)

@@ -1,6 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:dating_app/core/app/app_start_decider.dart';
+import 'package:dating_app/core/models/app_update_config_model.dart';
+import 'package:dating_app/core/network/http/dio_client.dart';
+import 'package:dating_app/core/services/app_update_service.dart';
+import 'package:dating_app/core/widgets/app_update_dialog/app_update_dialog.dart';
 import 'package:dating_app/features/employee/main/employee_scope.dart';
 import 'package:dating_app/features/splash/presentation/cubit/app_start_cubit.dart';
 import 'package:dating_app/features/onboarding/screens/join_community_screen.dart';
@@ -79,6 +83,11 @@ class _SplashScreenState extends State<SplashScreen>
 
     log("[APP_START] Navigating to: $status");
 
+    // Check for app update
+    await _checkAndShowUpdateIfNeeded(context);
+
+    if (!mounted) return;
+
     if (status == AppStartStatus.employee) {
       Navigator.pushAndRemoveUntil(
         context,
@@ -96,6 +105,23 @@ class _SplashScreenState extends State<SplashScreen>
         context,
         _createRoute(const JoinCommunityScreen()),
       );
+    }
+  }
+
+  Future<void> _checkAndShowUpdateIfNeeded(BuildContext context) async {
+    try {
+      final appUpdateService = AppUpdateService(DioClient.instance);
+      final updateConfig = await appUpdateService.fetchAppUpdateConfig();
+
+      if (mounted && updateConfig.isEnabled) {
+        await showAppUpdateDialog(
+          context: context,
+          updateConfig: updateConfig,
+        );
+      }
+    } catch (e) {
+      log('[APP_UPDATE] Error checking for updates: $e');
+      // Silently fail - don't interrupt the app flow
     }
   }
 

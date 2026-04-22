@@ -9,12 +9,27 @@ import 'package:dating_app/features/user/features/call/cubit/client_call_cubit.d
 import 'package:dating_app/features/user/features/call/model/call_type.dart';
 import 'package:dating_app/features/user/features/premium/bloc/premium_bloc.dart';
 import 'package:dating_app/features/user/features/premium/widgets/premium_screen_widgets/premium_cards_grid.dart';
+import 'package:dating_app/core/widgets/profile_dialogs/profile_dialogs.dart';
+import 'package:dating_app/features/wallet/cubit/wallet_cubit.dart';
+import 'package:dating_app/features/wallet/screen/wallet_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PremiumScreenTab extends StatelessWidget {
   const PremiumScreenTab({super.key});
+
+  void _refreshUserBalanceAfterCall(BuildContext context) {
+    final userCubit = context.read<UserCubit>();
+    userCubit.fetchUser();
+
+    // Coin deduction/credit may arrive slightly after call-ended event.
+    // Trigger a second refresh to avoid stale app-bar balance.
+    Future.delayed(const Duration(seconds: 2), () {
+      if (!context.mounted) return;
+      userCubit.fetchUser();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,6 +106,8 @@ class PremiumScreenTab extends StatelessWidget {
                             token: state.joinData.token,
                             userId: currentUserId,
                             userName: currentUserName,
+                            maxDurationSeconds:
+                                state.joinData.maxDurationSeconds,
                             callType: state.joinData.callType == 'audio'
                                 ? CallType.audio
                                 : CallType.video,
@@ -104,25 +121,24 @@ class PremiumScreenTab extends StatelessWidget {
                       );
                     }
                   });
+                } else if (state is ClientCallInsufficientCoins) {
+                  if (Navigator.canPop(context)) Navigator.pop(context);
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BlocProvider(
+                        create: (context) =>
+                            sl<WalletCubit>()..loadWalletData(),
+                        child: const WalletScreen(),
+                      ),
+                    ),
+                  );
                 } else if (state is ClientCallEnded ||
                     state is ClientCallError) {
                   if (Navigator.canPop(context)) Navigator.pop(context);
 
-                  String message = "Call Ended";
-                  if (state is ClientCallError) {
-                    message = "Call failed. Please try again.";
-                  } else if (state is ClientCallEnded) {
-                    message = "Call Ended";
-                  }
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(message),
-                      backgroundColor: state is ClientCallError
-                          ? Colors.red
-                          : null,
-                    ),
-                  );
+                  _refreshUserBalanceAfterCall(context);
                 }
               },
               child: GradientScaffold(
@@ -147,8 +163,33 @@ class PremiumScreenTab extends StatelessWidget {
                             physics: const AlwaysScrollableScrollPhysics(),
                             child: Column(
                               children: [
-                                PremiumCardsGrid(
-                                  response: state.premiumEmployeesList,
+                                if (state
+                                    .premiumEmployeesList
+                                    .employees
+                                    .isEmpty)
+                                  SizedBox(
+                                    height:
+                                        MediaQuery.of(context).size.height *
+                                        0.55,
+                                    child: const Center(
+                                      child: Text(
+                                        'No premium user',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                else
+                                  PremiumCardsGrid(
+                                    response: state.premiumEmployeesList,
+                                  ),
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).padding.bottom +
+                                      110,
                                 ),
                               ],
                             ),

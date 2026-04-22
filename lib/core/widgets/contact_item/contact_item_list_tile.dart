@@ -7,6 +7,8 @@ class ContactItem extends StatelessWidget {
   final String name;
   final String age;
   final String imageUrl;
+  final bool isOnline;
+  final bool isBusy;
   final bool isVideoAvailable;
   final bool isAudioAvailable;
   final int? audioCallRate;
@@ -19,6 +21,8 @@ class ContactItem extends StatelessWidget {
     required this.name,
     required this.age,
     required this.imageUrl,
+    this.isOnline = true,
+    this.isBusy = false,
     this.isVideoAvailable = true,
     this.isAudioAvailable = true,
     this.audioCallRate,
@@ -59,10 +63,7 @@ class ContactItem extends StatelessWidget {
       ),
       child: Row(
         children: [
-          ContactAvatar(
-            imageUrl: imageUrl,
-            isOnline: true, // TODO: Map this to actual status if available
-          ),
+          ContactAvatar(imageUrl: imageUrl, isOnline: isOnline, isBusy: isBusy),
           const SizedBox(width: 16),
           Expanded(
             child: ContactInfo(name: name, age: age),
@@ -73,8 +74,8 @@ class ContactItem extends StatelessWidget {
                 icon: Icons.videocam_rounded,
                 rate: videoCallRate,
                 color: Colors.greenAccent,
-                isActive: isVideoAvailable,
-                onTap: isVideoAvailable
+                isActive: isVideoAvailable && isOnline,
+                onTap: isVideoAvailable && isOnline
                     ? onVideoCall
                     : () => _showDisabledSnackbar(context),
               ),
@@ -83,8 +84,8 @@ class ContactItem extends StatelessWidget {
                 icon: Icons.phone_rounded,
                 rate: audioCallRate,
                 color: Colors.blueAccent,
-                isActive: isAudioAvailable,
-                onTap: isAudioAvailable
+                isActive: isAudioAvailable && isOnline,
+                onTap: isAudioAvailable && isOnline
                     ? onCall
                     : () => _showDisabledSnackbar(context),
               ),

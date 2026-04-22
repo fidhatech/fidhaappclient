@@ -64,6 +64,7 @@ class ProfileCubit extends Cubit<ProfileState> {
           dob: profile.dob != null && profile.dob!.contains('T')
               ? profile.dob!.split('T').first
               : (profile.dob ?? ''),
+          about: profile.about ?? '',
           gender:
               currentGender, // Preserve gender from UserCubit or previous state
           avatarPath: profile.avatar,
@@ -105,6 +106,12 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
+  void aboutChanged(String value) {
+    if (state is ProfileEditing) {
+      emit((state as ProfileEditing).copyWith(about: value));
+    }
+  }
+
   Future<void> updateProfile() async {
     if (state is! ProfileEditing) return;
     final currentState = state as ProfileEditing;
@@ -122,6 +129,7 @@ class ProfileCubit extends Cubit<ProfileState> {
         name: currentState.name,
         dob: currentState.dob,
         avatar: currentState.avatarPath,
+        about: currentState.about,
       );
 
       log("ProfileCubit: Update successful");

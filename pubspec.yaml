@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.1+2
+version: 1.0.1+6
 
 environment:
   sdk: ^3.10.7
@@ -62,8 +62,10 @@ dependencies:
   url_launcher: ^6.3.2
   firebase_core: ^4.4.0
   firebase_messaging: ^16.1.1
+  firebase_analytics: ^12.0.3
   meta: ^1.17.0
   pretty_dio_logger: ^1.4.0
+  flutter_meta_appads_sdk: ^2.1.0+1
 
 
 dev_dependencies:
@@ -95,6 +97,11 @@ flutter:
     - assets/images/onboarding_images/
     - assets/images/employ_images/
     - assets/images/offer_card/
+
+  fonts:
+    - family: GreatVibes
+      fonts:
+        - asset: assets/fonts/Great_Vibes/GreatVibes-Regular.ttf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

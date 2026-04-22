@@ -20,6 +20,13 @@ class WalletLoaded extends WalletState {
   }
 }
 
+class WalletPaymentSuccess extends WalletState {
+  final List<CoinPackage> packages;
+  final WalletBalance? balance;
+
+  WalletPaymentSuccess({required this.packages, this.balance});
+}
+
 class WalletError extends WalletState {
   final String message;
 

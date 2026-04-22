@@ -28,7 +28,15 @@ class WalletScreen extends StatelessWidget {
       ),
       body: BlocListener<WalletCubit, WalletState>(
         listener: (context, state) {
-          if (state is WalletError) {
+          if (state is WalletPaymentSuccess) {
+            Navigator.of(context).pop();
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Payment Successful! Coins added to your wallet."),
+                backgroundColor: Colors.green,
+              ),
+            );
+          } else if (state is WalletError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
@@ -88,27 +96,60 @@ class WalletScreen extends StatelessWidget {
                           ),
                         ),
                       );
-                    } else if (state is WalletLoaded) {
+                    } else if (state is WalletLoaded || state is WalletPaymentSuccess) {
+                      final packages = state is WalletPaymentSuccess
+                          ? (state as WalletPaymentSuccess).packages
+                          : (state as WalletLoaded).packages;
+                      final balance = state is WalletPaymentSuccess
+                          ? (state as WalletPaymentSuccess).balance
+                          : (state as WalletLoaded).balance;
+                      // Find best value package (highest coins per rupee)
+                      int bestValueIndex = -1;
+                      if (packages.isNotEmpty) {
+                        double bestRatio = 0;
+                        for (int i = 0; i < packages.length; i++) {
+                          final p = packages[i];
+                          if (p.offerPrice > 0) {
+                            final ratio = p.coins / p.offerPrice;
+                            if (ratio > bestRatio) {
+                              bestRatio = ratio;
+                              bestValueIndex = i;
+                            }
+                          }
+                        }
+                      }
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(height: 20),
-                          if (state.balance != null)
+                          if (balance != null)
                             BalanceDisplay(
-                              coins: state.balance!.coins,
-                              message: state.balance!.message,
+                              coins: balance.coins,
+                              message: balance.message,
                             ),
-                          const SizedBox(height: 32),
+                          const SizedBox(height: 28),
+                          Row(
+                            children: [
+                              const Text(
+                                '🔥 Recharge Coins',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 4),
                           const Text(
-                            'Buy Coins',
+                            'Choose a package',
                             style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+                              color: Colors.white54,
+                              fontSize: 13,
                             ),
                           ),
                           const SizedBox(height: 16),
-                          if (state.packages.isEmpty)
+                          if (packages.isEmpty)
                             const Padding(
                               padding: EdgeInsets.only(top: 40),
                               child: Center(
@@ -119,16 +160,22 @@ class WalletScreen extends StatelessWidget {
                               ),
                             )
                           else
-                            ListView.separated(
+                            GridView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              itemCount: state.packages.length,
-                              separatorBuilder: (context, index) =>
-                                  const SizedBox(height: 16),
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 12,
+                                mainAxisSpacing: 12,
+                                childAspectRatio: 0.72,
+                              ),
+                              itemCount: packages.length,
                               itemBuilder: (context, index) {
-                                final package = state.packages[index];
+                                final package = packages[index];
                                 return PackageCard(
                                   package: package,
+                                  isBestValue: index == bestValueIndex,
                                   onTap: () {
                                     context.read<WalletCubit>().startPayment(
                                       package,

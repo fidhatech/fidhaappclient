@@ -13,6 +13,7 @@ class ContactGridCard extends StatelessWidget {
   final bool isAudioEnabled;
   final bool isVideoEnabled;
   final bool isOnline;
+  final bool isBusy;
 
   const ContactGridCard({
     super.key,
@@ -27,6 +28,7 @@ class ContactGridCard extends StatelessWidget {
     this.isAudioEnabled = true,
     this.isVideoEnabled = true,
     this.isOnline = true,
+    this.isBusy = false,
   });
 
   @override
@@ -70,6 +72,30 @@ class ContactGridCard extends StatelessWidget {
               ),
             ),
           ),
+
+          // Status dot (green = online, yellow = busy)
+          if (isOnline || isBusy)
+            Positioned(
+              top: 8,
+              right: 8,
+              child: Container(
+                width: 12,
+                height: 12,
+                decoration: BoxDecoration(
+                  color: isOnline ? Colors.greenAccent : Colors.yellow,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.black, width: 1.5),
+                  boxShadow: [
+                    BoxShadow(
+                      color: (isOnline ? Colors.greenAccent : Colors.yellow)
+                          .withValues(alpha: 0.6),
+                      blurRadius: 4,
+                      spreadRadius: 1,
+                    ),
+                  ],
+                ),
+              ),
+            ),
 
           // Content
           Padding(

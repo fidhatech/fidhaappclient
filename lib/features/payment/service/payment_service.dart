@@ -45,7 +45,7 @@ class PaymentService {
     var options = {
       'key': order.razorpayKeyId,
       'amount': order.amount,
-      'name': 'Vibily',
+      'name': 'Fathima Fidha',
       'order_id': order.orderId,
       'description': description,
       'currency': order.currency,

@@ -1,4 +1,3 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:dating_app/core/network/socket/socket_service.dart';
 import 'package:dating_app/di/injection.dart';
 import 'package:dating_app/features/employee/home/cubit/employee_cubit.dart';
@@ -35,39 +34,25 @@ class EmployeeAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                 );
               } else if (state is EmployeeSuccess) {
-                const colorizeColors = [
-                  Colors.white,
-                  Color(0xffd946ef),
-                  Color(0xfff472b6),
-                  Color(0xffc084fc),
-                ];
-
                 final colorizeTextStyle = const TextStyle(
                   fontSize: 35,
                   fontFamily: 'GreatVibes',
                   fontWeight: FontWeight.w400,
-                  letterSpacing: 1.2,
+                  color: Colors.white,
+                  letterSpacing: 0.4,
                   shadows: [
                     Shadow(
                       blurRadius: 10,
-                      color: Color(0x88f472b6),
+                      color: Color(0x55000000),
                       offset: Offset(0, 2),
                     ),
                   ],
                 );
 
-                return AnimatedTextKit(
-                  animatedTexts: [
-                    ColorizeAnimatedText(
-                      'Fidha',
-                      textStyle: colorizeTextStyle,
-                      colors: colorizeColors,
-                      speed: const Duration(milliseconds: 500),
-                      textAlign: TextAlign.start,
-                    ),
-                  ],
-                  isRepeatingAnimation: true,
-                  repeatForever: true,
+                return Text(
+                  'Fidha',
+                  style: colorizeTextStyle,
+                  textAlign: TextAlign.start,
                 );
               }
               return const Text(

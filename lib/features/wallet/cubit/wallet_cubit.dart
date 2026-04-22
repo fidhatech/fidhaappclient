@@ -28,6 +28,7 @@ class WalletCubit extends Cubit<WalletState> {
     try {
       final packages = await _service.getCoinPackages();
       final balance = await _service.getWalletBalance();
+      userCubit.syncCoins(balance.coins);
       emit(WalletLoaded(packages: packages, balance: balance));
     } catch (e) {
       emit(WalletError(e.toString()));
@@ -61,7 +62,10 @@ class WalletCubit extends Cubit<WalletState> {
     try {
       final isVerified = await _paymentService.verifyPayment(response);
       if (isVerified) {
-        await loadWalletData();
+        final packages = await _service.getCoinPackages();
+        final balance = await _service.getWalletBalance();
+        userCubit.syncCoins(balance.coins);
+        emit(WalletPaymentSuccess(packages: packages, balance: balance));
       } else {
         emit(
           WalletError("Payment verification failed. Please contact support."),

@@ -76,14 +76,14 @@ class CustomBottomNavBar extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            NavItemWithIcon(
-                              icon: FontAwesomeIcons.house,
+                            NavItemWithSvg(
+                              assetPath: 'assets/icons/premium.svg',
                               index: 0,
                               selectedIndex: selectedIndex,
                               onTap: onTabChange,
                             ),
-                            NavItemWithSvg(
-                              assetPath: 'assets/icons/premium.svg',
+                            NavItemWithIcon(
+                              icon: FontAwesomeIcons.house,
                               index: 1,
                               selectedIndex: selectedIndex,
                               onTap: onTabChange,

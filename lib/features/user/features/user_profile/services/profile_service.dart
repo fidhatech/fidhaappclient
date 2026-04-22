@@ -24,6 +24,7 @@ class ProfileService {
     String? name,
     String? dob,
     String? avatar,
+    String? about,
   }) async {
     try {
       if (avatar != null &&
@@ -32,6 +33,7 @@ class ProfileService {
         FormData formData = FormData.fromMap({
           if (name != null && name.isNotEmpty) 'name': name,
           if (dob != null && dob.isNotEmpty) 'dob': dob,
+          'about': ?about,
           'avatar': await MultipartFile.fromFile(avatar),
         });
 
@@ -40,6 +42,7 @@ class ProfileService {
         final Map<String, dynamic> body = {};
         if (name != null && name.isNotEmpty) body['name'] = name;
         if (dob != null && dob.isNotEmpty) body['dob'] = dob;
+        if (about != null) body['about'] = about;
         if (avatar != null && avatar.isNotEmpty) body['avatar'] = avatar;
 
         await _dioClient.patch(
@@ -71,8 +74,9 @@ class UserProfileResponse {
   final String name;
   final String? dob;
   final String? avatar;
+  final String? about;
 
-  UserProfileResponse({required this.name, this.dob, this.avatar});
+  UserProfileResponse({required this.name, this.dob, this.avatar, this.about});
 
   factory UserProfileResponse.fromJson(Map<String, dynamic> json) {
     String? avatarUrl;
@@ -84,6 +88,7 @@ class UserProfileResponse {
       name: json['name'] ?? '',
       dob: json['dob'],
       avatar: avatarUrl,
+      about: json['about'] as String?,
     );
   }
 }

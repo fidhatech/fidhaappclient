@@ -34,6 +34,7 @@ class ProfileEditing extends ProfileState {
   final String? name;
   final String? dob;
   final String? avatarPath;
+  final String? about;
   final String? gender;
   final bool isLoading;
   final bool isSuccess;
@@ -43,6 +44,7 @@ class ProfileEditing extends ProfileState {
     this.name,
     this.dob,
     this.avatarPath,
+    this.about,
     this.gender,
     this.isLoading = false,
     this.isSuccess = false,
@@ -53,6 +55,7 @@ class ProfileEditing extends ProfileState {
     String? name,
     String? dob,
     String? avatarPath,
+    String? about,
     String? gender,
     bool? isLoading,
     bool? isSuccess,
@@ -62,6 +65,7 @@ class ProfileEditing extends ProfileState {
       name: name ?? this.name,
       dob: dob ?? this.dob,
       avatarPath: avatarPath ?? this.avatarPath,
+      about: about ?? this.about,
       gender: gender ?? this.gender,
       isLoading: isLoading ?? this.isLoading,
       isSuccess: isSuccess ?? this.isSuccess,

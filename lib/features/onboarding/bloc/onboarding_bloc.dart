@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:dating_app/core/services/firebase_notification_service.dart';
 import 'package:dating_app/core/storage/secure_storage.dart';
 import 'package:dating_app/di/injection.dart';
 import 'package:dating_app/features/onboarding/models/on_boarding_model.dart';
@@ -139,6 +140,7 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
         accessToken: tokens['accessToken']!,
         refreshToken: tokens['refreshToken']!,
       );
+      await FirebaseNotificationService.registerTokenWithBackend();
       // Save Role for Offline Access
       await SecureStorage.saveUserRole('employee');
       emit(state.copyWith(status: OnboardingStatus.moreDetailsRequired));

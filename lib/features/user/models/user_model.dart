@@ -1,4 +1,6 @@
-class UserModel {
+import 'package:equatable/equatable.dart';
+
+class UserModel extends Equatable {
   final String userId;
   final String name;
   final int coins;
@@ -6,7 +8,7 @@ class UserModel {
   final String? dob;
   final String? gender;
 
-  UserModel({
+  const UserModel({
     required this.userId,
     required this.name,
     required this.coins,
@@ -25,8 +27,30 @@ class UserModel {
       gender: json['gender'],
     );
   }
+
+  UserModel copyWith({
+    String? userId,
+    String? name,
+    int? coins,
+    String? avatar,
+    String? dob,
+    String? gender,
+  }) {
+    return UserModel(
+      userId: userId ?? this.userId,
+      name: name ?? this.name,
+      coins: coins ?? this.coins,
+      avatar: avatar ?? this.avatar,
+      dob: dob ?? this.dob,
+      gender: gender ?? this.gender,
+    );
+  }
+
   @override
   String toString() {
     return "UserModel(userId: $userId, name: $name, dob: $dob, gender: $gender)";
   }
+
+  @override
+  List<Object?> get props => [userId, name, coins, avatar, dob, gender];
 }
