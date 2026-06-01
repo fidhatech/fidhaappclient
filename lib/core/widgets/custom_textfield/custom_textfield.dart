@@ -39,6 +39,8 @@ class CustomTextField extends StatelessWidget {
   final int? maxLines;
   final int? minLines;
 
+  final bool readOnly;
+
   const CustomTextField({
     super.key,
     required this.controller,
@@ -69,6 +71,7 @@ class CustomTextField extends StatelessWidget {
     this.borderRadius,
     this.maxLines = 1,
     this.minLines,
+    this.readOnly = false,
   });
 
   @override
@@ -102,7 +105,7 @@ class CustomTextField extends StatelessWidget {
           autovalidateMode: autovalidateMode,
           maxLines: maxLines,
           minLines: minLines,
-
+          readOnly: readOnly,
           style: styles.inputStyle(
             textTheme,
             textSize: textSize,

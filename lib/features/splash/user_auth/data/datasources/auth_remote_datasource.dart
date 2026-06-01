@@ -3,10 +3,29 @@ import 'dart:developer';
 import 'package:dating_app/features/splash/user_auth/data/models/auth_response_model.dart';
 import 'package:dio/dio.dart';
 
+import '../models/abroad_user_login_model.dart';
+
 class AuthRemoteDatasource {
   final Dio dio;
 
   AuthRemoteDatasource(this.dio);
+
+  Future<AbroadUserLoginModel> checkUserExists(String email) async {
+    try {
+      final response = await dio.post(
+        "/auth/check-user-existence",
+        data: {"email": email},
+      );
+      log(response.data.toString());
+      return AbroadUserLoginModel.fromJson(response.data);
+    } on DioException catch (e) {
+      log(e.response?.data.toString() ?? "Failed to check user existence");
+      throw Exception(e.response?.data["message"] ?? "Failed to check user existence");
+    } catch (e) {
+      log(e.toString());
+      throw Exception("Something went wrong");
+    }
+  }
 
   Future<String> sendOtp(String phone) async {
     try {

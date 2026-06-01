@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:dating_app/core/app/app_start_decider.dart';
-import 'package:dating_app/core/models/app_update_config_model.dart';
 import 'package:dating_app/core/network/http/dio_client.dart';
 import 'package:dating_app/core/services/app_update_service.dart';
 import 'package:dating_app/core/widgets/app_update_dialog/app_update_dialog.dart';

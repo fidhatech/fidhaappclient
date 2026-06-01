@@ -12,7 +12,12 @@
           "package_name": "com.fidha.dating"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1071891136226-eo9hiv210d5pq58n5e8d2pm9jtrs1qgs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCD9xR7QqO80m0pRDlKdRgE-XEpQX2uZUQ"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1071891136226-eo9hiv210d5pq58n5e8d2pm9jtrs1qgs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1071891136226-ouoblek2c8en732ue91foljmcddk8jck.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.datingApp"
+              }
+            }
+          ]
         }
       }
     },
@@ -31,7 +48,12 @@
           "package_name": "fidha.app.com"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1071891136226-eo9hiv210d5pq58n5e8d2pm9jtrs1qgs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCD9xR7QqO80m0pRDlKdRgE-XEpQX2uZUQ"
@@ -39,7 +61,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1071891136226-eo9hiv210d5pq58n5e8d2pm9jtrs1qgs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1071891136226-ouoblek2c8en732ue91foljmcddk8jck.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.datingApp"
+              }
+            }
+          ]
         }
       }
     }

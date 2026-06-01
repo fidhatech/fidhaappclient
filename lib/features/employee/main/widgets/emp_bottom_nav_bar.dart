@@ -82,7 +82,7 @@ class EmployeeCustomBottomNavBar extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             NavItemWithIcon(
-                              icon: FontAwesomeIcons.house,
+                              icon: FontAwesomeIcons.house.data,
                               index: 0,
                               selectedIndex: selectedIndex,
                               onTap: onTabChange,
@@ -95,7 +95,7 @@ class EmployeeCustomBottomNavBar extends StatelessWidget {
                               onTap: onTabChange,
                             ),
                             NavItemWithRoundedIcon(
-                              icon: FontAwesomeIcons.user,
+                              icon: FontAwesomeIcons.user.data,
                               index: 2,
                               selectedIndex: selectedIndex,
                               onTap: onTabChange,

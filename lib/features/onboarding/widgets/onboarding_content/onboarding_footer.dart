@@ -11,6 +11,8 @@ import 'package:dating_app/features/splash/user_auth/presentation/screens/mobile
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../splash/user_auth/presentation/screens/google_sign_in_screen.dart';
+
 class OnboardingFooter extends StatelessWidget {
   const OnboardingFooter({super.key});
 
@@ -58,6 +60,34 @@ class OnboardingFooter extends StatelessWidget {
                         create: (context) => MobileNumberCubit(),
                         child: const MobileNumberScreen(),
                       ),
+                    ),
+                  );
+                },
+                backgroundColor: AppColor.primaryButton,
+              ),
+              SizedBox(height: controlHeight(context, 80)),
+              OnboardingActionButton(
+                text: "Continue for Users Outside India",
+                onPressed: () async {
+                  final checker = sl<NetworkChecker>();
+
+                  final hasNetwork = await checker.isConnected;
+
+                  if (!context.mounted) return;
+
+                  if (!hasNetwork) {
+                    showAppSnackbar(
+                      context,
+                      message: "Check your internet connection",
+                      icon: Icons.signal_wifi_connected_no_internet_4_outlined,
+                    );
+                    return;
+                  }
+
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const GoogleSignInScreen(),
                     ),
                   );
                 },

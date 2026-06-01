@@ -83,7 +83,7 @@ class CustomBottomNavBar extends StatelessWidget {
                               onTap: onTabChange,
                             ),
                             NavItemWithIcon(
-                              icon: FontAwesomeIcons.house,
+                              icon: FontAwesomeIcons.house.data,
                               index: 1,
                               selectedIndex: selectedIndex,
                               onTap: onTabChange,
@@ -95,7 +95,7 @@ class CustomBottomNavBar extends StatelessWidget {
                               onTap: onTabChange,
                             ),
                             NavItemWithRoundedIcon(
-                              icon: FontAwesomeIcons.user,
+                              icon: FontAwesomeIcons.user.data,
                               index: 3,
                               selectedIndex: selectedIndex,
                               onTap: onTabChange,

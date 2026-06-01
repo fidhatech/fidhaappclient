@@ -4,6 +4,8 @@ import 'package:dating_app/features/splash/user_auth/data/datasources/auth_remot
 import 'package:dating_app/features/splash/user_auth/data/models/auth_response_model.dart';
 import 'package:dating_app/features/splash/user_auth/data/repositories/user_auth_repository.dart';
 
+import '../models/abroad_user_login_model.dart';
+
 class UserAuthRepositoryImpl implements UserAuthRepository {
   final AuthRemoteDatasource remote;
   UserAuthRepositoryImpl(this.remote);
@@ -29,5 +31,16 @@ class UserAuthRepositoryImpl implements UserAuthRepository {
   @override
   Future<String> resendOtp(String phone) {
     return remote.resendOtp(phone);
+  }
+  
+  @override
+  Future<AbroadUserLoginModel> abroadUserLogin({required String email, required String name, required String phone}) {
+    // TODO: implement abroadUserLogin
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<AbroadUserLoginModel> checkUserExists(String email) {
+    return remote.checkUserExists(email);
   }
 }

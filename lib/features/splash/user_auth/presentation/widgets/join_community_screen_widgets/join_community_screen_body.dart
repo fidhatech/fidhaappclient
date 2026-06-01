@@ -15,7 +15,11 @@ class JoinCommunityScreenBody extends StatelessWidget {
     return Scaffold(
       backgroundColor: backgroundColor ?? Colors.black,
       body: Stack(
-        children: const [CarouselImage(), OnboardingBody(), OnboardingFooter()],
+        children: const [
+          CarouselImage(), 
+          OnboardingBody(), 
+          OnboardingFooter(),
+        ],
       ),
     );
   }
