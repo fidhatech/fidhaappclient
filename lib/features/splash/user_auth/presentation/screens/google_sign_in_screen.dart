@@ -24,7 +24,7 @@ class _GoogleSignInScreenState extends State<GoogleSignInScreen> {
 
   void _listenGoogleSignInCubit(BuildContext context, GoogleSigninState state) async {
     if (state is GoogleSigninSuccess) {
-      Navigator.pop(context);
+      //Navigator.pop(context);
       showAppSnackbar(
         context,
         message: "Logged in successfully",

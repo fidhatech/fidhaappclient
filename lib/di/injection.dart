@@ -41,6 +41,8 @@ import 'package:dating_app/features/user/features/home/repository/home_services.
 import 'package:dating_app/features/user/features/details/repository/user_details_repository.dart';
 import 'package:dating_app/features/user/features/details/presentation/cubit/user_details_cubit.dart';
 
+import '../features/onboarding/data/onboarding_datasource.dart';
+
 final sl = GetIt.instance;
 
 void init() {
@@ -50,6 +52,10 @@ void init() {
   // 2) Remote datasource
   sl.registerLazySingleton<AuthRemoteDatasource>(
     () => AuthRemoteDatasource(sl()),
+  );
+
+  sl.registerLazySingleton<OnboardingDatasource>(
+    () => OnboardingDatasource(sl()),
   );
 
   // 3) Repositories

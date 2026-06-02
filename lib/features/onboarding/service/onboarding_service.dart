@@ -6,6 +6,30 @@ class OnboardingService {
   final Dio _dio;
   OnboardingService(this._dio);
 
+  Future<void> submitAbroadUserDetails({
+    required String email,
+    required String name,
+    required String phone,
+  }) async {
+    try {
+      final response = await _dio.post(
+        "user/auth/abroad-login",
+        data: {
+          "email": email,
+          "name": name,
+          "phone": phone,
+        },
+      );
+      log(response.data.toString());
+    } on DioException catch (e) {
+      log(e.response?.data.toString() ?? "Failed to submit user details");
+      throw Exception(e.response?.data["message"] ?? "Failed to submit user details");
+    } catch (e) {
+      log(e.toString());
+      throw Exception("Something went wrong");
+    }
+  }
+
   Future<Map<String, dynamic>> roleCheck() async {
     try {
       final data = await _dio.get("user/check-role");

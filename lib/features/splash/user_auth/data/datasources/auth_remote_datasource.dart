@@ -13,7 +13,7 @@ class AuthRemoteDatasource {
   Future<AbroadUserLoginModel> checkUserExists(String email) async {
     try {
       final response = await dio.post(
-        "/auth/check-user-existence",
+        "user/auth/check-user-existence",
         data: {"email": email},
       );
       log(response.data.toString());

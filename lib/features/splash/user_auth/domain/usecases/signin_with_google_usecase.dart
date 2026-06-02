@@ -45,7 +45,7 @@ class SigninWithGoogleUsecase {
 
     return (
       email: googleUser.email,
-      userExists: res.isExistingUser,
+      userExists: res.isExistingUser && res.userStage != "PROFILE_INCOMPLETE",
     );
   }
 }

@@ -1,4 +1,6 @@
+import 'package:dating_app/features/onboarding/screens/dob_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 
 import '../../../core/utils/mediaquery.dart';
@@ -6,6 +8,7 @@ import '../../../core/widgets/custom_elevated_button/custom_elevated_button.dart
 import '../../../core/widgets/custom_textfield/custom_textfield.dart';
 import '../../../core/widgets/custom_textfield/custom_textfield_styles.dart';
 import '../../../core/widgets/gradient_scaffold/gradient_scaffold.dart';
+import '../cubit/onboard_abroad_user_cubit/onboard_abroad_user_cubit.dart';
 
 class AbroadUserDetailsEntryScreen extends StatefulWidget {
 
@@ -26,6 +29,25 @@ class _AbroadUserDetailsEntryScreenState extends State<AbroadUserDetailsEntryScr
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  final PhoneController _phoneController = PhoneController();
+
+  final OnboardAbroadUserCubit _cubit = OnboardAbroadUserCubit();
+
+  void _listenOnboardUserCubit(BuildContext context, OnboardAbroadUserState state) { 
+    if (state is OnboardAbroadUserSuccess) {
+      Navigator
+        .of(context)
+        .push(
+          MaterialPageRoute(
+            builder: (_) => const DobScreen(),
+          ),
+        );
+    } else if (state is OnboardAbroadUserFailure) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(state.message)),
+      );
+    }
+  }
 
   @override
   void initState() {
@@ -37,8 +59,11 @@ class _AbroadUserDetailsEntryScreenState extends State<AbroadUserDetailsEntryScr
 
   @override
   void dispose() {
+    _cubit.close();
+
     _nameController.dispose();
     _emailController.dispose();
+    _phoneController.dispose();
 
     super.dispose();
   }
@@ -99,6 +124,7 @@ class _AbroadUserDetailsEntryScreenState extends State<AbroadUserDetailsEntryScr
                 ),
                 const SizedBox(height: 20),
                 PhoneFormField(
+                  controller: _phoneController,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: getResponsiveFontSize(context, mobile: 16),
@@ -128,13 +154,22 @@ class _AbroadUserDetailsEntryScreenState extends State<AbroadUserDetailsEntryScr
                   ),
                 ),
                 const SizedBox(height: 40),
-                CustomButton(
-                  onPressed: () {
-                    
-                  },
-                  text: "Continue",
-                  heightMultiplier: 16,
-                  textSize: getResponsiveFontSize(context, mobile: 16),
+                BlocConsumer<OnboardAbroadUserCubit, OnboardAbroadUserState>(
+                  bloc: _cubit,
+                  listener: _listenOnboardUserCubit,
+                  builder: (context, state) => CustomButton(
+                    onPressed: () {
+                      _cubit.onboardUser(
+                        email: _emailController.text,
+                        name: _nameController.text,
+                        phone: '${_phoneController.value.countryCode}-${_phoneController.value.nsn}',
+                      );
+                    },
+                    text: "Continue",
+                    heightMultiplier: 16,
+                    textSize: getResponsiveFontSize(context, mobile: 16),
+                    isLoading: state is OnboardAbroadUserLoading,
+                  ),
                 ),
               ],
             ),
