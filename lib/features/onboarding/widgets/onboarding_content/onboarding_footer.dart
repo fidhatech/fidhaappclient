@@ -65,35 +65,35 @@ class OnboardingFooter extends StatelessWidget {
                 },
                 backgroundColor: AppColor.primaryButton,
               ),
-              SizedBox(height: controlHeight(context, 80)),
-              OnboardingActionButton(
-                text: "Continue for Users Outside India",
-                onPressed: () async {
-                  final checker = sl<NetworkChecker>();
-
-                  final hasNetwork = await checker.isConnected;
-
-                  if (!context.mounted) return;
-
-                  if (!hasNetwork) {
-                    showAppSnackbar(
-                      context,
-                      message: "Check your internet connection",
-                      icon: Icons.signal_wifi_connected_no_internet_4_outlined,
-                    );
-                    return;
-                  }
-
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const GoogleSignInScreen(),
-                    ),
-                  );
-                },
-                backgroundColor: AppColor.primaryButton,
-              ),
               SizedBox(height: controlHeight(context, 40)),
+              // OnboardingActionButton(
+              //   text: "Continue for Users Outside India",
+              //   onPressed: () async {
+              //     final checker = sl<NetworkChecker>();
+
+              //     final hasNetwork = await checker.isConnected;
+
+              //     if (!context.mounted) return;
+
+              //     if (!hasNetwork) {
+              //       showAppSnackbar(
+              //         context,
+              //         message: "Check your internet connection",
+              //         icon: Icons.signal_wifi_connected_no_internet_4_outlined,
+              //       );
+              //       return;
+              //     }
+
+              //     Navigator.pushReplacement(
+              //       context,
+              //       MaterialPageRoute(
+              //         builder: (context) => const GoogleSignInScreen(),
+              //       ),
+              //     );
+              //   },
+              //   backgroundColor: AppColor.primaryButton,
+              // ),
+              // SizedBox(height: controlHeight(context, 40)),
 
               OnboardingTermsText(
                 text: '''Terms and Conditions Terms and\nConditions''',

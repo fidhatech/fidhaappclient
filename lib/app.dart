@@ -11,6 +11,8 @@ import 'package:dating_app/core/routes/app_routes.dart';
 import 'package:dating_app/core/widgets/offline_screen/offline_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'core/services/firebase_notification_service.dart';
+
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
@@ -19,6 +21,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<NetworkStatusCubit, NetworkStatusState>(

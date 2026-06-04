@@ -3,8 +3,27 @@ import 'package:dating_app/features/splash/user_auth/presentation/widgets/join_c
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class JoinCommunityScreen extends StatelessWidget {
+import '../../../core/services/firebase_notification_service.dart';
+
+class JoinCommunityScreen extends StatefulWidget {
   const JoinCommunityScreen({super.key});
+
+  @override
+  State<JoinCommunityScreen> createState() => _JoinCommunityScreenState();
+}
+
+class _JoinCommunityScreenState extends State<JoinCommunityScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      
+      FirebaseNotificationService.checkAndRequestPermission(context);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -4,6 +4,11 @@ import 'package:dating_app/features/splash/user_auth/presentation/widgets/mobile
 import 'package:dating_app/features/splash/user_auth/presentation/widgets/mobile_number_screen_widgets/mobile_input.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../../core/utils/network_checker.dart';
+import '../../../../../../core/widgets/app_snackBar/show_snackbar.dart';
+import '../../../../../../di/injection.dart';
+import '../../screens/google_sign_in_screen.dart';
+
 /// Scrollable content section containing header, input field, and illustration
 class MobileScrollableContent extends StatelessWidget {
   final double bottomPadding;

@@ -12,6 +12,11 @@ import 'package:dating_app/features/splash/user_auth/presentation/cubit/otp_cubi
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../../core/utils/network_checker.dart';
+import '../../../../../../core/widgets/custom_elevated_button/custom_elevated_button.dart';
+import '../../../../../../di/injection.dart';
+import '../../screens/google_sign_in_screen.dart';
+
 /// Fixed bottom section with gradient overlay and OTP button
 /// Positioned at the bottom of the screen with a fade-in gradient effect
 class MobileBottomSection extends StatelessWidget {
@@ -21,55 +26,106 @@ class MobileBottomSection extends StatelessWidget {
   Widget build(BuildContext context) {
     log("📌 BottomSection built");
 
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: SizedBox(
-        width: double.infinity,
-        height: screenHeightPercentage(context, 0.30),
+    return SizedBox(
+      width: double.infinity,
+      height: screenHeightPercentage(context, 0.45),
+    
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Login for outside of India',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+              shadows: [
+                Shadow(
+                  color: Colors.black45,
+                  offset: Offset(2.0, 2.0),
+                  blurRadius: 4.0,
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: .only(
+              left: controlWidth(context, 16),
+              right: controlWidth(context, 16),
+              bottom: controlHeight(context, 20),
+              top: controlHeight(context, 80),
+            ),
+            child: CustomButton(
+              onPressed: () async {
+                final checker = sl<NetworkChecker>();
 
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            BlocSelector<MobileNumberCubit, MobileNumberState, bool>(
-              selector: (state) {
-                if (state is MobileNumberInitial) {
-                  return state.isValid;
+                final hasNetwork = await checker.isConnected;
+
+                if (!context.mounted) return;
+
+                if (!hasNetwork) {
+                  showAppSnackbar(
+                    context,
+                    message: "Check your internet connection",
+                    icon: Icons.signal_wifi_connected_no_internet_4_outlined,
+                  );
+                  return;
                 }
-                return false;
-              },
-              builder: (context, isValid) {
-                return ConfirmButtonWithText(
-                  buttonText: 'Confirm',
-                  bottomText:
-                      'By continuing, you agree to our Terms & Conditions',
-                  onBottomTextTap: () =>
-                      UrlHelper.launchURL(AppUrls.termsAndConditions),
-                  onTap: () {
-                    log('Get otp button Pressed !!!!!!!!!!!11');
 
-                    if (!isValid) {
-                      showAppSnackbar(
-                        context,
-                        message: 'Please enter a valid mobile number',
-                        icon: Icons.error,
-                      );
-                      return;
-                    }
-
-                    final phone =
-                        (context.read<MobileNumberCubit>().state
-                                as MobileNumberInitial)
-                            .mobileNumber;
-
-                    log("📨 Calling sendOtp for number: $phone");
-
-                    context.read<OtpCubit>().sendOtp(phone);
-                  },
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const GoogleSignInScreen(),
+                  ),
                 );
               },
+              text: 'Sign in with Google',
+              svgIcon: 'assets/icons/google.svg',
+              heightMultiplier: 16,
+              widthMultiplier: 0,
             ),
-          ],
-        ),
+          ),
+          const Spacer(),
+          BlocSelector<MobileNumberCubit, MobileNumberState, bool>(
+            selector: (state) {
+              if (state is MobileNumberInitial) {
+                return state.isValid;
+              }
+              return false;
+            },
+            builder: (context, isValid) {
+              return ConfirmButtonWithText(
+                buttonText: 'Confirm',
+                bottomText:
+                    'By continuing, you agree to our Terms & Conditions',
+                onBottomTextTap: () =>
+                    UrlHelper.launchURL(AppUrls.termsAndConditions),
+                onTap: () {
+                  log('Get otp button Pressed !!!!!!!!!!!11');
+          
+                  if (!isValid) {
+                    showAppSnackbar(
+                      context,
+                      message: 'Please enter a valid mobile number',
+                      icon: Icons.error,
+                    );
+                    return;
+                  }
+          
+                  final phone =
+                      (context.read<MobileNumberCubit>().state
+                              as MobileNumberInitial)
+                          .mobileNumber;
+          
+                  log("📨 Calling sendOtp for number: $phone");
+          
+                  context.read<OtpCubit>().sendOtp(phone);
+                },
+              );
+            },
+          ),
+          const Spacer(),
+        ],
       ),
     );
   }
