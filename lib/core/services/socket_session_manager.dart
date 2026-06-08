@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:dating_app/core/network/socket/socket_service.dart';
-import 'package:dating_app/core/storage/secure_storage.dart';
+import '../network/socket/socket_service.dart';
+import '../storage/secure_storage.dart';
 import 'package:flutter/material.dart';
 
 class SocketSessionManager with WidgetsBindingObserver {

@@ -1,18 +1,20 @@
 import 'dart:async';
 import 'dart:developer';
-import 'package:dating_app/core/app/app_start_decider.dart';
-import 'package:dating_app/core/network/http/dio_client.dart';
-import 'package:dating_app/core/services/app_update_service.dart';
-import 'package:dating_app/core/widgets/app_update_dialog/app_update_dialog.dart';
-import 'package:dating_app/features/employee/main/employee_scope.dart';
-import 'package:dating_app/features/splash/presentation/cubit/app_start_cubit.dart';
-import 'package:dating_app/features/onboarding/screens/join_community_screen.dart';
-import 'package:dating_app/features/splash/widgets/splash_background.dart';
-import 'package:dating_app/features/splash/widgets/splash_content.dart';
-import 'package:dating_app/features/user/features/navigation/user_scope.dart';
+import 'package:auto_route/auto_route.dart';
+import '../../../core/app/app_start_decider.dart';
+import '../../../core/network/http/dio_client.dart';
+import '../../../core/services/app_update_service.dart';
+import '../../../core/widgets/app_update_dialog/app_update_dialog.dart';
+import '../../employee/main/employee_scope.dart';
+import '../presentation/cubit/app_start_cubit.dart';
+import '../../onboarding/screens/join_community_screen.dart';
+import '../widgets/splash_background.dart';
+import '../widgets/splash_content.dart';
+import '../../user/features/navigation/user_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+@RoutePage()
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
