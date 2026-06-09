@@ -1,6 +1,6 @@
-import 'package:dating_app/config/theme/app_color.dart';
-import 'package:dating_app/features/onboarding/employ_screens/employ/cubit/employee_voice_cubit/employee_voice_cubit.dart';
-import 'package:dating_app/features/onboarding/employ_screens/employ/cubit/employee_voice_cubit/employee_voice_state.dart';
+import '../../../../../../config/theme/app_color.dart';
+import '../../cubit/employee_voice_cubit/employee_voice_cubit.dart';
+import '../../cubit/employee_voice_cubit/employee_voice_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -47,10 +47,10 @@ class EmployeeVoiceRecordingCard extends StatelessWidget {
                 children: [
                   Text(
                     isRecording
-                        ? "Recording..."
+                        ? 'Recording...'
                         : isRecorded
-                        ? "Tap to Re-record"
-                        : "Tap to Speak",
+                        ? 'Tap to Re-record'
+                        : 'Tap to Speak',
                     style: TextStyle(
                       color: Colors.white.withValues(alpha: 0.6),
                       fontSize: 16,
@@ -73,7 +73,7 @@ class EmployeeVoiceRecordingCard extends StatelessWidget {
                         color: Colors.white,
                         boxShadow: isRecording
                             ? [
-                                BoxShadow(
+                                const BoxShadow(
                                   color: AppColor.primaryPink,
                                   blurRadius: 20,
                                   spreadRadius: 5,

@@ -1,6 +1,6 @@
 import 'dart:developer';
-import 'package:dating_app/core/services/call_foreground_service.dart';
-import 'package:dating_app/features/user/features/call/model/call_type.dart';
+import '../../../core/services/call_foreground_service.dart';
+import '../../user/features/call/model/call_type.dart';
 import 'package:flutter/material.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
@@ -109,10 +109,10 @@ class _CallUiKitState extends State<CallUiKit> {
 
               // Handle exceptions/errors merged from onException
               if (error.toString().contains(
-                "STARTPREVIEW_NO_TEXTURERENDERER",
+                'STARTPREVIEW_NO_TEXTURERENDERER',
               )) {
                 print(
-                  "CallUiKit: Ignoring texture renderer error during shutdown.",
+                  'CallUiKit: Ignoring texture renderer error during shutdown.',
                 );
                 return; // Or continue if you want to run other checks
               }
@@ -124,7 +124,7 @@ class _CallUiKitState extends State<CallUiKit> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
-                        "Call Connection Failed (Error $code). Please retry.",
+                        'Call Connection Failed (Error $code). Please retry.',
                       ),
                       backgroundColor: Colors.red,
                     ),
@@ -134,7 +134,7 @@ class _CallUiKitState extends State<CallUiKit> {
                   }
                 }
               } catch (e) {
-                print("CallUiKit: Failed to parse error code: $e");
+                print('CallUiKit: Failed to parse error code: $e');
               }
             },
             onCallEnd: (event, defaultAction) {

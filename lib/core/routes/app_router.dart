@@ -1,7 +1,12 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../features/splash/screens/splash_screen.dart';
+import '../../features/authentication/presentation/pages/google_sign_in_screen.dart';
+import '../../features/authentication/presentation/pages/mobile_number_screen.dart';
+import '../../features/authentication/presentation/pages/otp_verification_screen.dart';
+import '../../features/onboarding/presentation/pages/join_community_screen.dart';
+import '../../features/splash/presentation/pages/splash_screen.dart';
 
 part 'app_router.gr.dart';
 
@@ -12,5 +17,11 @@ class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
     AutoRoute(page: SplashRoute.page, initial: true),
+
+    AutoRoute(page: GoogleSignInRoute.page),
+    AutoRoute(page: MobileNumberRoute.page),
+    AutoRoute(page: OtpVerificationRoute.page),
+
+    AutoRoute(page: JoinCommunityRoute.page),
   ];
 }

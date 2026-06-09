@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:dating_app/core/utils/handle_back_press.dart';
+import '../../../../core/utils/handle_back_press.dart';
 import 'package:flutter/material.dart';
 import '../widget/pulse_avatar.dart';
 
@@ -19,9 +19,9 @@ class CallWaitingScreen extends StatelessWidget {
     await handleBackAction(
       context,
       onAction: onEndCall,
-      title: "Cancel Call?",
-      message: "Are you sure you want to cancel this call?",
-      confirmText: "End Call",
+      title: 'Cancel Call?',
+      message: 'Are you sure you want to cancel this call?',
+      confirmText: 'End Call',
       confirmColor: Colors.red,
     );
   }
@@ -102,7 +102,7 @@ class CallWaitingScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 12),
                           const Text(
-                            "End Call",
+                            'End Call',
                             style: TextStyle(
                               color: Colors.white70,
                               fontWeight: FontWeight.w500,
@@ -157,7 +157,7 @@ class _TypingDotsState extends State<_TypingDots>
       builder: (context, child) {
         String dots = '.' * (_dotCount.value + 1);
         return Text(
-          "Connecting$dots",
+          'Connecting$dots',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w400,

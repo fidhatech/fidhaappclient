@@ -1,13 +1,13 @@
-import 'package:dating_app/core/network/http/dio_client.dart';
-import 'package:dating_app/features/employee/history/cubit/session_cubit.dart';
-import 'package:dating_app/features/employee/history/screen/widgets/session_item.dart';
-import 'package:dating_app/features/employee/history/service/session_history.dart';
-import 'package:dating_app/features/employee/home/widgets/employee_app_bar.dart';
-import 'package:dating_app/features/employee/home/widgets/employee_error_view.dart';
-import 'package:dating_app/features/employee/home/widgets/section_header.dart';
-import 'package:dating_app/features/employee/main/cubit/navigator_cubit.dart';
+import '../../../../core/network/http/dio_client.dart';
+import '../cubit/session_cubit.dart';
+import 'widgets/session_item.dart';
+import '../service/session_history.dart';
+import '../../home/widgets/employee_app_bar.dart';
+import '../../home/widgets/employee_error_view.dart';
+import '../../home/widgets/section_header.dart';
+import '../../main/cubit/navigator_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:dating_app/core/widgets/gradient_scaffold/gradient_scaffold.dart';
+import '../../../../core/widgets/gradient_scaffold/gradient_scaffold.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
@@ -56,7 +56,7 @@ class _EmployeeHistoryScreenState extends State<EmployeeHistoryScreen> {
                       return const Center(child: CircularProgressIndicator());
                     } else if (state is SessionError) {
                       return EmployeeErrorView(
-                        title: "Failed to Load History",
+                        title: 'Failed to Load History',
                         message: _getFriendlyErrorMessage(state.message),
                         onRetry: () {
                           context.read<SessionCubit>().fetch();
@@ -70,7 +70,7 @@ class _EmployeeHistoryScreenState extends State<EmployeeHistoryScreen> {
                       if (sessions.isEmpty) {
                         return const Center(
                           child: Text(
-                            "No sessions found",
+                            'No sessions found',
                             style: TextStyle(color: Colors.white),
                           ),
                         );
@@ -83,7 +83,7 @@ class _EmployeeHistoryScreenState extends State<EmployeeHistoryScreen> {
                               vertical: 10,
                             ),
                             child: SectionHeader(
-                              title: "Session History",
+                              title: 'Session History',
                               icon: Icons.history,
                             ),
                           ),
@@ -107,8 +107,8 @@ class _EmployeeHistoryScreenState extends State<EmployeeHistoryScreen> {
                                 return SessionItem(
                                   name: session.name,
                                   subtitle:
-                                      "$formattedDate • ${session.duration} min • ${session.status}",
-                                  imageUrl: session.avatar ?? "",
+                                      '$formattedDate • ${session.duration} min • ${session.status}',
+                                  imageUrl: session.avatar ?? '',
                                 );
                               },
                             ),
@@ -139,10 +139,10 @@ class _EmployeeHistoryScreenState extends State<EmployeeHistoryScreen> {
     if (rawError.toLowerCase().contains('connection') ||
         rawError.toLowerCase().contains('socket') ||
         rawError.toLowerCase().contains('host lookup')) {
-      return "Unable to connect to the server. Please check your internet connection and try again.";
+      return 'Unable to connect to the server. Please check your internet connection and try again.';
     } else if (rawError.contains('401')) {
-      return "Session expired. Please log in again.";
+      return 'Session expired. Please log in again.';
     }
-    return "Something went wrong. Please try again later.";
+    return 'Something went wrong. Please try again later.';
   }
 }

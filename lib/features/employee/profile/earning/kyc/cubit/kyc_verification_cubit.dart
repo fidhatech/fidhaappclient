@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:dating_app/features/employee/profile/earning/service/kyc_service.dart';
+import '../../service/kyc_service.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 
@@ -40,7 +40,7 @@ class KycVerificationCubit extends Cubit<KycVerificationState> {
   Future<bool> verifyPan(String panNumber) async {
     emit(PanVerifying());
     try {
-      log("Starting PAN verification for: $panNumber");
+      log('Starting PAN verification for: $panNumber');
 
       final response = await _kycService.verifyPan(panNumber);
 
@@ -48,23 +48,23 @@ class KycVerificationCubit extends Cubit<KycVerificationState> {
       final panVerified = response['panVerified'] as bool? ?? false;
 
       if (panVerified) {
-        log("PAN verified successfully. Holder: $holderName");
+        log('PAN verified successfully. Holder: $holderName');
         emit(PanVerified(holderName: holderName, panVerified: panVerified));
         return true;
       } else {
-        log("PAN verification failed");
+        log('PAN verification failed');
         emit(
           const KycVerificationError(
-            "Unable to verify PAN. Please check the details and try again.",
+            'Unable to verify PAN. Please check the details and try again.',
           ),
         );
         return false;
       }
     } catch (e) {
-      log("Error verifying PAN: $e");
+      log('Error verifying PAN: $e');
       final errorMessage = _extractErrorMessage(
         e,
-        "Unable to verify PAN. Please check the details and try again.",
+        'Unable to verify PAN. Please check the details and try again.',
       );
       emit(KycVerificationError(errorMessage));
       return false;
@@ -77,20 +77,20 @@ class KycVerificationCubit extends Cubit<KycVerificationState> {
     try {
       // Step 1: Verify PAN if provided (OPTIONAL)
       if (panNumber != null && panNumber.trim().isNotEmpty) {
-        log("PAN provided, verifying first...");
+        log('PAN provided, verifying first...');
         final panSuccess = await verifyPan(panNumber.trim());
 
         if (!panSuccess) {
-          log("PAN verification failed, stopping KYC flow");
+          log('PAN verification failed, stopping KYC flow');
           return; // Stop if PAN verification fails
         }
       } else {
-        log("No PAN provided, skipping PAN verification");
+        log('No PAN provided, skipping PAN verification');
       }
 
       // Step 2: Submit UPI KYC (MANDATORY)
       emit(KycVerificationLoading());
-      log("Submitting UPI KYC...");
+      log('Submitting UPI KYC...');
 
       final response = await _kycService.submitUpiKyc(upiId);
 
@@ -100,21 +100,21 @@ class KycVerificationCubit extends Cubit<KycVerificationState> {
           'KYC completed successfully. You can now request withdrawals.';
 
       if (kycCompleted) {
-        log("KYC completed successfully");
+        log('KYC completed successfully');
         emit(KycCompleted(kycCompleted: kycCompleted, message: message));
       } else {
-        log("KYC submission failed");
+        log('KYC submission failed');
         emit(
           const KycVerificationError(
-            "Unable to complete KYC. Please try again.",
+            'Unable to complete KYC. Please try again.',
           ),
         );
       }
     } catch (e) {
-      log("Error submitting KYC: $e");
+      log('Error submitting KYC: $e');
       final errorMessage = _extractErrorMessage(
         e,
-        "Unable to complete KYC. Please try again.",
+        'Unable to complete KYC. Please try again.',
       );
       emit(KycVerificationError(errorMessage));
     }

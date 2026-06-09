@@ -1,13 +1,13 @@
-import 'package:dating_app/core/widgets/app_snackBar/show_snackbar.dart';
-import 'package:dating_app/core/widgets/gradient_scaffold/gradient_scaffold.dart';
-import 'package:dating_app/core/widgets/loading_dialog/otp_loading_dialog.dart';
-import 'package:dating_app/features/onboarding/bloc/onboarding_bloc.dart';
-import 'package:dating_app/features/onboarding/employ_screens/employ/cubit/employee_voice_cubit/employee_voice_cubit.dart';
-import 'package:dating_app/features/onboarding/employ_screens/employ/cubit/employee_voice_cubit/employee_voice_state.dart';
-import 'package:dating_app/features/onboarding/employ_screens/employ/screens/employee_video_verification_screen.dart';
-import 'package:dating_app/features/onboarding/employ_screens/employ/widgets/employee_voice_widgets/employee_voice_confirm_button.dart';
-import 'package:dating_app/features/onboarding/employ_screens/employ/widgets/employee_voice_widgets/employee_voice_header.dart';
-import 'package:dating_app/features/onboarding/employ_screens/employ/widgets/employee_voice_widgets/employee_voice_recording_card.dart';
+import '../../../../../core/widgets/app_snackBar/show_snackbar.dart';
+import '../../../../../core/widgets/gradient_scaffold/gradient_scaffold.dart';
+import '../../../../../core/widgets/loading_dialog/otp_loading_dialog.dart';
+import '../../../bloc/onboarding_bloc.dart';
+import '../cubit/employee_voice_cubit/employee_voice_cubit.dart';
+import '../cubit/employee_voice_cubit/employee_voice_state.dart';
+import 'employee_video_verification_screen.dart';
+import '../widgets/employee_voice_widgets/employee_voice_confirm_button.dart';
+import '../widgets/employee_voice_widgets/employee_voice_header.dart';
+import '../widgets/employee_voice_widgets/employee_voice_recording_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

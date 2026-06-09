@@ -1,8 +1,8 @@
-import 'package:dating_app/core/widgets/gradient_scaffold/gradient_scaffold.dart';
-import 'package:dating_app/features/wallet/cubit/wallet_cubit.dart';
-import 'package:dating_app/features/wallet/cubit/wallet_state.dart';
-import 'package:dating_app/features/wallet/widgets/balance_display.dart';
-import 'package:dating_app/features/wallet/widgets/package_card.dart';
+import '../../../core/widgets/gradient_scaffold/gradient_scaffold.dart';
+import '../cubit/wallet_cubit.dart';
+import '../cubit/wallet_state.dart';
+import '../widgets/balance_display.dart';
+import '../widgets/package_card.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -128,9 +128,9 @@ class WalletScreen extends StatelessWidget {
                               message: balance.message,
                             ),
                           const SizedBox(height: 28),
-                          Row(
+                          const Row(
                             children: [
-                              const Text(
+                              Text(
                                 '🔥 Recharge Coins',
                                 style: TextStyle(
                                   color: Colors.white,

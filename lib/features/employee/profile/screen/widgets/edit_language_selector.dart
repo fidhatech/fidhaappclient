@@ -1,6 +1,6 @@
-import 'package:dating_app/config/theme/app_color.dart';
+import '../../../../../config/theme/app_color.dart';
 import 'package:flutter/material.dart';
-import 'package:dating_app/features/employee/profile/cubit/employee_edit_profile_state.dart';
+import '../../cubit/employee_edit_profile_state.dart';
 
 class EditLanguageSelector extends StatelessWidget {
   final EmployeeEditProfileEditing state;
@@ -17,10 +17,10 @@ class EditLanguageSelector extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Align(
+        const Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            "Languages",
+            'Languages',
             style: TextStyle(color: Colors.white70, fontSize: 16),
           ),
         ),
@@ -30,12 +30,12 @@ class EditLanguageSelector extends StatelessWidget {
           runSpacing: 8,
           children:
               [
-                "English",
-                "Hindi",
-                "Malayalam",
-                "Tamil",
-                "Telugu",
-                "Kannada",
+                'English',
+                'Hindi',
+                'Malayalam',
+                'Tamil',
+                'Telugu',
+                'Kannada',
               ].map((language) {
                 final isSelected = state.languages.contains(language);
                 return FilterChip(

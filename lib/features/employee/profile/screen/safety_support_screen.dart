@@ -1,6 +1,6 @@
-import 'package:dating_app/config/theme/app_color.dart';
-import 'package:dating_app/core/widgets/gradient_scaffold/gradient_scaffold.dart';
-import 'package:dating_app/features/employee/profile/screen/widgets/profile_option_tile.dart';
+import '../../../../config/theme/app_color.dart';
+import '../../../../core/widgets/gradient_scaffold/gradient_scaffold.dart';
+import 'widgets/profile_option_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -14,7 +14,7 @@ class SafetySupportScreen extends StatelessWidget {
         title: const Padding(
           padding: EdgeInsets.all(8.0),
           child: Text(
-            "Safety & Support",
+            'Safety & Support',
             style: TextStyle(color: Colors.white, fontSize: 26),
           ),
         ),
@@ -69,7 +69,7 @@ class SafetySupportScreen extends StatelessWidget {
                           ),
                           SizedBox(height: 4),
                           Text(
-                            "Report any issues or reach out to our support team.",
+                            'Report any issues or reach out to our support team.',
                             style: TextStyle(
                               color: AppColor.secondaryText,
                               fontSize: 13,
@@ -83,7 +83,7 @@ class SafetySupportScreen extends StatelessWidget {
               ),
               const SizedBox(height: 32),
               const Text(
-                "How can we help you?",
+                'How can we help you?',
                 style: TextStyle(
                   color: AppColor.secondaryText,
                   fontSize: 13,
@@ -94,13 +94,13 @@ class SafetySupportScreen extends StatelessWidget {
               const SizedBox(height: 12),
               ProfileOptionTile(
                 icon: Icons.flag_outlined,
-                title: "Report Abuse",
+                title: 'Report Abuse',
                 onTap: () => _showReportAbuseBottomSheet(context),
               ),
               const Divider(color: Colors.white12, height: 1),
               ProfileOptionTile(
                 icon: Icons.headset_mic_outlined,
-                title: "Contact Support",
+                title: 'Contact Support',
                 onTap: () => _launchSupportEmail(context),
               ),
             ],
@@ -191,7 +191,7 @@ class _ReportAbuseBottomSheetState extends State<_ReportAbuseBottomSheet> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColor.primaryPink.withOpacity(0.15),
+                  color: AppColor.primaryPink.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: const Icon(
@@ -205,7 +205,7 @@ class _ReportAbuseBottomSheetState extends State<_ReportAbuseBottomSheet> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Report Abuse",
+                    'Report Abuse',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 18,
@@ -213,7 +213,7 @@ class _ReportAbuseBottomSheetState extends State<_ReportAbuseBottomSheet> {
                     ),
                   ),
                   Text(
-                    "Tell us what happened",
+                    'Tell us what happened',
                     style: TextStyle(
                       color: AppColor.secondaryText,
                       fontSize: 13,
@@ -227,7 +227,7 @@ class _ReportAbuseBottomSheetState extends State<_ReportAbuseBottomSheet> {
           // Text field
           Container(
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.06),
+              color: Colors.white.withValues(alpha: 0.06),
               borderRadius: BorderRadius.circular(14),
               border: Border.all(color: AppColor.textFieldBorder),
             ),
@@ -238,7 +238,7 @@ class _ReportAbuseBottomSheetState extends State<_ReportAbuseBottomSheet> {
               minLines: 5,
               style: const TextStyle(color: Colors.white, fontSize: 15),
               decoration: const InputDecoration(
-                hintText: "Describe the issue...",
+                hintText: 'Describe the issue...',
                 hintStyle: TextStyle(color: AppColor.secondaryText),
                 contentPadding: EdgeInsets.all(16),
                 border: InputBorder.none,
@@ -284,7 +284,7 @@ class _ReportAbuseBottomSheetState extends State<_ReportAbuseBottomSheet> {
                       ),
                     )
                   : const Text(
-                      "Submit Report",
+                      'Submit Report',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,

@@ -1,7 +1,7 @@
 import 'package:dating_app/config/theme/app_color.dart';
 import 'package:dating_app/core/utils/mediaquery.dart';
-import 'package:dating_app/features/onboarding/widgets/onboarding_content/onboarding_action_button.dart';
-import 'package:dating_app/features/splash/user_auth/presentation/widgets/mobile_number_screen_widgets/terms_text.dart';
+import 'package:dating_app/features/onboarding/presentation/widgets/onboarding_content/onboarding_action_button.dart';
+import 'package:dating_app/features/authentication/presentation/widgets/mobile_number_screen_widgets/terms_text.dart';
 
 import 'package:flutter/material.dart';
 

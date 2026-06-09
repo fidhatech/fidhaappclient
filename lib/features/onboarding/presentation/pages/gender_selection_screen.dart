@@ -1,19 +1,19 @@
-import 'package:dating_app/core/constants/app_urls.dart';
-import 'package:dating_app/core/utils/mediaquery.dart';
-import 'package:dating_app/core/utils/url_helper.dart';
-import 'package:dating_app/core/widgets/app_snackBar/show_snackbar.dart';
-import 'package:dating_app/core/widgets/confirm_button_with_text/confirm_button_with_text.dart';
-import 'package:dating_app/core/widgets/gradient_scaffold/gradient_scaffold.dart';
-import 'package:dating_app/di/injection.dart';
-import 'package:dating_app/features/onboarding/bloc/onboarding_bloc.dart';
-import 'package:dating_app/features/onboarding/employ_screens/employ/cubit/employee_info_cubit/employee_info_cubit.dart';
-import 'package:dating_app/features/onboarding/employ_screens/employ/cubit/employee_language_cubit/employee_language_cubit.dart';
-import 'package:dating_app/features/onboarding/employ_screens/employ/screens/employee_info_screen.dart';
-import 'package:dating_app/features/onboarding/widgets/gender_selection_screen_widgets/gender_avatar_selector.dart';
-import 'package:dating_app/features/onboarding/widgets/gender_selection_screen_widgets/gender_header.dart';
-import 'package:dating_app/features/onboarding/widgets/gender_selection_screen_widgets/gender_selection_chips.dart';
+import '../../../../core/constants/app_urls.dart';
+import '../../../../core/utils/mediaquery.dart';
+import '../../../../core/utils/url_helper.dart';
+import '../../../../core/widgets/app_snackBar/show_snackbar.dart';
+import '../../../../core/widgets/confirm_button_with_text/confirm_button_with_text.dart';
+import '../../../../core/widgets/gradient_scaffold/gradient_scaffold.dart';
+import '../../../../di/injection.dart';
+import '../../bloc/onboarding_bloc.dart';
+import '../../employ_screens/employ/cubit/employee_info_cubit/employee_info_cubit.dart';
+import '../../employ_screens/employ/cubit/employee_language_cubit/employee_language_cubit.dart';
+import '../../employ_screens/employ/screens/employee_info_screen.dart';
+import '../widgets/gender_selection_screen_widgets/gender_avatar_selector.dart';
+import '../widgets/gender_selection_screen_widgets/gender_header.dart';
+import '../widgets/gender_selection_screen_widgets/gender_selection_chips.dart';
 
-import 'package:dating_app/features/user/features/navigation/user_scope.dart';
+import '../../../user/features/navigation/user_scope.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -136,7 +136,7 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
                                               sl<EmployeeLanguageCubit>(),
                                         ),
                                       ],
-                                      child: EmployeeInfoScreen(),
+                                      child: const EmployeeInfoScreen(),
                                     ),
                                   ),
                                 );
@@ -145,7 +145,7 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
                                 Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => UserScope(),
+                                    builder: (context) => const UserScope(),
                                   ),
                                   (route) => false,
                                 );

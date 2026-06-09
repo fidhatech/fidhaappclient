@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:dating_app/features/splash/user_auth/data/models/auth_response_model.dart';
+import '../models/auth_response_model.dart';
 import 'package:dio/dio.dart';
 
 import '../models/abroad_user_login_model.dart';
@@ -13,34 +13,34 @@ class AuthRemoteDatasource {
   Future<AbroadUserLoginModel> checkUserExists(String email) async {
     try {
       final response = await dio.post(
-        "user/auth/check-user-existence",
-        data: {"email": email},
+        'user/auth/check-user-existence',
+        data: {'email': email},
       );
       log(response.data.toString());
       return AbroadUserLoginModel.fromJson(response.data);
     } on DioException catch (e) {
-      log(e.response?.data.toString() ?? "Failed to check user existence");
-      throw Exception(e.response?.data["message"] ?? "Failed to check user existence");
+      log(e.response?.data.toString() ?? 'Failed to check user existence');
+      throw Exception(e.response?.data['message'] ?? 'Failed to check user existence');
     } catch (e) {
       log(e.toString());
-      throw Exception("Something went wrong");
+      throw Exception('Something went wrong');
     }
   }
 
   Future<String> sendOtp(String phone) async {
     try {
       final response = await dio.post(
-        "user/auth/otp/send",
-        data: {"phoneNumber": phone},
+        'user/auth/otp/send',
+        data: {'phoneNumber': phone},
       );
       log(response.data.toString());
-      return response.data["message"];
+      return response.data['message'];
     } on DioException catch (e) {
-      log(e.response?.data.toString() ?? "Failed to send OTP");
-      throw Exception(e.response?.data["message"] ?? "Failed to send OTP");
+      log(e.response?.data.toString() ?? 'Failed to send OTP');
+      throw Exception(e.response?.data['message'] ?? 'Failed to send OTP');
     } catch (e) {
       log(e.toString());
-      throw Exception("Something went wrong");
+      throw Exception('Something went wrong');
     }
   }
 
@@ -60,25 +60,25 @@ class AuthRemoteDatasource {
   Future<String> resendOtp(String phone) async {
     try {
       final response = await dio.post(
-        "user/auth/otp/resend",
+        'user/auth/otp/resend',
 
-        data: {"phoneNumber": phone},
+        data: {'phoneNumber': phone},
       );
 
-      return response.data["message"];
+      return response.data['message'];
     } on DioException catch (e) {
-      throw Exception(e.response?.data["message"] ?? "Failed to resend OTP");
+      throw Exception(e.response?.data['message'] ?? 'Failed to resend OTP');
     } catch (e) {
-      throw Exception("Something went wrong");
+      throw Exception('Something went wrong');
     }
   }
 
   Future<String> deleteUser() async {
     try {
-      final response = await dio.delete("user/auth/delete");
-      return response.data["message"];
+      final response = await dio.delete('user/auth/delete');
+      return response.data['message'];
     } catch (e) {
-      throw Exception("Something went wrong");
+      throw Exception('Something went wrong');
     }
   }
 }

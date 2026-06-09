@@ -2,13 +2,18 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:injectable/injectable.dart';
 
-import '../../di/di.dart';
 import '../../services/secure_storage.dart';
 
+@singleton
 class DioProvider {
 
+  final SecureStorage _storage;
+
   Dio? _dio;
+
+  DioProvider(this._storage);
 
   Future<Dio> get dio async {
     if (_dio == null) {
@@ -27,7 +32,7 @@ class DioProvider {
 
     _dio = Dio(options);
 
-    final accessToken = await getIt.get<SecureStorage>().getAccessToken();
+    final accessToken = await _storage.getAccessToken();
 
     if (accessToken != null) {
       _dio!.options.headers['Authorization'] = 'Bearer $accessToken';

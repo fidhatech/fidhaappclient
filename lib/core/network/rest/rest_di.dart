@@ -8,8 +8,9 @@ import 'rest_client.dart';
 abstract class RestDi {
 
   @preResolve
-  Future<Dio> get dio => DioProvider().dio;
+  @lazySingleton
+  Future<Dio> dio(DioProvider provider) async => await provider.dio;
 
   @singleton
-  Future<RestClient> get restClient async => RestClient(await dio);
+  RestClient restClient(Dio dio) => RestClient(dio);
 }

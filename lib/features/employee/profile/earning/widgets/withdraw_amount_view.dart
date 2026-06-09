@@ -1,4 +1,4 @@
-import 'package:dating_app/config/theme/app_color.dart';
+import '../../../../../config/theme/app_color.dart';
 import 'package:flutter/material.dart';
 
 class WithdrawAmountView extends StatefulWidget {
@@ -46,19 +46,19 @@ class _WithdrawAmountViewState extends State<WithdrawAmountView> {
 
       final parsed = int.tryParse(_amountController.text);
       if (parsed == null) {
-        _errorText = "Invalid amount";
+        _errorText = 'Invalid amount';
         _amount = null;
         return;
       }
 
       if (parsed <= 0) {
-        _errorText = "Amount must be greater than 0";
+        _errorText = 'Amount must be greater than 0';
         _amount = null;
         return;
       }
 
       if (parsed > widget.availableBalance) {
-        _errorText = "Insufficient balance";
+        _errorText = 'Insufficient balance';
         _amount = null;
         return;
       }
@@ -94,7 +94,7 @@ class _WithdrawAmountViewState extends State<WithdrawAmountView> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            "Withdraw Money",
+            'Withdraw Money',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
               color: Colors.black,
@@ -103,7 +103,7 @@ class _WithdrawAmountViewState extends State<WithdrawAmountView> {
           ),
           const SizedBox(height: 8),
           Text(
-            "Available Balance: ₹${widget.availableBalance.toStringAsFixed(2)}",
+            'Available Balance: ₹${widget.availableBalance.toStringAsFixed(2)}',
             style: TextStyle(color: Colors.grey[600], fontSize: 14),
             textAlign: TextAlign.center,
           ),
@@ -112,8 +112,8 @@ class _WithdrawAmountViewState extends State<WithdrawAmountView> {
             controller: _amountController,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
-              labelText: "Enter Amount",
-              prefixText: "₹ ",
+              labelText: 'Enter Amount',
+              prefixText: '₹ ',
               errorText: _errorText,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -138,15 +138,15 @@ class _WithdrawAmountViewState extends State<WithdrawAmountView> {
             ),
             child: Column(
               children: [
-                _buildSummaryRow("Requested Amount", "₹${_amount ?? 0}"),
+                _buildSummaryRow('Requested Amount', '₹${_amount ?? 0}'),
                 const SizedBox(height: 8),
                 _buildSummaryRow(
-                  "Platform Fee",
-                  "-₹$_platformFee",
+                  'Platform Fee',
+                  '-₹$_platformFee',
                   isDeduction: true,
                 ),
                 const Divider(height: 24),
-                _buildSummaryRow("You Receive", "₹$netAmount", isBold: true),
+                _buildSummaryRow('You Receive', '₹$netAmount', isBold: true),
               ],
             ),
           ),
@@ -199,8 +199,8 @@ class _WithdrawAmountViewState extends State<WithdrawAmountView> {
             ),
             child: Text(
               (_isSubmitting || widget.isSubmitting)
-                  ? "Confirming..."
-                  : "Confirm Withdrawal",
+                  ? 'Confirming...'
+                  : 'Confirm Withdrawal',
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,

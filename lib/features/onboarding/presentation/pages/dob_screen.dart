@@ -1,13 +1,13 @@
-import 'package:dating_app/config/theme/app_color.dart';
-import 'package:dating_app/core/constants/app_urls.dart';
-import 'package:dating_app/core/utils/mediaquery.dart';
-import 'package:dating_app/core/utils/url_helper.dart';
-import 'package:dating_app/core/widgets/confirm_button_with_text/confirm_button_with_text.dart';
-import 'package:dating_app/core/widgets/gradient_scaffold/gradient_scaffold.dart';
-import 'package:dating_app/features/onboarding/bloc/onboarding_bloc.dart';
-import 'package:dating_app/features/onboarding/screens/gender_selection_screen.dart';
-import 'package:dating_app/features/onboarding/widgets/dob_screen_widgets/dob_header.dart';
-import 'package:dating_app/features/onboarding/widgets/dob_screen_widgets/dob_selector_field.dart';
+import '../../../../config/theme/app_color.dart';
+import '../../../../core/constants/app_urls.dart';
+import '../../../../core/utils/mediaquery.dart';
+import '../../../../core/utils/url_helper.dart';
+import '../../../../core/widgets/confirm_button_with_text/confirm_button_with_text.dart';
+import '../../../../core/widgets/gradient_scaffold/gradient_scaffold.dart';
+import '../../bloc/onboarding_bloc.dart';
+import 'gender_selection_screen.dart';
+import '../widgets/dob_screen_widgets/dob_header.dart';
+import '../widgets/dob_screen_widgets/dob_selector_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

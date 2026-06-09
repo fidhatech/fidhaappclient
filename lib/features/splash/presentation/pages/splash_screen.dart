@@ -1,16 +1,16 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:auto_route/auto_route.dart';
-import '../../../core/utils/app_start_decider.dart';
-import '../../../core/network/http/dio_client.dart';
-import '../../../core/services/app_update_service.dart';
-import '../../../core/widgets/app_update_dialog/app_update_dialog.dart';
-import '../../employee/main/employee_scope.dart';
-import '../presentation/cubit/app_start_cubit.dart';
-import '../../onboarding/screens/join_community_screen.dart';
+import '../../../../core/routes/app_router.dart';
+import '../../../../core/utils/app_start_decider.dart';
+import '../../../../core/network/http/dio_client.dart';
+import '../../../../core/services/app_update_service.dart';
+import '../../../../core/widgets/app_update_dialog/app_update_dialog.dart';
+import '../../../employee/main/employee_scope.dart';
+import '../cubit/app_start_cubit.dart';
 import '../widgets/splash_background.dart';
 import '../widgets/splash_content.dart';
-import '../../user/features/navigation/user_scope.dart';
+import '../../../user/features/navigation/user_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,8 +22,7 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen>
-    with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
   late Animation<double> _iconPopAnim;
@@ -78,34 +77,29 @@ class _SplashScreenState extends State<SplashScreen>
       await _animationCompleter.future;
     }
 
-    if (!mounted) return;
+    if (!context.mounted) return;
 
-    if (!mounted) return;
-
-    log("[APP_START] Navigating to: $status");
+    log('[APP_START] Navigating to: $status');
 
     // Check for app update
     await _checkAndShowUpdateIfNeeded(context);
 
-    if (!mounted) return;
+    if (!context.mounted) return;
 
     if (status == AppStartStatus.employee) {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => EmployeeScope()),
+        MaterialPageRoute(builder: (context) => const EmployeeScope()),
         (route) => false,
       );
     } else if (status == AppStartStatus.client) {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => UserScope()),
+        MaterialPageRoute(builder: (context) => const UserScope()),
         (route) => false,
       );
     } else {
-      Navigator.pushReplacement(
-        context,
-        _createRoute(const JoinCommunityScreen()),
-      );
+      context.router.replace(const JoinCommunityRoute());
     }
   }
 
@@ -114,7 +108,7 @@ class _SplashScreenState extends State<SplashScreen>
       final appUpdateService = AppUpdateService(DioClient.instance);
       final updateConfig = await appUpdateService.fetchAppUpdateConfig();
 
-      if (mounted && updateConfig.isEnabled) {
+      if (context.mounted && updateConfig.isEnabled) {
         await showAppUpdateDialog(
           context: context,
           updateConfig: updateConfig,
@@ -126,29 +120,29 @@ class _SplashScreenState extends State<SplashScreen>
     }
   }
 
-  Route _createRoute(Widget page) {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => page,
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const curve = Curves.fastOutSlowIn;
+  // Route _createRoute(Widget page) {
+  //   return PageRouteBuilder(
+  //     pageBuilder: (context, animation, secondaryAnimation) => page,
+  //     transitionsBuilder: (context, animation, secondaryAnimation, child) {
+  //       const curve = Curves.fastOutSlowIn;
 
-        var tween = Tween(begin: 0.0, end: 1.0).chain(CurveTween(curve: curve));
-        var scaleTween = Tween(
-          begin: 0.8,
-          end: 1.0,
-        ).chain(CurveTween(curve: curve));
+  //       var tween = Tween(begin: 0.0, end: 1.0).chain(CurveTween(curve: curve));
+  //       var scaleTween = Tween(
+  //         begin: 0.8,
+  //         end: 1.0,
+  //       ).chain(CurveTween(curve: curve));
 
-        return FadeTransition(
-          opacity: animation.drive(tween),
-          child: ScaleTransition(
-            scale: animation.drive(scaleTween),
-            child: child,
-          ),
-        );
-      },
-      transitionDuration: const Duration(milliseconds: 800),
-    );
-  }
+  //       return FadeTransition(
+  //         opacity: animation.drive(tween),
+  //         child: ScaleTransition(
+  //           scale: animation.drive(scaleTween),
+  //           child: child,
+  //         ),
+  //       );
+  //     },
+  //     transitionDuration: const Duration(milliseconds: 800),
+  //   );
+  // }
 
   @override
   void dispose() {

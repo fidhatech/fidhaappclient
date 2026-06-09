@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:dating_app/core/widgets/custom_textfield/custom_textfield.dart';
-import 'package:dating_app/config/theme/app_color.dart';
+import '../../../../../../core/widgets/custom_textfield/custom_textfield.dart';
+import '../../../../../../config/theme/app_color.dart';
 
 class EmployeeAgeInput extends StatelessWidget {
   final TextEditingController controller;
@@ -10,9 +10,9 @@ class EmployeeAgeInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomTextField(
-      label: "Enter your Age",
-      inputLabel: "Age in years",
-      hint: "Age in years",
+      label: 'Enter your Age',
+      inputLabel: 'Age in years',
+      hint: 'Age in years',
       controller: controller,
       keyboardType: TextInputType.number,
       textColor: AppColor.primaryText,

@@ -1,15 +1,15 @@
-import 'package:dating_app/core/validators/app_validator.dart';
-import 'package:dating_app/core/widgets/app_snackBar/show_snackbar.dart';
-import 'package:dating_app/core/widgets/gradient_scaffold/gradient_scaffold.dart';
-import 'package:dating_app/core/widgets/loading_dialog/otp_loading_dialog.dart';
-import 'package:dating_app/di/injection.dart';
-import 'package:dating_app/features/employee/profile/earning/cubit/add_bank_account_cubit.dart';
-import 'package:dating_app/features/employee/profile/earning/service/bank_service.dart';
+import '../../../../../core/validators/app_validator.dart';
+import '../../../../../core/widgets/app_snackBar/show_snackbar.dart';
+import '../../../../../core/widgets/gradient_scaffold/gradient_scaffold.dart';
+import '../../../../../core/widgets/loading_dialog/otp_loading_dialog.dart';
+import '../../../../../di/injection.dart';
+import '../cubit/add_bank_account_cubit.dart';
+import '../service/bank_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:dating_app/features/employee/profile/earning/kyc/widgets/kyc_submit_button.dart';
+import '../kyc/widgets/kyc_submit_button.dart';
 
 class AddBankAccountScreen extends StatelessWidget {
   const AddBankAccountScreen({super.key});
@@ -199,16 +199,16 @@ class _AddBankAccountScreenContentState
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(color: Colors.white.withOpacity(0.4)),
+        hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.4)),
         filled: true,
-        fillColor: Colors.white.withOpacity(0.05),
+        fillColor: Colors.white.withValues(alpha: 0.05),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.white.withOpacity(0.1)),
+          borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.white.withOpacity(0.1)),
+          borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),

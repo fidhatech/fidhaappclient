@@ -1,10 +1,10 @@
 import 'dart:ui';
 import 'dart:developer';
-import 'package:dating_app/core/services/local_notification_service.dart';
-import 'package:dating_app/core/utils/handle_back_press.dart';
-import 'package:dating_app/features/call/call_waiting/widget/pulse_avatar.dart';
-import 'package:dating_app/features/call/incoming_call/widgets/incoming_call_button.dart';
-import 'package:dating_app/features/employee/call/cubit/employee_call_cubit.dart';
+import '../../../../core/services/local_notification_service.dart';
+import '../../../../core/utils/handle_back_press.dart';
+import '../../call_waiting/widget/pulse_avatar.dart';
+import '../widgets/incoming_call_button.dart';
+import '../../../employee/call/cubit/employee_call_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -33,9 +33,9 @@ class IncomingCallScreen extends StatelessWidget {
             LocalNotificationService.cancelIncomingCallNotification(callId);
             context.read<EmployeeCallCubit>().rejectCall(callId);
           },
-          title: "Reject Call?",
-          message: "Are you sure you want to reject this incoming call?",
-          confirmText: "Reject Call",
+          title: 'Reject Call?',
+          message: 'Are you sure you want to reject this incoming call?',
+          confirmText: 'Reject Call',
           confirmColor: Colors.red,
         );
       },
@@ -111,7 +111,7 @@ class IncomingCallScreen extends StatelessWidget {
                           children: [
                             // Reject Button Column
                             _ActionButtonWithLabel(
-                              label: "Decline",
+                              label: 'Decline',
                               button: IncomingCallButton(
                                 color: Colors.red.shade600,
                                 icon: Icons.call_end,
@@ -133,7 +133,7 @@ class IncomingCallScreen extends StatelessWidget {
                             ),
                             // Accept Button Column
                             _ActionButtonWithLabel(
-                              label: "Accept",
+                              label: 'Accept',
                               button: IncomingCallButton(
                                 color: Colors.green.shade600,
                                 icon: Icons.call,

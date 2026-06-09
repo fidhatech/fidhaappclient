@@ -1,5 +1,4 @@
 import '../core/network/cubit/network_status_cubit.dart';
-import '../core/services/socket_session_manager.dart';
 import '../features/employee/call/cubit/employee_call_cubit.dart';
 import '../features/employee/history/cubit/session_cubit.dart';
 import '../features/onboarding/service/onboarding_service.dart';
@@ -27,7 +26,6 @@ import '../features/user/features/user_profile/services/profile_service.dart';
 import '../features/user/features/promotion/service/popup_offer_service.dart';
 import 'package:get_it/get_it.dart';
 import '../core/network/http/dio_client.dart';
-import '../core/network/socket/socket_service.dart';
 import '../features/splash/user_auth/data/datasources/auth_remote_datasource.dart';
 import '../features/splash/user_auth/data/repositories/user_auth_repository_impl.dart';
 import '../features/splash/user_auth/domain/usecases/send_otp_usecase.dart';
@@ -46,8 +44,8 @@ import '../features/onboarding/data/onboarding_datasource.dart';
 final sl = GetIt.instance;
 
 void init() {
-  // 1) Dio Client
-  sl.registerLazySingleton(() => DioClient.instance);
+  // // 1) Dio Client
+  // sl.registerLazySingleton(() => DioClient.instance);
 
   // 2) Remote datasource
   sl.registerLazySingleton<AuthRemoteDatasource>(
@@ -66,7 +64,6 @@ void init() {
   sl.registerLazySingleton<HomeRepository>(() => HomeRepository(sl()));
   sl.registerLazySingleton<OnboardingService>(() => OnboardingService(sl()));
   sl.registerLazySingleton<EmployeeService>(() => EmployeeService(sl()));
-  sl.registerLazySingleton<SocketService>(() => SocketService());
   sl.registerLazySingleton<HistoryService>(() => HistoryService(sl()));
   sl.registerLazySingleton<PremiumService>(() => PremiumService(sl()));
   sl.registerLazySingleton<ClientCallService>(() => ClientCallService(sl()));

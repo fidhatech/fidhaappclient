@@ -1,6 +1,6 @@
 import 'package:dating_app/config/theme/app_color.dart';
 import 'package:dating_app/core/utils/mediaquery.dart';
-import 'package:dating_app/features/onboarding/widgets/onboarding_content/onboarding_action_button.dart';
+import 'package:dating_app/features/onboarding/presentation/widgets/onboarding_content/onboarding_action_button.dart';
 import 'package:flutter/material.dart';
 
 /// Reusable widget that displays a confirm button with optional text below it

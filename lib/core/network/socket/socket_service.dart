@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:injectable/injectable.dart';
 import '../../constants/api_constants.dart';
 import '../../di/di.dart';
 import 'socket_events.dart';
@@ -49,7 +50,15 @@ import 'package:socket_io_client/socket_io_client.dart' as io;
 ///    - Updates call duration and billing info
 ///
 /// ═══════════════════════════════════════════════════════════════════════════
+
+@lazySingleton
 class SocketService {
+
+  final SecureStorage _secureStorage;
+  //final LocalNotificationService _localNotificationService = getIt.get<LocalNotificationService>();
+
+  SocketService(this._secureStorage);
+
   io.Socket? _socket;
   bool _connecting = false;
   String? _connectedUserId;
@@ -126,7 +135,7 @@ class SocketService {
     );
     log('└────────────────────────────────────────────────────────────');
 
-    final token = await getIt.get<SecureStorage>().getAccessToken();
+    final token = await _secureStorage.getAccessToken();
 
     // CRITICAL: If a socket exists but the TOKEN has changed (e.g. logout/login),
     // we MUST dispose it even if the userId is the same.
@@ -160,7 +169,7 @@ class SocketService {
       _connecting = false;
       _connectedUserId = null;
       _lastToken = null;
-      _errorController.add("No authentication token. Please login again.");
+      _errorController.add('No authentication token. Please login again.');
       return;
     }
 
@@ -256,7 +265,7 @@ class SocketService {
 
   Future<String?> _inferUserIdFromAccessToken() async {
     try {
-      final token = await getIt.get<SecureStorage>().getAccessToken();
+      final token = await _secureStorage.getAccessToken();
       if (token == null || token.isEmpty) return null;
 
       final parts = token.split('.');
@@ -411,7 +420,7 @@ class SocketService {
       // Only surface an error when the server drops us unexpectedly.
       // Intentional disconnects (app resume reconnect, logout cleanup) are silent.
       if (!wasIntentional) {
-        _errorController.add("Disconnected from server");
+        _errorController.add('Disconnected from server');
       }
       _connectionStatusController.add(false);
     });
@@ -459,7 +468,7 @@ class SocketService {
         log('╚════════════════════════════════════════════════════════════╝');
       }
 
-      _errorController.add("Connection Error: $err");
+      _errorController.add('Connection Error: $err');
     });
 
     // 🔥 SOCKET ERROR (Runtime errors after connection)
@@ -471,7 +480,7 @@ class SocketService {
       log('║ Error: $err');
       log('║ Time: ${DateTime.now().toIso8601String()}');
       log('╚════════════════════════════════════════════════════════════╝');
-      _errorController.add("Socket Error: $err");
+      _errorController.add('Socket Error: $err');
     });
 
     log('─────────────────────────────────────────');
@@ -492,7 +501,7 @@ class SocketService {
         _normalEmployeeController.add(model);
       } catch (e) {
         log('❌ Error parsing normalEmployeesList: $e');
-        _errorController.add("Employee List Parse Error");
+        _errorController.add('Employee List Parse Error');
       }
     });
 
@@ -526,7 +535,7 @@ class SocketService {
         _incomingCallController.add(model);
       } catch (e) {
         log('❌ Error parsing incomingCall: $e');
-        _errorController.add("Incoming Call Parse Error");
+        _errorController.add('Incoming Call Parse Error');
       }
     });
 
@@ -549,7 +558,7 @@ class SocketService {
         _joinCallController.add(model);
       } catch (e) {
         log('❌ Error parsing joinCall: $e');
-        _errorController.add("Join Call Parse Error");
+        _errorController.add('Join Call Parse Error');
       }
     });
 
@@ -572,7 +581,7 @@ class SocketService {
         return;
       }
 
-      _errorController.add("Cannot send data: Socket not connected");
+      _errorController.add('Cannot send data: Socket not connected');
       _ensureConnectedInBackground();
       return;
     }
@@ -690,7 +699,7 @@ class SocketService {
 
     if (clear) {
       log('🔐 Clearing all secure tokens from storage...');
-      await getIt.get<SecureStorage>().clearTokens();
+      await _secureStorage.clearTokens();
       log('✅ Tokens cleared');
     }
 

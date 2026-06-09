@@ -1,22 +1,22 @@
-import 'package:dating_app/config/theme/app_color.dart';
-import 'package:dating_app/core/constants/app_urls.dart';
-import 'package:dating_app/core/routes/app_routes.dart';
-import 'package:dating_app/core/widgets/app_snackBar/show_snackbar.dart';
-import 'package:dating_app/core/widgets/gradient_scaffold/gradient_scaffold.dart';
-import 'package:dating_app/core/widgets/loading_dialog/otp_loading_dialog.dart';
-import 'package:dating_app/core/widgets/profile_dialogs/profile_dialogs.dart';
-import 'package:dating_app/di/injection.dart';
+import '../../../../config/theme/app_color.dart';
+import '../../../../core/constants/app_urls.dart';
+import '../../../../core/routes/app_routes.dart';
+import '../../../../core/widgets/app_snackBar/show_snackbar.dart';
+import '../../../../core/widgets/gradient_scaffold/gradient_scaffold.dart';
+import '../../../../core/widgets/loading_dialog/otp_loading_dialog.dart';
+import '../../../../core/widgets/profile_dialogs/profile_dialogs.dart';
+import '../../../../di/injection.dart';
 
-import 'package:dating_app/features/employee/call/cubit/employee_call_cubit.dart';
-import 'package:dating_app/features/employee/home/cubit/employee_cubit.dart';
-import 'package:dating_app/features/employee/profile/cubit/employee_account_cubit.dart';
-import 'package:dating_app/features/employee/profile/earning/screen/earning_screen.dart';
-import 'package:dating_app/features/employee/profile/screen/safety_support_screen.dart';
-import 'package:dating_app/features/employee/profile/screen/edit_profile_screen.dart';
-import 'package:dating_app/features/employee/profile/screen/widgets/profile_header.dart';
-import 'package:dating_app/features/employee/profile/screen/widgets/profile_option_tile.dart';
-import 'package:dating_app/features/employee/service/employee_service.dart';
-import 'package:dating_app/features/employee/session/cubit/employee_session_cubit.dart';
+import '../../call/cubit/employee_call_cubit.dart';
+import '../../home/cubit/employee_cubit.dart';
+import '../cubit/employee_account_cubit.dart';
+import '../earning/screen/earning_screen.dart';
+import 'safety_support_screen.dart';
+import 'edit_profile_screen.dart';
+import 'widgets/profile_header.dart';
+import 'widgets/profile_option_tile.dart';
+import '../../service/employee_service.dart';
+import '../../session/cubit/employee_session_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -64,7 +64,7 @@ class EmployeeAccountScreen extends StatelessWidget {
       title: const Padding(
         padding: EdgeInsets.all(8.0),
         child: Text(
-          "My Profile",
+          'My Profile',
           style: TextStyle(color: Colors.white, fontSize: 26),
         ),
       ),
@@ -72,7 +72,7 @@ class EmployeeAccountScreen extends StatelessWidget {
       elevation: 0,
       actions: [
         TextButton.icon(
-          label: const Text("Edit", style: TextStyle(color: Colors.white)),
+          label: const Text('Edit', style: TextStyle(color: Colors.white)),
           icon: const Icon(Icons.edit, color: Colors.white),
           onPressed: () async {
             await Navigator.push(
@@ -94,7 +94,7 @@ class EmployeeAccountScreen extends StatelessWidget {
   Widget _buildProfileHeader(BuildContext context) {
     return BlocBuilder<EmployeeSessionCubit, EmployeeSessionState>(
       builder: (context, state) {
-        String name = "Employee";
+        String name = 'Employee';
         String? avatarUrl;
 
         if (state is EmployeeSessionLoaded) {
@@ -114,7 +114,7 @@ class EmployeeAccountScreen extends StatelessWidget {
       children: [
         ProfileOptionTile(
           icon: Icons.wallet_giftcard,
-          title: "Earnings",
+          title: 'Earnings',
           onTap: () {
             Navigator.push(
               context,
@@ -133,14 +133,14 @@ class EmployeeAccountScreen extends StatelessWidget {
         const SizedBox(height: 10),
         ProfileOptionTile(
           icon: Icons.description_outlined,
-          title: "Terms and Conditions",
+          title: 'Terms and Conditions',
           onTap: () async {
             final Uri url = Uri.parse(AppUrls.termsAndConditions);
             if (!await launchUrl(url)) {
               if (context.mounted) {
                 showAppSnackbar(
                   context,
-                  message: "Could not launch URL",
+                  message: 'Could not launch URL',
                   icon: Icons.error,
                 );
               }
@@ -150,14 +150,14 @@ class EmployeeAccountScreen extends StatelessWidget {
         const SizedBox(height: 10),
         ProfileOptionTile(
           icon: Icons.privacy_tip_outlined,
-          title: "Privacy Policy",
+          title: 'Privacy Policy',
           onTap: () async {
             final Uri url = Uri.parse(AppUrls.privacyPolicy);
             if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
               if (context.mounted) {
                 showAppSnackbar(
                   context,
-                  message: "Could not launch URL",
+                  message: 'Could not launch URL',
                   icon: Icons.error,
                 );
               }
@@ -167,7 +167,7 @@ class EmployeeAccountScreen extends StatelessWidget {
         const SizedBox(height: 10),
         ProfileOptionTile(
           icon: Icons.security_outlined,
-          title: "Safety & Support",
+          title: 'Safety & Support',
           onTap: () {
             Navigator.push(
               context,
@@ -180,13 +180,13 @@ class EmployeeAccountScreen extends StatelessWidget {
         const SizedBox(height: 10),
         ProfileOptionTile(
           icon: Icons.logout,
-          title: "Log Out",
+          title: 'Log Out',
           onTap: () => _showLogoutDialog(context),
         ),
         const SizedBox(height: 10),
         ProfileOptionTile(
           icon: Icons.delete_outline,
-          title: "Delete Account",
+          title: 'Delete Account',
           textColor: AppColor.primaryPink,
           iconColor: AppColor.primaryPink,
           onTap: () => _showDeleteAccountDialog(context),

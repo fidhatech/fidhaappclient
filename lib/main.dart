@@ -12,7 +12,7 @@ import 'features/onboarding/bloc/onboarding_bloc.dart';
 import 'features/splash/user_auth/domain/usecases/resend_otp_usecase.dart';
 import 'features/splash/user_auth/domain/usecases/send_otp_usecase.dart';
 import 'features/splash/user_auth/domain/usecases/verify_otp_usecase.dart';
-import 'features/splash/user_auth/presentation/cubit/mobile_number_cubit.dart';
+import 'features/authentication/presentation/cubit/mobile_number_cubit/mobile_number_cubit.dart';
 import 'features/splash/user_auth/presentation/cubit/otp_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';

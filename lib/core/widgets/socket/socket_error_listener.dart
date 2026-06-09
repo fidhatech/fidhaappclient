@@ -1,6 +1,6 @@
 import 'dart:developer';
-import 'package:dating_app/core/network/socket/socket_service.dart';
-import 'package:dating_app/core/utils/network_checker.dart';
+import '../../network/socket/socket_service.dart';
+import '../../utils/network_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -66,7 +66,7 @@ class _SocketErrorListenerState extends State<SocketErrorListener> {
             );
             return;
           }
-          _showErrorSnackBar("No Internet Connection");
+          _showErrorSnackBar('No Internet Connection');
         } else {
           // If connection is back, we clear ANY outstanding connection error message.
           // This gives immediate feedback. If socket fails again, a new error will appear.
@@ -147,16 +147,16 @@ class _SocketErrorListenerState extends State<SocketErrorListener> {
 
     // Sanitize technical errors
     String displayMessage = errorMessage;
-    if (errorMessage.toLowerCase().contains("timeout")) {
-      displayMessage = "Connection timed out. Retrying...";
-    } else if (errorMessage.contains("SocketError") ||
-        errorMessage.contains("SocketException") ||
-        errorMessage.contains("errno = 7") ||
-        errorMessage.contains("Failed host lookup")) {
-      displayMessage = "Connection issue. Retrying...";
-    } else if (errorMessage.contains("Connection Error") ||
-        errorMessage.contains("Socket connect error")) {
-      displayMessage = "Unable to connect to server.";
+    if (errorMessage.toLowerCase().contains('timeout')) {
+      displayMessage = 'Connection timed out. Retrying...';
+    } else if (errorMessage.contains('SocketError') ||
+        errorMessage.contains('SocketException') ||
+        errorMessage.contains('errno = 7') ||
+        errorMessage.contains('Failed host lookup')) {
+      displayMessage = 'Connection issue. Retrying...';
+    } else if (errorMessage.contains('Connection Error') ||
+        errorMessage.contains('Socket connect error')) {
+      displayMessage = 'Unable to connect to server.';
     }
 
     if (!mounted) return;

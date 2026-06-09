@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:dating_app/core/widgets/offer_popup_card/offer_popup_card.dart';
-import 'package:dating_app/core/widgets/offer_popup_card/promotion_model.dart';
+import 'offer_popup_card.dart';
+import 'promotion_model.dart';
 
 /// Example usage of OfferPopupCard
 ///
@@ -84,16 +84,16 @@ class OfferPopupExample extends StatelessWidget {
   void _showOfferFromApi(BuildContext context) {
     // In real app, you would fetch this from your API
     final jsonResponse = {
-      "success": true,
-      "message": "Popup offer fetched successfully",
-      "promotion": {
-        "id": "65b1f3c2e8f4a9a1c1234567",
-        "title": "New Year Offer",
-        "coins": 100,
-        "actualPrice": 199,
-        "offerPrice": 99,
-        "date": "2026-01-05T10:30:00.000Z",
-        "type": "offer",
+      'success': true,
+      'message': 'Popup offer fetched successfully',
+      'promotion': {
+        'id': '65b1f3c2e8f4a9a1c1234567',
+        'title': 'New Year Offer',
+        'coins': 100,
+        'actualPrice': 199,
+        'offerPrice': 99,
+        'date': '2026-01-05T10:30:00.000Z',
+        'type': 'offer',
       },
     };
 

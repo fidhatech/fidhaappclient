@@ -35,10 +35,10 @@ class EmployeeVoiceCubit extends Cubit<EmployeeVoiceState> {
 
   Future<void> startRecording() async {
     try {
-      log("Start recording requested");
+      log('Start recording requested');
       // Request permission explicitly
       final status = await Permission.microphone.request();
-      log("Microphone permission status: $status");
+      log('Microphone permission status: $status');
 
       if (status.isGranted) {
         final Directory appDocumentsDir =
@@ -46,17 +46,17 @@ class EmployeeVoiceCubit extends Cubit<EmployeeVoiceState> {
         final String filePath =
             '${appDocumentsDir.path}/voice_auth_${DateTime.now().millisecondsSinceEpoch}.m4a';
 
-        log("Starting recording to: $filePath");
+        log('Starting recording to: $filePath');
         await _audioRecorder.start(const RecordConfig(), path: filePath);
-        log("Recording started");
+        log('Recording started');
         emit(EmployeeVoiceRecording());
       } else {
-        log("Microphone permission denied");
-        emit(const EmployeeVoiceError(message: "Microphone permission denied"));
+        log('Microphone permission denied');
+        emit(const EmployeeVoiceError(message: 'Microphone permission denied'));
       }
     } catch (e) {
-      log("Error starting recording: $e");
-      emit(EmployeeVoiceError(message: "Failed to start recording: $e"));
+      log('Error starting recording: $e');
+      emit(EmployeeVoiceError(message: 'Failed to start recording: $e'));
     }
   }
 
@@ -69,7 +69,7 @@ class EmployeeVoiceCubit extends Cubit<EmployeeVoiceState> {
         emit(EmployeeVoiceInitial()); // Canceled or failed
       }
     } catch (e) {
-      emit(EmployeeVoiceError(message: "Failed to stop recording: $e"));
+      emit(EmployeeVoiceError(message: 'Failed to stop recording: $e'));
     }
   }
 

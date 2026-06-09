@@ -1,8 +1,8 @@
-import 'package:dating_app/features/employee/home/cubit/employee_cubit.dart';
-import 'package:dating_app/features/employee/home/widgets/call_control_panel.dart';
-import 'package:dating_app/features/employee/home/widgets/earnings_section.dart';
-import 'package:dating_app/features/employee/home/widgets/section_header.dart';
-import 'package:dating_app/features/employee/model/employee_model.dart';
+import '../../home/cubit/employee_cubit.dart';
+import '../../home/widgets/call_control_panel.dart';
+import '../../home/widgets/earnings_section.dart';
+import '../../home/widgets/section_header.dart';
+import '../../model/employee_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

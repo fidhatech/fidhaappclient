@@ -1,4 +1,4 @@
-import 'package:dating_app/features/payment/model/order_model.dart';
+import '../model/order_model.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:dio/dio.dart';
 
@@ -18,7 +18,7 @@ class PaymentService {
   Future<RazorpayOrderModel> createOrder(String packageId) async {
     final response = await _dio.post(
       'user/payment/create-order',
-      data: {"packageId": packageId},
+      data: {'packageId': packageId},
     );
     return RazorpayOrderModel.fromJson(response.data['order']);
   }
@@ -26,7 +26,7 @@ class PaymentService {
   Future<RazorpayOrderModel> createOrderForPromotion(String promotionId) async {
     final response = await _dio.post(
       'user/payment/create-order',
-      data: {"packageId": promotionId, "type": "promo"},
+      data: {'packageId': promotionId, 'type': 'promo'},
     );
     return RazorpayOrderModel.fromJson(response.data['order']);
   }
@@ -57,9 +57,9 @@ class PaymentService {
     final result = await _dio.post(
       'user/payment/verify',
       data: {
-        "razorpay_order_id": response.orderId,
-        "razorpay_payment_id": response.paymentId,
-        "razorpay_signature": response.signature,
+        'razorpay_order_id': response.orderId,
+        'razorpay_payment_id': response.paymentId,
+        'razorpay_signature': response.signature,
       },
     );
     return result.data['success'] == true;

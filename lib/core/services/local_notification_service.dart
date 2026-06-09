@@ -52,14 +52,14 @@ class LocalNotificationService {
   );
 
   static final AndroidNotificationChannel
-  _incomingCallChannel = AndroidNotificationChannel(
+  _incomingCallChannel = const AndroidNotificationChannel(
     _incomingCallChannelId,
     'Incoming Calls',
     description:
         'High-priority full-screen incoming call alerts with ringtone and vibration.',
     importance: Importance.max,
     playSound: true,
-    sound: const UriAndroidNotificationSound(
+    sound: UriAndroidNotificationSound(
       'content://settings/system/ringtone',
     ),
   );
@@ -223,13 +223,13 @@ class LocalNotificationService {
         ),
         timeoutAfter: 45000,
         actions: <AndroidNotificationAction>[
-          AndroidNotificationAction(
+          const AndroidNotificationAction(
             acceptActionId,
             'Accept',
             showsUserInterface: true,
             cancelNotification: true,
           ),
-          AndroidNotificationAction(
+          const AndroidNotificationAction(
             declineActionId,
             'Decline',
             showsUserInterface: true,

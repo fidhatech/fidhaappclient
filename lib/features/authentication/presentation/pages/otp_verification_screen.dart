@@ -1,3 +1,5 @@
+import 'package:auto_route/auto_route.dart';
+
 import '../../../../core/di/di.dart';
 import '../../../../core/utils/app_start_decider.dart';
 import '../../../../core/widgets/app_confirmation%20dialog.dart/app_confirmation.dart';
@@ -7,7 +9,7 @@ import '../../../../core/widgets/loading_dialog/otp_loading_dialog.dart';
 
 import '../../../employee/main/employee_scope.dart';
 import '../../../onboarding/bloc/onboarding_bloc.dart';
-import '../../../onboarding/screens/name_entry_screen.dart';
+import '../../../onboarding/presentation/pages/name_entry_screen.dart';
 import '../../../splash/user_auth/presentation/cubit/otp_cubit.dart';
 import '../../../splash/user_auth/presentation/cubit/otp_state.dart';
 import 'mobile_number_screen.dart';
@@ -18,6 +20,7 @@ import '../../../user/features/navigation/user_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+@RoutePage()
 class OtpVerificationScreen extends StatelessWidget {
   final String phone;
   const OtpVerificationScreen({super.key, required this.phone});

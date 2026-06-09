@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
-import 'package:dating_app/config/theme/app_color.dart';
-import 'package:dating_app/core/models/app_update_config_model.dart';
+import '../../../config/theme/app_color.dart';
+import '../../models/app_update_config_model.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -53,7 +53,7 @@ Future<void> showAppUpdateDialog({
                         color: AppColor.primary.withValues(alpha: 0.2),
                         shape: BoxShape.circle,
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.system_update,
                         color: AppColor.primary,
                         size: 32,

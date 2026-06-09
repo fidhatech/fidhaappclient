@@ -1,4 +1,4 @@
-import 'package:dating_app/features/employee/profile/earning/models/withdrawal_model.dart';
+import '../models/withdrawal_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -31,7 +31,7 @@ class WithdrawalHistoryList extends StatelessWidget {
           padding: const EdgeInsets.all(20.0),
           child: Text(
             error!,
-            style: TextStyle(color: Colors.white.withOpacity(0.7)),
+            style: TextStyle(color: Colors.white.withValues(alpha: 0.7)),
             textAlign: TextAlign.center,
           ),
         ),
@@ -47,12 +47,12 @@ class WithdrawalHistoryList extends StatelessWidget {
               Icon(
                 Icons.history,
                 size: 48,
-                color: Colors.white.withOpacity(0.3),
+                color: Colors.white.withValues(alpha: 0.3),
               ),
               const SizedBox(height: 12),
               Text(
-                "No withdrawal history yet",
-                style: TextStyle(color: Colors.white.withOpacity(0.5)),
+                'No withdrawal history yet',
+                style: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
               ),
             ],
           ),
@@ -66,7 +66,7 @@ class WithdrawalHistoryList extends StatelessWidget {
           const NeverScrollableScrollPhysics(), // Assuming inside a larger ScrollView
       itemCount: history.length,
       separatorBuilder: (context, index) =>
-          Divider(color: Colors.white.withOpacity(0.1), height: 1),
+          Divider(color: Colors.white.withValues(alpha: 0.1), height: 1),
       itemBuilder: (context, index) {
         final item = history[index];
         return ListTile(
@@ -75,7 +75,7 @@ class WithdrawalHistoryList extends StatelessWidget {
             horizontal: 0,
           ),
           title: Text(
-            "₹${item.amount.toStringAsFixed(0)}",
+            '₹${item.amount.toStringAsFixed(0)}',
             style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
@@ -89,13 +89,13 @@ class WithdrawalHistoryList extends StatelessWidget {
               Text(
                 DateFormat('MMM d, yyyy • h:mm a').format(item.requestedAt),
                 style: TextStyle(
-                  color: Colors.white.withOpacity(0.6),
+                  color: Colors.white.withValues(alpha: 0.6),
                   fontSize: 12,
                 ),
               ),
               if (item.failureReason != null)
                 Text(
-                  "Reason: ${item.failureReason}",
+                  'Reason: ${item.failureReason}',
                   style: const TextStyle(color: Colors.redAccent, fontSize: 11),
                 ),
             ],
@@ -133,9 +133,9 @@ class WithdrawalHistoryList extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.2),
+        color: color.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color.withOpacity(0.5)),
+        border: Border.all(color: color.withValues(alpha: 0.5)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

@@ -1,18 +1,18 @@
-import 'package:dating_app/core/widgets/app_snackBar/show_snackbar.dart';
-import 'package:dating_app/core/widgets/gradient_scaffold/gradient_scaffold.dart';
-import 'package:dating_app/features/employee/profile/cubit/employee_edit_profile_cubit.dart';
-import 'package:dating_app/features/employee/profile/cubit/employee_edit_profile_state.dart';
-import 'package:dating_app/features/employee/profile/screen/widgets/edit_about_field.dart';
-import 'package:dating_app/features/employee/profile/screen/widgets/edit_avatar_picker.dart';
-import 'package:dating_app/features/employee/profile/screen/widgets/edit_dob_picker.dart';
-import 'package:dating_app/features/employee/profile/screen/widgets/edit_interest_selector.dart';
-import 'package:dating_app/features/employee/profile/screen/widgets/edit_language_selector.dart';
-import 'package:dating_app/features/employee/profile/screen/widgets/edit_name_field.dart';
-import 'package:dating_app/features/employee/profile/screen/widgets/edit_save_button.dart';
+import '../../../../core/widgets/app_snackBar/show_snackbar.dart';
+import '../../../../core/widgets/gradient_scaffold/gradient_scaffold.dart';
+import '../cubit/employee_edit_profile_cubit.dart';
+import '../cubit/employee_edit_profile_state.dart';
+import 'widgets/edit_about_field.dart';
+import 'widgets/edit_avatar_picker.dart';
+import 'widgets/edit_dob_picker.dart';
+import 'widgets/edit_interest_selector.dart';
+import 'widgets/edit_language_selector.dart';
+import 'widgets/edit_name_field.dart';
+import 'widgets/edit_save_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:dating_app/features/employee/service/employee_service.dart';
-import 'package:dating_app/di/injection.dart';
+import '../../service/employee_service.dart';
+import '../../../../di/injection.dart';
 
 class EmployeeEditProfileScreen extends StatelessWidget {
   const EmployeeEditProfileScreen({super.key});
@@ -51,7 +51,7 @@ class EmployeeEditProfileScreen extends StatelessWidget {
             elevation: 0,
             leading: const BackButton(color: Colors.white),
             title: const Text(
-              "Edit Profile",
+              'Edit Profile',
               style: TextStyle(color: Colors.white),
             ),
           ),

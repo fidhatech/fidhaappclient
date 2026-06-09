@@ -13,29 +13,29 @@ class OnboardingService {
   }) async {
     try {
       final response = await _dio.post(
-        "user/auth/abroad-login",
+        'user/auth/abroad-login',
         data: {
-          "email": email,
-          "name": name,
-          "phone": phone,
+          'email': email,
+          'name': name,
+          'phone': phone,
         },
       );
       log(response.data.toString());
     } on DioException catch (e) {
-      log(e.response?.data.toString() ?? "Failed to submit user details");
-      throw Exception(e.response?.data["message"] ?? "Failed to submit user details");
+      log(e.response?.data.toString() ?? 'Failed to submit user details');
+      throw Exception(e.response?.data['message'] ?? 'Failed to submit user details');
     } catch (e) {
       log(e.toString());
-      throw Exception("Something went wrong");
+      throw Exception('Something went wrong');
     }
   }
 
   Future<Map<String, dynamic>> roleCheck() async {
     try {
-      final data = await _dio.get("user/check-role");
+      final data = await _dio.get('user/check-role');
       return data.data;
     } on DioException catch (e) {
-      log("dio ${e.toString()}");
+      log('dio ${e.toString()}');
       rethrow;
     } catch (e) {
       log(e.toString());
@@ -45,9 +45,9 @@ class OnboardingService {
 
   Future sendOnboardData(Map<String, dynamic> payload) async {
     try {
-      await _dio.patch("user/home/onboard", data: payload);
+      await _dio.patch('user/home/onboard', data: payload);
     } on DioException catch (e) {
-      log("dio ${e.toString()}");
+      log('dio ${e.toString()}');
       rethrow;
     } catch (e) {
       log(e.toString());
@@ -57,11 +57,11 @@ class OnboardingService {
 
   Future<Map<String, dynamic>> getLanguages() async {
     try {
-      var response = await _dio.get("user/languages");
+      var response = await _dio.get('user/languages');
       log(response.data.toString());
       return response.data;
     } on DioException catch (e) {
-      log("dio ${e.toString()}");
+      log('dio ${e.toString()}');
       rethrow;
     } catch (e) {
       log(e.toString());
@@ -74,14 +74,14 @@ class OnboardingService {
   }) async {
     try {
       final response = await _dio.post(
-        "user/audio-verification/text",
-        data: {"language": language},
+        'user/audio-verification/text',
+        data: {'language': language},
       );
 
-      log("Audio Verification Response: ${response.data}");
+      log('Audio Verification Response: ${response.data}');
       return response.data;
     } on DioException catch (e) {
-      log("Audio Verification Error: ${e.response?.data}");
+      log('Audio Verification Error: ${e.response?.data}');
       rethrow;
     }
   }
@@ -94,20 +94,20 @@ class OnboardingService {
       log(formData.toString());
 
       final response = await _dio.patch(
-        "employee/profile/onboard",
+        'employee/profile/onboard',
         data: formData,
       );
       log(response.data.toString());
 
-      log("Onboarding Success: ${response.data}");
+      log('Onboarding Success: ${response.data}');
       return (response.data['tokens']).cast<String, String>();
     } on DioException catch (e) {
-      log("Dio Error Data: ${e.response?.data}");
-      log("Dio Error Msg: ${e.message}");
-      log("Dio Error: ${e.response?.data ?? e.message}");
+      log('Dio Error Data: ${e.response?.data}');
+      log('Dio Error Msg: ${e.message}');
+      log('Dio Error: ${e.response?.data ?? e.message}');
       rethrow;
     } catch (e) {
-      log("Unexpected Error: ${e.toString()}");
+      log('Unexpected Error: ${e.toString()}');
       rethrow;
     }
   }
@@ -117,13 +117,13 @@ class OnboardingService {
   ) async {
     try {
       final response = await _dio.get(
-        "employee/profile/verification-status",
+        'employee/profile/verification-status',
         data: userInfo,
       );
-      log("resposen data ${response.data}");
+      log('resposen data ${response.data}');
       return response.data['data'];
     } on DioException catch (e) {
-      log("Verification Check Error: ${e.toString()}");
+      log('Verification Check Error: ${e.toString()}');
       rethrow;
     }
   }
@@ -146,20 +146,20 @@ class OnboardingService {
       }
 
       final response = await _dio.patch(
-        "employee/profile/prime/activate",
+        'employee/profile/prime/activate',
         data: payload,
       );
       log(response.toString());
       if (response.statusCode == 200) {
-        log("${response.data} ${response.statusCode}");
+        log('${response.data} ${response.statusCode}');
 
         return true;
       } else {
-        log("${response.data} ${response.statusCode}");
+        log('${response.data} ${response.statusCode}');
         throw Exception({response.statusMessage});
       }
     } catch (e) {
-      log("Upload failed: $e");
+      log('Upload failed: $e');
       return false;
     }
   }

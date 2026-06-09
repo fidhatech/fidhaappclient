@@ -1,4 +1,4 @@
-import 'package:dating_app/features/splash/user_auth/presentation/cubit/mobile_number_state.dart';
+import 'mobile_number_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MobileNumberCubit extends Cubit<MobileNumberState> {

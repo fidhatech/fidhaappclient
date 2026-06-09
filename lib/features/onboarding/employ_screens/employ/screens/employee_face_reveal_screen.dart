@@ -1,14 +1,14 @@
-import 'package:dating_app/core/constants/app_urls.dart';
+import '../../../../../core/constants/app_urls.dart';
 
-import 'package:dating_app/core/utils/url_helper.dart';
-import 'package:dating_app/core/widgets/confirm_button_with_text/confirm_button_with_text.dart';
-import 'package:dating_app/core/widgets/gradient_scaffold/gradient_scaffold.dart';
-import 'package:dating_app/core/widgets/loading_dialog/otp_loading_dialog.dart';
-import 'package:dating_app/features/employee/main/employee_scope.dart';
-import 'package:dating_app/features/onboarding/bloc/onboarding_bloc.dart';
-import 'package:dating_app/features/onboarding/employ_screens/employ/cubit/employee_face_reveal_cubit/employee_face_reveal_cubit.dart';
-import 'package:dating_app/features/onboarding/employ_screens/employ/widgets/employee_face_reveal_widgets/employee_face_reveal_grid.dart';
-import 'package:dating_app/features/onboarding/employ_screens/employ/widgets/employee_face_reveal_widgets/employee_face_reveal_header.dart';
+import '../../../../../core/utils/url_helper.dart';
+import '../../../../../core/widgets/confirm_button_with_text/confirm_button_with_text.dart';
+import '../../../../../core/widgets/gradient_scaffold/gradient_scaffold.dart';
+import '../../../../../core/widgets/loading_dialog/otp_loading_dialog.dart';
+import '../../../../employee/main/employee_scope.dart';
+import '../../../bloc/onboarding_bloc.dart';
+import '../cubit/employee_face_reveal_cubit/employee_face_reveal_cubit.dart';
+import '../widgets/employee_face_reveal_widgets/employee_face_reveal_grid.dart';
+import '../widgets/employee_face_reveal_widgets/employee_face_reveal_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -63,12 +63,12 @@ class EmployeeFaceRevealScreen extends StatelessWidget {
                               left: MediaQuery.sizeOf(context).width / 17,
                               right: MediaQuery.sizeOf(context).width / 17,
                             ),
-                            child: Column(
+                            child: const Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const EmployeeFaceRevealHeader(),
-                                const SizedBox(height: 20),
-                                const EmployeeFaceRevealGrid(),
+                                EmployeeFaceRevealHeader(),
+                                SizedBox(height: 20),
+                                EmployeeFaceRevealGrid(),
                               ],
                             ),
                           ),

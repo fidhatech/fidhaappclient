@@ -1,6 +1,6 @@
 import 'package:dating_app/core/utils/mediaquery.dart';
-import 'package:dating_app/features/onboarding/widgets/name_entry_screen_widgets/name_header.dart';
-import 'package:dating_app/features/onboarding/widgets/name_entry_screen_widgets/name_input_field.dart';
+import 'package:dating_app/features/onboarding/presentation/widgets/name_entry_screen_widgets/name_header.dart';
+import 'package:dating_app/features/onboarding/presentation/widgets/name_entry_screen_widgets/name_input_field.dart';
 import 'package:dating_app/features/splash/user_auth/presentation/widgets/otp_verification_widgets/otp_illustration.dart';
 
 import 'package:flutter/material.dart';

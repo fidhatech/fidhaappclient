@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:dating_app/core/network/socket/socket_service.dart';
-import 'package:dating_app/features/call/model/join_call_model.dart';
-import 'package:dating_app/features/employee/call/models/incoming_call_model.dart';
-import 'package:dating_app/features/employee/constants/employee_constants.dart';
+import '../../../../core/network/socket/socket_service.dart';
+import '../../../call/model/join_call_model.dart';
+import '../models/incoming_call_model.dart';
+import '../../constants/employee_constants.dart';
 
 part 'employee_call_state.dart';
 

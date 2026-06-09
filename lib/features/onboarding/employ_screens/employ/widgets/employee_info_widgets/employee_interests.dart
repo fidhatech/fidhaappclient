@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:dating_app/features/onboarding/employ_screens/employ/cubit/employee_info_cubit/employee_info_cubit.dart';
-import 'package:dating_app/features/onboarding/employ_screens/employ/cubit/employee_info_cubit/employee_info_state.dart';
-import 'package:dating_app/config/theme/app_color.dart';
+import '../../cubit/employee_info_cubit/employee_info_cubit.dart';
+import '../../cubit/employee_info_cubit/employee_info_state.dart';
+import '../../../../../../config/theme/app_color.dart';
 
 class EmployeeInterests extends StatelessWidget {
   const EmployeeInterests({super.key});
 
   static final List<String> _interests = [
-    "Love",
-    "Movies and cinema",
-    "Romantic",
-    "Emotional or supportive talk",
-    "Career",
-    "Childhood memories",
+    'Love',
+    'Movies and cinema',
+    'Romantic',
+    'Emotional or supportive talk',
+    'Career',
+    'Childhood memories',
   ];
 
   @override
@@ -22,7 +22,7 @@ class EmployeeInterests extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          "Select your interests",
+          'Select your interests',
           style: TextStyle(
             color: AppColor.primaryText,
             fontSize: 14,

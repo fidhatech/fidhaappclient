@@ -1,9 +1,9 @@
-import 'package:dating_app/core/validators/app_validator.dart';
-import 'package:dating_app/config/theme/app_color.dart';
-import 'package:dating_app/core/widgets/app_snackBar/show_snackbar.dart';
-import 'package:dating_app/features/onboarding/widgets/onboarding_content/onboarding_action_button.dart';
+import '../../../../../core/validators/app_validator.dart';
+import '../../../../../config/theme/app_color.dart';
+import '../../../../../core/widgets/app_snackBar/show_snackbar.dart';
+import '../../../../onboarding/presentation/widgets/onboarding_content/onboarding_action_button.dart';
 import 'package:flutter/material.dart';
-import 'package:dating_app/features/employee/profile/cubit/employee_edit_profile_state.dart';
+import '../../cubit/employee_edit_profile_state.dart';
 
 class EditSaveButton extends StatelessWidget {
   final EmployeeEditProfileEditing state;
@@ -18,7 +18,7 @@ class EditSaveButton extends StatelessWidget {
     final bool isFormValid = isNameValid && state.languages.isNotEmpty;
 
     return OnboardingActionButton(
-      text: "Save Changes",
+      text: 'Save Changes',
       onPressed: isFormValid
           ? onSave
           : () {
@@ -27,9 +27,9 @@ class EditSaveButton extends StatelessWidget {
               if (!isNameValid) {
                 errorMessage = nameError;
               } else if (state.languages.isEmpty) {
-                errorMessage = "Please select at least one language";
+                errorMessage = 'Please select at least one language';
               } else {
-                errorMessage = "Please fix all errors before saving";
+                errorMessage = 'Please fix all errors before saving';
               }
 
               showAppSnackbar(

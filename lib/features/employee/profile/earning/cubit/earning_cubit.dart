@@ -1,12 +1,12 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:dating_app/features/employee/profile/earning/models/bank_account_model.dart';
-import 'package:dating_app/features/employee/profile/earning/models/kyc_status_model.dart';
-import 'package:dating_app/features/employee/profile/earning/models/withdrawal_model.dart';
-import 'package:dating_app/features/employee/profile/earning/service/bank_service.dart';
-import 'package:dating_app/features/employee/profile/earning/service/kyc_service.dart';
-import 'package:dating_app/features/employee/profile/earning/service/withdrawal_service.dart';
+import '../models/bank_account_model.dart';
+import '../models/kyc_status_model.dart';
+import '../models/withdrawal_model.dart';
+import '../service/bank_service.dart';
+import '../service/kyc_service.dart';
+import '../service/withdrawal_service.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 
@@ -19,13 +19,10 @@ class EarningCubit extends Cubit<EarningState> {
   static const String _tag = '[EMPLOYEE_EARNING] EarningCubit';
 
   EarningCubit({
-    required KycService kycService,
-    required BankService bankService,
-    required WithdrawalService withdrawalService,
-  }) : _kycService = kycService,
-       _bankService = bankService,
-       _withdrawalService = withdrawalService,
-       super(EarningInitial());
+    required this._kycService,
+    required this._bankService,
+    required this._withdrawalService,
+  }) : super(EarningInitial());
 
   /// Load earning data + KYC status + Bank Details
   Future<void> loadEarningData() async {

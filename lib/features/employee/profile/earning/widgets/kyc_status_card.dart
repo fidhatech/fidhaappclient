@@ -1,5 +1,5 @@
-import 'package:dating_app/config/theme/app_color.dart';
-import 'package:dating_app/features/employee/profile/earning/models/kyc_status_model.dart';
+import '../../../../../config/theme/app_color.dart';
+import '../models/kyc_status_model.dart';
 import 'package:flutter/material.dart';
 
 class KycStatusCard extends StatelessWidget {
@@ -18,7 +18,7 @@ class KycStatusCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.05),
+        color: Colors.white.withValues(alpha: 0.05),
         border: Border.all(color: Colors.white.withOpacity(0.2), width: 1),
         borderRadius: BorderRadius.circular(12),
       ),
@@ -75,9 +75,9 @@ class KycStatusCard extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildInfoRow("PAN Holder", kycStatus.panHolderName ?? 'N/A'),
+          _buildInfoRow('PAN Holder', kycStatus.panHolderName ?? 'N/A'),
           const SizedBox(height: 8),
-          _buildInfoRow("UPI ID", kycStatus.upiId ?? 'N/A'),
+          _buildInfoRow('UPI ID', kycStatus.upiId ?? 'N/A'),
         ],
       );
     } else if (kycStatus.panVerified) {
@@ -89,7 +89,7 @@ class KycStatusCard extends StatelessWidget {
               const Icon(Icons.check_circle, color: Colors.green, size: 16),
               const SizedBox(width: 6),
               Text(
-                "PAN Verified",
+                'PAN Verified',
                 style: TextStyle(
                   color: Colors.white.withOpacity(0.9),
                   fontSize: 13,
@@ -99,9 +99,9 @@ class KycStatusCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            "Add UPI ID to complete KYC",
+            'Add UPI ID to complete KYC',
             style: TextStyle(
-              color: Colors.white.withOpacity(0.6),
+              color: Colors.white.withValues(alpha: 0.6),
               fontSize: 13,
             ),
           ),
@@ -109,9 +109,9 @@ class KycStatusCard extends StatelessWidget {
       );
     } else {
       return Text(
-        "Complete KYC verification to verify your account and withdraw earnings.",
+        'Complete KYC verification to verify your account and withdraw earnings.',
         style: TextStyle(
-          color: Colors.white.withOpacity(0.7),
+          color: Colors.white.withValues(alpha: 0.7),
           fontSize: 14,
           height: 1.4,
         ),
@@ -125,7 +125,7 @@ class KycStatusCard extends StatelessWidget {
       children: [
         Text(
           label,
-          style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 13),
+          style: TextStyle(color: Colors.white.withValues(alpha: 0.6), fontSize: 13),
         ),
         Text(
           value,
@@ -161,9 +161,9 @@ class KycStatusCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: badgeColor.withOpacity(0.15),
+        color: badgeColor.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: badgeColor.withOpacity(0.5), width: 1),
+        border: Border.all(color: badgeColor.withValues(alpha: 0.5), width: 1),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

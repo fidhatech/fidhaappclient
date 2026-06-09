@@ -68,13 +68,13 @@ class DioClient {
               error.type == DioExceptionType.connectionError ||
               error.error.toString().contains('SocketException')) {
             String message =
-                "No Internet Connection. Please turn on mobile data or Wi-Fi.";
+                'No Internet Connection. Please turn on mobile data or Wi-Fi.';
             IconData icon = Icons.wifi_off;
 
             if (error.type == DioExceptionType.receiveTimeout ||
                 error.type == DioExceptionType.sendTimeout ||
                 error.type == DioExceptionType.connectionTimeout) {
-              message = "Server took too long to respond. Please try again.";
+              message = 'Server took too long to respond. Please try again.';
               icon = Icons.timer_outlined;
             }
 

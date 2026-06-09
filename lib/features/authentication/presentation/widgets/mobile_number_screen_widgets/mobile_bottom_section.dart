@@ -1,21 +1,23 @@
 
 import 'dart:developer';
 
-import 'package:dating_app/core/constants/app_urls.dart';
-import 'package:dating_app/core/utils/mediaquery.dart';
-import 'package:dating_app/core/utils/url_helper.dart';
-import 'package:dating_app/core/widgets/app_snackBar/show_snackbar.dart';
-import 'package:dating_app/core/widgets/confirm_button_with_text/confirm_button_with_text.dart';
-import 'package:dating_app/features/splash/user_auth/presentation/cubit/mobile_number_cubit.dart';
-import 'package:dating_app/features/splash/user_auth/presentation/cubit/mobile_number_state.dart';
-import 'package:dating_app/features/splash/user_auth/presentation/cubit/otp_cubit.dart';
+import 'package:auto_route/auto_route.dart';
+
+import '../../../../../core/constants/app_urls.dart';
+import '../../../../../core/routes/app_router.dart';
+import '../../../../../core/utils/mediaquery.dart';
+import '../../../../../core/utils/url_helper.dart';
+import '../../../../../core/widgets/app_snackBar/show_snackbar.dart';
+import '../../../../../core/widgets/confirm_button_with_text/confirm_button_with_text.dart';
+import '../../cubit/mobile_number_cubit/mobile_number_cubit.dart';
+import '../../cubit/mobile_number_cubit/mobile_number_state.dart';
+import '../../../../splash/user_auth/presentation/cubit/otp_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../../core/utils/network_checker.dart';
-import '../../../../../../core/widgets/custom_elevated_button/custom_elevated_button.dart';
-import '../../../../../../di/injection.dart';
-import '../../../../../authentication/presentation/pages/google_sign_in_screen.dart';
+import '../../../../../core/utils/network_checker.dart';
+import '../../../../../core/widgets/custom_elevated_button/custom_elevated_button.dart';
+import '../../../../../di/injection.dart';
 
 /// Fixed bottom section with gradient overlay and OTP button
 /// Positioned at the bottom of the screen with a fade-in gradient effect
@@ -24,7 +26,7 @@ class MobileBottomSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log("📌 BottomSection built");
+    log('📌 BottomSection built');
 
     return SizedBox(
       width: double.infinity,
@@ -33,7 +35,7 @@ class MobileBottomSection extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
+          const Text(
             'Login for outside of India',
             style: TextStyle(
               fontSize: 20,
@@ -66,18 +68,13 @@ class MobileBottomSection extends StatelessWidget {
                 if (!hasNetwork) {
                   showAppSnackbar(
                     context,
-                    message: "Check your internet connection",
+                    message: 'Check your internet connection',
                     icon: Icons.signal_wifi_connected_no_internet_4_outlined,
                   );
                   return;
                 }
 
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const GoogleSignInScreen(),
-                  ),
-                );
+                context.router.replace(const GoogleSignInRoute());
               },
               text: 'Sign in with Google',
               svgIcon: 'assets/icons/google.svg',
@@ -117,7 +114,7 @@ class MobileBottomSection extends StatelessWidget {
                               as MobileNumberInitial)
                           .mobileNumber;
           
-                  log("📨 Calling sendOtp for number: $phone");
+                  log('📨 Calling sendOtp for number: $phone');
           
                   context.read<OtpCubit>().sendOtp(phone);
                 },

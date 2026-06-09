@@ -2,9 +2,9 @@ import 'package:dating_app/core/utils/mediaquery.dart';
 import 'package:dating_app/core/validators/app_validator.dart';
 import 'package:dating_app/core/widgets/app_snackBar/show_snackbar.dart';
 import 'package:dating_app/features/onboarding/bloc/onboarding_bloc.dart';
-import 'package:dating_app/features/onboarding/screens/dob_screen.dart';
-import 'package:dating_app/features/onboarding/widgets/name_entry_screen_widgets/name_bottom_section.dart';
-import 'package:dating_app/features/onboarding/widgets/name_entry_screen_widgets/name_scrollable_content.dart';
+import 'package:dating_app/features/onboarding/presentation/pages/dob_screen.dart';
+import 'package:dating_app/features/onboarding/presentation/widgets/name_entry_screen_widgets/name_bottom_section.dart';
+import 'package:dating_app/features/onboarding/presentation/widgets/name_entry_screen_widgets/name_scrollable_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

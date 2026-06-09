@@ -1,4 +1,4 @@
-import 'package:dating_app/config/theme/app_color.dart';
+import 'app_color.dart';
 import 'package:flutter/material.dart';
 
 class AppTextTheme {

@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dating_app/features/employee/profile/cubit/employee_edit_profile_state.dart';
-import 'package:dating_app/features/onboarding/widgets/gender_selection_screen_widgets/gender_avatar_selector.dart';
+import 'package:dating_app/features/onboarding/presentation/widgets/gender_selection_screen_widgets/gender_avatar_selector.dart';
 
 class EditAvatarPicker extends StatelessWidget {
   final EmployeeEditProfileEditing state;

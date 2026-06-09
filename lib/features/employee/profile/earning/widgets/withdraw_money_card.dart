@@ -1,4 +1,4 @@
-import 'package:dating_app/features/employee/profile/earning/widgets/withdraw_amount_view.dart';
+import 'withdraw_amount_view.dart';
 import 'package:flutter/material.dart';
 
 class WithdrawMoneyCard extends StatelessWidget {
@@ -19,8 +19,8 @@ class WithdrawMoneyCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.1), // Glassmorphism-ish base
-        border: Border.all(color: Colors.white.withOpacity(0.2), width: 1),
+        color: Colors.white.withValues(alpha: 0.1), // Glassmorphism-ish base
+        border: Border.all(color: Colors.white.withValues(alpha: 0.2), width: 1),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -30,16 +30,16 @@ class WithdrawMoneyCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Withdraw Money",
+                'Withdraw Money',
                 style: TextStyle(
-                  color: Colors.white.withOpacity(0.9),
+                  color: Colors.white.withValues(alpha: 0.9),
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
               ),
               Icon(
                 Icons.account_balance_wallet_outlined,
-                color: Colors.white.withOpacity(0.8),
+                color: Colors.white.withValues(alpha: 0.8),
                 size: 20,
               ),
             ],
@@ -48,7 +48,7 @@ class WithdrawMoneyCard extends StatelessWidget {
           Text(
             'Available: ₹${availableBalance.toStringAsFixed(2)}',
             style: TextStyle(
-              color: Colors.white.withOpacity(0.7),
+              color: Colors.white.withValues(alpha: 0.7),
               fontSize: 14,
             ),
           ),
@@ -83,7 +83,7 @@ class WithdrawMoneyCard extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 12),
               ),
               child: const Text(
-                "Request Withdrawal",
+                'Request Withdrawal',
                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
               ),
             ),

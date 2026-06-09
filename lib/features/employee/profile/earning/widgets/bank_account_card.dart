@@ -1,5 +1,5 @@
-import 'package:dating_app/config/theme/app_color.dart';
-import 'package:dating_app/features/employee/profile/earning/models/bank_account_model.dart';
+import '../../../../../config/theme/app_color.dart';
+import '../models/bank_account_model.dart';
 import 'package:flutter/material.dart';
 
 class BankAccountCard extends StatelessWidget {
@@ -18,8 +18,8 @@ class BankAccountCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.05),
-        border: Border.all(color: Colors.white.withOpacity(0.2), width: 1),
+        color: Colors.white.withValues(alpha: 0.05),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.2), width: 1),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -73,25 +73,25 @@ class BankAccountCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildInfoRow(
-            "Account Holder",
+            'Account Holder',
             bankAccount.accountHolderName ?? 'N/A',
           ),
           const SizedBox(height: 8),
-          _buildInfoRow("Bank Name", bankAccount.bankName ?? 'N/A'),
+          _buildInfoRow('Bank Name', bankAccount.bankName ?? 'N/A'),
           const SizedBox(height: 8),
           _buildInfoRow(
-            "Account Number",
+            'Account Number',
             _maskAccountNumber(bankAccount.accountNumber),
           ),
           const SizedBox(height: 8),
-          _buildInfoRow("IFSC Code", bankAccount.ifscCode ?? 'N/A'),
+          _buildInfoRow('IFSC Code', bankAccount.ifscCode ?? 'N/A'),
         ],
       );
     } else {
       return Text(
-        "Add your bank account details to receive earnings directly to your bank.",
+        'Add your bank account details to receive earnings directly to your bank.',
         style: TextStyle(
-          color: Colors.white.withOpacity(0.7),
+          color: Colors.white.withValues(alpha: 0.7),
           fontSize: 14,
           height: 1.4,
         ),
@@ -105,7 +105,7 @@ class BankAccountCard extends StatelessWidget {
       children: [
         Text(
           label,
-          style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 13),
+          style: TextStyle(color: Colors.white.withValues(alpha: 0.6), fontSize: 13),
         ),
         Text(
           value,
@@ -142,9 +142,9 @@ class BankAccountCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: badgeColor.withOpacity(0.15),
+        color: badgeColor.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: badgeColor.withOpacity(0.5), width: 1),
+        border: Border.all(color: badgeColor.withValues(alpha: 0.5), width: 1),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -168,6 +168,6 @@ class BankAccountCard extends StatelessWidget {
     if (accountNumber == null || accountNumber.length < 4) {
       return accountNumber ?? 'N/A';
     }
-    return "XXXX${accountNumber.substring(accountNumber.length - 4)}";
+    return 'XXXX${accountNumber.substring(accountNumber.length - 4)}';
   }
 }

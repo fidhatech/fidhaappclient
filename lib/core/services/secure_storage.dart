@@ -5,6 +5,7 @@ import '../utils/logger.dart';
 
 @lazySingleton
 class SecureStorage {
+  
   final _storage = const FlutterSecureStorage(
     aOptions: AndroidOptions(),
     iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock),

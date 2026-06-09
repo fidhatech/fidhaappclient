@@ -1,10 +1,10 @@
-import 'package:dating_app/core/constants/app_urls.dart';
-import 'package:dating_app/core/utils/url_helper.dart';
-import 'package:dating_app/core/widgets/confirm_button_with_text/confirm_button_with_text.dart';
-import 'package:dating_app/core/widgets/loading_dialog/otp_loading_dialog.dart';
-import 'package:dating_app/features/onboarding/employ_screens/employ/cubit/employee_language_cubit/employee_language_cubit.dart';
-import 'package:dating_app/features/onboarding/employ_screens/employ/cubit/employee_language_cubit/employee_language_state.dart';
-import 'package:dating_app/features/onboarding/employ_screens/employ/screens/employee_voice_screen.dart';
+import '../../../../../../core/constants/app_urls.dart';
+import '../../../../../../core/utils/url_helper.dart';
+import '../../../../../../core/widgets/confirm_button_with_text/confirm_button_with_text.dart';
+import '../../../../../../core/widgets/loading_dialog/otp_loading_dialog.dart';
+import '../../cubit/employee_language_cubit/employee_language_cubit.dart';
+import '../../cubit/employee_language_cubit/employee_language_state.dart';
+import '../../screens/employee_voice_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

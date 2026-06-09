@@ -1,7 +1,7 @@
-import 'package:dating_app/core/widgets/app_confirmation%20dialog.dart/app_confirmation.dart';
-import 'package:dating_app/core/widgets/gradient_scaffold/gradient_scaffold.dart';
-import 'package:dating_app/features/onboarding/widgets/name_entry_screen_widgets/name_body.dart';
-import 'package:dating_app/features/authentication/presentation/pages/mobile_number_screen.dart';
+import '../../../../core/widgets/app_confirmation%20dialog.dart/app_confirmation.dart';
+import '../../../../core/widgets/gradient_scaffold/gradient_scaffold.dart';
+import '../widgets/name_entry_screen_widgets/name_body.dart';
+import '../../../authentication/presentation/pages/mobile_number_screen.dart';
 
 import 'package:flutter/material.dart';
 
@@ -16,10 +16,10 @@ class NameEntryScreen extends StatelessWidget {
         if (didPop) return;
         final shouldLeave = await showAppConfirmationDialog(
           context: context,
-          title: "Are you sure?",
-          message: "You want to go back to mobile number screen?",
-          confirmText: "Yes",
-          cancelText: "No",
+          title: 'Are you sure?',
+          message: 'You want to go back to mobile number screen?',
+          confirmText: 'Yes',
+          cancelText: 'No',
         );
         if (shouldLeave == true) {
           if (!context.mounted) return;
@@ -32,7 +32,7 @@ class NameEntryScreen extends StatelessWidget {
           );
         }
       },
-      child: GradientScaffold(
+      child: const GradientScaffold(
         resizeToAvoidBottomInset: false,
 
         body: NameBody(),

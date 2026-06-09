@@ -1,9 +1,9 @@
-import 'package:dating_app/core/constants/app_urls.dart';
-import 'package:dating_app/core/utils/url_helper.dart';
-import 'package:dating_app/core/widgets/confirm_button_with_text/confirm_button_with_text.dart';
-import 'package:dating_app/features/onboarding/bloc/onboarding_bloc.dart';
-import 'package:dating_app/features/onboarding/employ_screens/employ/cubit/employee_voice_cubit/employee_voice_cubit.dart';
-import 'package:dating_app/features/onboarding/employ_screens/employ/cubit/employee_voice_cubit/employee_voice_state.dart';
+import '../../../../../../core/constants/app_urls.dart';
+import '../../../../../../core/utils/url_helper.dart';
+import '../../../../../../core/widgets/confirm_button_with_text/confirm_button_with_text.dart';
+import '../../../../bloc/onboarding_bloc.dart';
+import '../../cubit/employee_voice_cubit/employee_voice_cubit.dart';
+import '../../cubit/employee_voice_cubit/employee_voice_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

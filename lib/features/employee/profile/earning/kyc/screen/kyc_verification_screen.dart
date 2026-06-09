@@ -1,14 +1,14 @@
-import 'package:dating_app/core/validators/app_validator.dart';
-import 'package:dating_app/core/widgets/app_snackBar/show_snackbar.dart';
-import 'package:dating_app/core/widgets/gradient_scaffold/gradient_scaffold.dart';
-import 'package:dating_app/core/widgets/loading_dialog/otp_loading_dialog.dart';
-import 'package:dating_app/di/injection.dart';
-import 'package:dating_app/features/employee/profile/earning/kyc/cubit/kyc_verification_cubit.dart';
-import 'package:dating_app/features/employee/profile/earning/kyc/widgets/kyc_header.dart';
-import 'package:dating_app/features/employee/profile/earning/kyc/widgets/kyc_submit_button.dart';
-import 'package:dating_app/features/employee/profile/earning/kyc/widgets/pan_input_field.dart';
-import 'package:dating_app/features/employee/profile/earning/kyc/widgets/upi_input_field.dart';
-import 'package:dating_app/features/employee/profile/earning/service/kyc_service.dart';
+import '../../../../../../core/validators/app_validator.dart';
+import '../../../../../../core/widgets/app_snackBar/show_snackbar.dart';
+import '../../../../../../core/widgets/gradient_scaffold/gradient_scaffold.dart';
+import '../../../../../../core/widgets/loading_dialog/otp_loading_dialog.dart';
+import '../../../../../../di/injection.dart';
+import '../cubit/kyc_verification_cubit.dart';
+import '../widgets/kyc_header.dart';
+import '../widgets/kyc_submit_button.dart';
+import '../widgets/pan_input_field.dart';
+import '../widgets/upi_input_field.dart';
+import '../../service/kyc_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

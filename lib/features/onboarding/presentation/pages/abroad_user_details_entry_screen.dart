@@ -1,14 +1,14 @@
-import 'package:dating_app/features/onboarding/screens/dob_screen.dart';
+import 'package:dating_app/features/onboarding/presentation/pages/dob_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 
-import '../../../core/utils/mediaquery.dart';
-import '../../../core/widgets/custom_elevated_button/custom_elevated_button.dart';
-import '../../../core/widgets/custom_textfield/custom_textfield.dart';
-import '../../../core/widgets/custom_textfield/custom_textfield_styles.dart';
-import '../../../core/widgets/gradient_scaffold/gradient_scaffold.dart';
-import '../cubit/onboard_abroad_user_cubit/onboard_abroad_user_cubit.dart';
+import '../../../../core/utils/mediaquery.dart';
+import '../../../../core/widgets/custom_elevated_button/custom_elevated_button.dart';
+import '../../../../core/widgets/custom_textfield/custom_textfield.dart';
+import '../../../../core/widgets/custom_textfield/custom_textfield_styles.dart';
+import '../../../../core/widgets/gradient_scaffold/gradient_scaffold.dart';
+import '../../cubit/onboard_abroad_user_cubit/onboard_abroad_user_cubit.dart';
 
 class AbroadUserDetailsEntryScreen extends StatefulWidget {
 

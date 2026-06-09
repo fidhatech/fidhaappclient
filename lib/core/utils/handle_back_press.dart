@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:dating_app/core/widgets/app_confirmation dialog.dart/app_confirmation.dart';
+import '../widgets/app_confirmation%20dialog.dart/app_confirmation.dart';
 
 /// A reusable back handler that asks a confirmation
 /// and then navigates to ANY screen you pass.
@@ -8,10 +8,10 @@ import 'package:dating_app/core/widgets/app_confirmation dialog.dart/app_confirm
 Future<void> handleBackNavigation(
   BuildContext context, {
   required Widget target,
-  String title = "Are you sure?",
-  String message = "Do you want to go back?",
-  String confirmText = "Yes",
-  String cancelText = "No",
+  String title = 'Are you sure?',
+  String message = 'Do you want to go back?',
+  String confirmText = 'Yes',
+  String cancelText = 'No',
 }) async {
   final shouldLeave = await showAppConfirmationDialog(
     context: context,
@@ -36,10 +36,10 @@ Future<void> handleBackNavigation(
 Future<void> handleBackAction(
   BuildContext context, {
   required VoidCallback onAction,
-  String title = "Are you sure?",
-  String message = "Do you want to proceed?",
-  String confirmText = "Yes",
-  String cancelText = "No",
+  String title = 'Are you sure?',
+  String message = 'Do you want to proceed?',
+  String confirmText = 'Yes',
+  String cancelText = 'No',
   Color? confirmColor,
 }) async {
   final shouldProceed = await showAppConfirmationDialog(

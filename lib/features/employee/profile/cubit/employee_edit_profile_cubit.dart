@@ -56,8 +56,8 @@ class EmployeeEditProfileCubit extends Cubit<EmployeeEditProfileState> {
         ),
       );
     } catch (e) {
-      log("Error loading profile: $e");
-      emit(EmployeeEditProfileUpdateFailure("Failed to load profile: $e"));
+      log('Error loading profile: $e');
+      emit(EmployeeEditProfileUpdateFailure('Failed to load profile: $e'));
     }
   }
 
@@ -154,21 +154,21 @@ class EmployeeEditProfileCubit extends Cubit<EmployeeEditProfileState> {
           final dobDate = DateFormat('dd/MM/yyyy').parse(currentState.dob!);
           age = _calculateAge(dobDate);
         } catch (e) {
-          log("Error parsing DOB: $e");
+          log('Error parsing DOB: $e');
           // Keep existing age or null if parsing fails
         }
       }
 
       // Prepare data
       final Map<String, dynamic> data = {
-        "name": currentState.name,
-        "dob": currentState
+        'name': currentState.name,
+        'dob': currentState
             .dob, // Format might need adjustment? API example shows "1998-03-20".
         // The UI picker returns dd/MM/yyyy. I should convert it to yyyy-MM-dd for API consistency?
         // User request example: "dob": "1998-03-20".
         // Current Code `dobChanged` stores "dd/MM/yyyy".
         // I should convert it here.
-        "avatar": currentState
+        'avatar': currentState
             .avatarPath, // This assumes a URL string. If it's a file path, we need upload logic.
         // User request "Create the UI only (no API calls initially)" -> "After the UI is stable, integrate...".
         // "avatar": "https://example.com/avatar.jpg" implies it expects a URL.
@@ -188,10 +188,10 @@ class EmployeeEditProfileCubit extends Cubit<EmployeeEditProfileState> {
         // Given constraints, I will implement the logic. If avatar is local file, I might need to skip or handle it.
         // For this step, I will map it as is. If it's a local path, the API might reject it or I need to handle it.
         // Let's stick to the requested JSON structure.
-        "language": currentState.languages,
-        "age": age,
-        "about": currentState.about,
-        "interest": currentState.interests,
+        'language': currentState.languages,
+        'age': age,
+        'about': currentState.about,
+        'interest': currentState.interests,
       };
 
       // Convert DOB to yyyy-MM-dd if needed
@@ -205,7 +205,7 @@ class EmployeeEditProfileCubit extends Cubit<EmployeeEditProfileState> {
       await _employeeService.updateProfile(data);
       emit(EmployeeEditProfileUpdateSuccess());
     } catch (e) {
-      log("Error updating profile: $e");
+      log('Error updating profile: $e');
       // Keep user on the form, show error via SnackBar logic in UI
       emit(currentState.copyWith(isLoading: false, errorMessage: e.toString()));
     }

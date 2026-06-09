@@ -1,17 +1,16 @@
-import 'package:dating_app/di/injection.dart';
-import 'package:dating_app/core/widgets/gradient_scaffold/gradient_scaffold.dart';
+import '../../../../../di/injection.dart';
+import '../../../../../core/widgets/gradient_scaffold/gradient_scaffold.dart';
 
-import 'package:dating_app/features/call/call_permission_service.dart';
-import 'package:dating_app/features/call/call_waiting/screens/call_waiting_screen.dart';
-import 'package:dating_app/features/call/screens/call_ui_kit.dart';
-import 'package:dating_app/features/user/cubit/user_cubit.dart';
-import 'package:dating_app/features/user/features/call/cubit/client_call_cubit.dart';
-import 'package:dating_app/features/user/features/call/model/call_type.dart';
-import 'package:dating_app/features/user/features/premium/bloc/premium_bloc.dart';
-import 'package:dating_app/features/user/features/premium/widgets/premium_screen_widgets/premium_cards_grid.dart';
-import 'package:dating_app/core/widgets/profile_dialogs/profile_dialogs.dart';
-import 'package:dating_app/features/wallet/cubit/wallet_cubit.dart';
-import 'package:dating_app/features/wallet/screen/wallet_screen.dart';
+import '../../../../call/call_permission_service.dart';
+import '../../../../call/call_waiting/screens/call_waiting_screen.dart';
+import '../../../../call/screens/call_ui_kit.dart';
+import '../../../cubit/user_cubit.dart';
+import '../../call/cubit/client_call_cubit.dart';
+import '../../call/model/call_type.dart';
+import '../bloc/premium_bloc.dart';
+import '../widgets/premium_screen_widgets/premium_cards_grid.dart';
+import '../../../../wallet/cubit/wallet_cubit.dart';
+import '../../../../wallet/screen/wallet_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

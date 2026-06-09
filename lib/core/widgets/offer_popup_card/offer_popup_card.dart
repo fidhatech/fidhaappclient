@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:dating_app/config/theme/app_color.dart';
-import 'package:dating_app/core/widgets/offer_popup_card/promotion_model.dart';
+import '../../../config/theme/app_color.dart';
+import 'promotion_model.dart';
 
 class OfferPopupCard extends StatelessWidget {
   final Function()? onBuyNow;
@@ -133,7 +133,7 @@ class OfferPopupCard extends StatelessWidget {
                               children: [
                                 Text(
                                   originalPrice,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: AppColor.secondaryText,
                                     fontSize: 14,
                                     decoration: TextDecoration.lineThrough,
@@ -215,7 +215,7 @@ class OfferPopupCard extends StatelessWidget {
                                   // Original price (strikethrough)
                                   Text(
                                     originalPrice,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: AppColor.secondaryText,
                                       fontSize: 16,
                                       decoration: TextDecoration.lineThrough,
@@ -256,7 +256,7 @@ class OfferPopupCard extends StatelessWidget {
                               ),
 
                               // Decorative hearts
-                              Positioned(
+                              const Positioned(
                                 top: 10,
                                 right: 20,
                                 child: Text(
@@ -264,7 +264,7 @@ class OfferPopupCard extends StatelessWidget {
                                   style: TextStyle(fontSize: 24),
                                 ),
                               ),
-                              Positioned(
+                              const Positioned(
                                 top: 30,
                                 right: 10,
                                 child: Text(
