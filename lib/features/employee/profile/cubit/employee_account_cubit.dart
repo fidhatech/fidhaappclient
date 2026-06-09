@@ -1,13 +1,14 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:dating_app/core/network/socket/socket_service.dart';
-import 'package:dating_app/core/services/socket_session_manager.dart';
-import 'package:dating_app/core/storage/secure_storage.dart';
-import 'package:dating_app/features/employee/constants/employee_constants.dart';
-import 'package:dating_app/features/employee/service/employee_service.dart';
-import 'package:dating_app/features/employee/session/cubit/employee_session_cubit.dart';
-import 'package:dating_app/features/user/cubit/user_cubit.dart';
+import '../../../../core/di/di.dart';
+import '../../../../core/network/socket/socket_service.dart';
+import '../../../../core/services/socket_session_manager.dart';
+import '../../../../core/services/secure_storage.dart';
+import '../../constants/employee_constants.dart';
+import '../../service/employee_service.dart';
+import '../../session/cubit/employee_session_cubit.dart';
+import '../../../user/cubit/user_cubit.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
 
@@ -71,7 +72,7 @@ class EmployeeAccountCubit extends Cubit<EmployeeAccountState> {
         await socketService.disconnect(clear: true);
         log('$_tag 🧹 Socket disconnected and tokens cleared (fallback).');
       } else {
-        await SecureStorage.clearTokens();
+        await getIt.get<SecureStorage>().clearTokens();
         log('$_tag 🧹 Tokens cleared manually (fallback).');
       }
 

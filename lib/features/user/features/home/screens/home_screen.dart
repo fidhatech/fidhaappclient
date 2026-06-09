@@ -1,23 +1,23 @@
-import 'package:dating_app/core/services/firebase_notification_service.dart';
-import 'package:dating_app/features/call/call_permission_service.dart';
-import 'package:dating_app/features/call/call_waiting/screens/call_waiting_screen.dart';
-import 'package:dating_app/features/call/screens/call_ui_kit.dart';
-import 'package:dating_app/features/user/cubit/user_cubit.dart';
-import 'package:dating_app/features/user/features/call/cubit/client_call_cubit.dart';
-import 'package:dating_app/features/user/features/call/model/call_type.dart';
-import 'package:dating_app/features/user/features/home/bloc/home_bloc.dart';
-import 'package:dating_app/features/user/features/home/bloc/home_event.dart';
-import 'package:dating_app/features/user/features/home/bloc/home_state.dart';
-import 'package:dating_app/core/widgets/gradient_scaffold/gradient_scaffold.dart';
-import 'package:dating_app/features/user/features/home/screens/filter_screen.dart';
-import 'package:dating_app/features/user/features/home/utils/home_helper.dart';
-import 'package:dating_app/features/user/features/home/widgets/horizontal_friends_list.dart';
-import 'package:dating_app/features/user/features/home/widgets/section_header.dart';
-import 'package:dating_app/features/user/features/home/widgets/vertical_friends_list.dart';
-import 'package:dating_app/core/widgets/profile_dialogs/profile_dialogs.dart';
-import 'package:dating_app/features/wallet/cubit/wallet_cubit.dart';
-import 'package:dating_app/features/wallet/screen/wallet_screen.dart';
-import 'package:dating_app/di/injection.dart';
+import '../../../../../core/di/di.dart';
+import '../../../../../core/services/firebase_notification_service.dart';
+import '../../../../call/call_permission_service.dart';
+import '../../../../call/call_waiting/screens/call_waiting_screen.dart';
+import '../../../../call/screens/call_ui_kit.dart';
+import '../../../cubit/user_cubit.dart';
+import '../../call/cubit/client_call_cubit.dart';
+import '../../call/model/call_type.dart';
+import '../bloc/home_bloc.dart';
+import '../bloc/home_event.dart';
+import '../bloc/home_state.dart';
+import '../../../../../core/widgets/gradient_scaffold/gradient_scaffold.dart';
+import 'filter_screen.dart';
+import '../utils/home_helper.dart';
+import '../widgets/horizontal_friends_list.dart';
+import '../widgets/section_header.dart';
+import '../widgets/vertical_friends_list.dart';
+import '../../../../wallet/cubit/wallet_cubit.dart';
+import '../../../../wallet/screen/wallet_screen.dart';
+import '../../../../../di/injection.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,12 +33,13 @@ class _HomeScreenTabState extends State<HomeScreenTab> {
   @override
   void initState() {
     super.initState();
-    FirebaseNotificationService.registerTokenWithBackend();
+
+    getIt.get<FirebaseNotificationService>().registerTokenWithBackend();
   }
 
   @override
   Widget build(BuildContext context) {
-    return _HomeScreenContent();
+    return const _HomeScreenContent();
   }
 }
 
@@ -216,7 +217,7 @@ class _HomeScreenContent extends StatelessWidget {
                                           ),
                                           const SizedBox(height: 16),
                                           Text(
-                                            "No friends found",
+                                            'No friends found',
                                             style: TextStyle(
                                               color: Colors.white.withValues(
                                                 alpha: 0.8,
@@ -250,7 +251,7 @@ class _HomeScreenContent extends StatelessWidget {
               );
             }
 
-            return SizedBox.shrink();
+            return const SizedBox.shrink();
           },
         ),
       ),

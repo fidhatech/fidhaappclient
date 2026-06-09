@@ -1,9 +1,10 @@
-import 'package:dating_app/di/injection.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../../../../../core/di/di.dart';
 import '../../../../../core/services/firebase_notification_service.dart';
-import '../../../../../core/storage/secure_storage.dart';
+import '../../../../../core/services/secure_storage.dart';
+import '../../../../../di/injection.dart';
 import '../../data/repositories/user_auth_repository.dart';
 
 typedef SigninWithGoogleResult = ({
@@ -37,15 +38,15 @@ class SigninWithGoogleUsecase {
 
     final res = await repo.checkUserExists(googleUser.email);
 
-    await SecureStorage.saveTokens(
+    await getIt.get<SecureStorage>().saveTokens(
       accessToken: res.accessToken,
       refreshToken: res.refreshToken,
     );
-    await FirebaseNotificationService.registerTokenWithBackend();
+    await getIt.get<FirebaseNotificationService>().registerTokenWithBackend();
 
     return (
       email: googleUser.email,
-      userExists: res.isExistingUser && res.userStage != "PROFILE_INCOMPLETE",
+      userExists: res.isExistingUser && res.userStage != 'PROFILE_INCOMPLETE',
     );
   }
 }

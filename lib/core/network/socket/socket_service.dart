@@ -3,14 +3,15 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:dating_app/core/constants/api_constants.dart';
-import 'package:dating_app/core/network/socket/socket_events.dart';
-import 'package:dating_app/core/services/local_notification_service.dart';
-import 'package:dating_app/core/storage/secure_storage.dart';
-import 'package:dating_app/features/call/model/join_call_model.dart';
-import 'package:dating_app/features/employee/call/models/incoming_call_model.dart';
-import 'package:dating_app/features/user/features/home/models/home_response_model.dart';
-import 'package:dating_app/features/user/features/home/models/home_update_response_model.dart';
+import '../../constants/api_constants.dart';
+import '../../di/di.dart';
+import 'socket_events.dart';
+import '../../services/local_notification_service.dart';
+import '../../services/secure_storage.dart';
+import '../../../features/call/model/join_call_model.dart';
+import '../../../features/employee/call/models/incoming_call_model.dart';
+import '../../../features/user/features/home/models/home_response_model.dart';
+import '../../../features/user/features/home/models/home_update_response_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
@@ -125,7 +126,7 @@ class SocketService {
     );
     log('└────────────────────────────────────────────────────────────');
 
-    final token = await SecureStorage.getAccessToken();
+    final token = await getIt.get<SecureStorage>().getAccessToken();
 
     // CRITICAL: If a socket exists but the TOKEN has changed (e.g. logout/login),
     // we MUST dispose it even if the userId is the same.
@@ -255,7 +256,7 @@ class SocketService {
 
   Future<String?> _inferUserIdFromAccessToken() async {
     try {
-      final token = await SecureStorage.getAccessToken();
+      final token = await getIt.get<SecureStorage>().getAccessToken();
       if (token == null || token.isEmpty) return null;
 
       final parts = token.split('.');
@@ -689,7 +690,7 @@ class SocketService {
 
     if (clear) {
       log('🔐 Clearing all secure tokens from storage...');
-      await SecureStorage.clearTokens();
+      await getIt.get<SecureStorage>().clearTokens();
       log('✅ Tokens cleared');
     }
 

@@ -1,4 +1,4 @@
-import 'package:dating_app/features/splash/user_auth/presentation/screens/mobile_number_screen.dart';
+import 'package:dating_app/features/authentication/presentation/pages/mobile_number_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:dating_app/features/user/features/details/presentation/screens/user_details_screen.dart';

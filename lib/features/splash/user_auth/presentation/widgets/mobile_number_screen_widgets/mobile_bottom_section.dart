@@ -15,7 +15,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../../core/utils/network_checker.dart';
 import '../../../../../../core/widgets/custom_elevated_button/custom_elevated_button.dart';
 import '../../../../../../di/injection.dart';
-import '../../screens/google_sign_in_screen.dart';
+import '../../../../../authentication/presentation/pages/google_sign_in_screen.dart';
 
 /// Fixed bottom section with gradient overlay and OTP button
 /// Positioned at the bottom of the screen with a fade-in gradient effect

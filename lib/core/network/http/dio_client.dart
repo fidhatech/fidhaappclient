@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:dating_app/features/employee/constants/employee_constants.dart';
-import 'package:dating_app/core/constants/api_constants.dart';
-import 'package:dating_app/core/globals/keys.dart';
-import 'package:dating_app/core/storage/secure_storage.dart';
+import '../../../features/employee/constants/employee_constants.dart';
+import '../../constants/api_constants.dart';
+import '../../di/di.dart';
+import '../../globals/keys.dart';
+import '../../services/secure_storage.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -45,7 +46,7 @@ class DioClient {
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
-          final accessToken = await SecureStorage.getAccessToken();
+          final accessToken = await getIt.get<SecureStorage>().getAccessToken();
 
           if (accessToken != null) {
             options.headers['Authorization'] = 'Bearer $accessToken';
@@ -109,10 +110,10 @@ class DioClient {
           }
 
           if (error.response?.statusCode == 401) {
-            final refreshToken = await SecureStorage.getRefreshToken();
+            final refreshToken = await getIt.get<SecureStorage>().getRefreshToken();
 
             if (refreshToken == null) {
-              await SecureStorage.clearTokens();
+              await getIt.get<SecureStorage>().clearTokens();
               return handler.reject(error);
             }
 
@@ -134,7 +135,7 @@ class DioClient {
             log('🔄 Session expired (401). Attempting token refresh...');
 
             try {
-              final role = await SecureStorage.getUserRole();
+              final role = await getIt.get<SecureStorage>().getUserRole();
               log('🔄 Detected role: $role');
 
               // Select correct refresh endpoint based on role
@@ -169,7 +170,7 @@ class DioClient {
               final newRefreshToken =
                   refreshResponse.data['tokens']['refreshToken'];
 
-              await SecureStorage.saveTokens(
+              await getIt.get<SecureStorage>().saveTokens(
                 accessToken: newAccessToken,
                 refreshToken: newRefreshToken,
               );
@@ -188,7 +189,7 @@ class DioClient {
               return handler.resolve(await _dio!.fetch(error.requestOptions));
             } catch (e) {
               log('❌ Token refresh failed: $e');
-              await SecureStorage.clearTokens();
+              await getIt.get<SecureStorage>().clearTokens();
               return handler.reject(error);
             } finally {
               _isRefreshing = false;

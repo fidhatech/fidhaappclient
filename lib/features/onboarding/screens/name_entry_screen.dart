@@ -1,7 +1,7 @@
 import 'package:dating_app/core/widgets/app_confirmation%20dialog.dart/app_confirmation.dart';
 import 'package:dating_app/core/widgets/gradient_scaffold/gradient_scaffold.dart';
 import 'package:dating_app/features/onboarding/widgets/name_entry_screen_widgets/name_body.dart';
-import 'package:dating_app/features/splash/user_auth/presentation/screens/mobile_number_screen.dart';
+import 'package:dating_app/features/authentication/presentation/pages/mobile_number_screen.dart';
 
 import 'package:flutter/material.dart';
 

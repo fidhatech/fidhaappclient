@@ -7,7 +7,7 @@ import 'package:dating_app/features/splash/user_auth/presentation/cubit/mobile_n
 import 'package:dating_app/features/splash/user_auth/presentation/cubit/mobile_number_state.dart';
 import 'package:dating_app/features/splash/user_auth/presentation/cubit/otp_cubit.dart';
 import 'package:dating_app/features/splash/user_auth/presentation/cubit/otp_state.dart';
-import 'package:dating_app/features/splash/user_auth/presentation/screens/otp_verification_screen.dart';
+import 'package:dating_app/features/authentication/presentation/pages/otp_verification_screen.dart';
 import 'package:dating_app/features/splash/user_auth/presentation/widgets/mobile_number_screen_widgets/mobile_screen_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

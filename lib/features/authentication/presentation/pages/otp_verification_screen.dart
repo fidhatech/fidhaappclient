@@ -1,18 +1,19 @@
-import 'package:dating_app/core/app/app_start_decider.dart';
-import 'package:dating_app/core/widgets/app_confirmation%20dialog.dart/app_confirmation.dart';
-import 'package:dating_app/core/widgets/app_snackBar/show_snackbar.dart';
-import 'package:dating_app/core/widgets/gradient_scaffold/gradient_scaffold.dart';
-import 'package:dating_app/core/widgets/loading_dialog/otp_loading_dialog.dart';
+import '../../../../core/di/di.dart';
+import '../../../../core/utils/app_start_decider.dart';
+import '../../../../core/widgets/app_confirmation%20dialog.dart/app_confirmation.dart';
+import '../../../../core/widgets/app_snackBar/show_snackbar.dart';
+import '../../../../core/widgets/gradient_scaffold/gradient_scaffold.dart';
+import '../../../../core/widgets/loading_dialog/otp_loading_dialog.dart';
 
-import 'package:dating_app/features/employee/main/employee_scope.dart';
-import 'package:dating_app/features/onboarding/bloc/onboarding_bloc.dart';
-import 'package:dating_app/features/onboarding/screens/name_entry_screen.dart';
-import 'package:dating_app/features/splash/user_auth/presentation/cubit/otp_cubit.dart';
-import 'package:dating_app/features/splash/user_auth/presentation/cubit/otp_state.dart';
-import 'package:dating_app/features/splash/user_auth/presentation/screens/mobile_number_screen.dart';
-import 'package:dating_app/features/splash/user_auth/presentation/widgets/otp_verification_widgets/otp_body_widgets/otp_body.dart';
+import '../../../employee/main/employee_scope.dart';
+import '../../../onboarding/bloc/onboarding_bloc.dart';
+import '../../../onboarding/screens/name_entry_screen.dart';
+import '../../../splash/user_auth/presentation/cubit/otp_cubit.dart';
+import '../../../splash/user_auth/presentation/cubit/otp_state.dart';
+import 'mobile_number_screen.dart';
+import '../../../splash/user_auth/presentation/widgets/otp_verification_widgets/otp_body_widgets/otp_body.dart';
 
-import 'package:dating_app/features/user/features/navigation/user_scope.dart';
+import '../../../user/features/navigation/user_scope.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,10 +31,10 @@ class OtpVerificationScreen extends StatelessWidget {
 
         final shouldLeave = await showAppConfirmationDialog(
           context: context,
-          title: "Leave OTP Verification",
-          message: "Are you sure you want to stop verifying your OTP?",
-          confirmText: "Yes",
-          cancelText: "No",
+          title: 'Leave OTP Verification',
+          message: 'Are you sure you want to stop verifying your OTP?',
+          confirmText: 'Yes',
+          cancelText: 'No',
         );
 
         if (shouldLeave == true) {
@@ -54,7 +55,7 @@ class OtpVerificationScreen extends StatelessWidget {
                 Navigator.pop(context);
                 showAppSnackbar(
                   context,
-                  message: "OTP verified successfully",
+                  message: 'OTP verified successfully',
                   icon: Icons.check_circle_outline,
                   backgroundColor: Colors.green,
                 );
@@ -67,7 +68,7 @@ class OtpVerificationScreen extends StatelessWidget {
                     state.userStage != 'PROFILE_INCOMPLETE') {
                   ScaffoldMessenger.of(context).clearSnackBars();
 
-                  final status = await AppStartDecider.determineStartStatus();
+                  final status = await getIt.get<AppStartDecider>().determineStartStatus();
 
                   if (!context.mounted) return;
 
@@ -80,13 +81,13 @@ class OtpVerificationScreen extends StatelessWidget {
                   } else if (status == AppStartStatus.client) {
                     Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(builder: (context) => UserScope()),
+                      MaterialPageRoute(builder: (context) => const UserScope()),
                       (route) => false,
                     );
                   } else {
                     showAppSnackbar(
                       context,
-                      message: "Could not determine user role",
+                      message: 'Could not determine user role',
                       icon: Icons.error,
                     );
                   }

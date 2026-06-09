@@ -1,8 +1,9 @@
-import 'package:dating_app/features/splash/user_auth/presentation/cubit/carousel_cubit.dart';
-import 'package:dating_app/features/splash/user_auth/presentation/widgets/join_community_screen_widgets/join_community_screen_body.dart';
+import '../../splash/user_auth/presentation/cubit/carousel_cubit.dart';
+import '../../splash/user_auth/presentation/widgets/join_community_screen_widgets/join_community_screen_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/di/di.dart';
 import '../../../core/services/firebase_notification_service.dart';
 
 class JoinCommunityScreen extends StatefulWidget {
@@ -20,8 +21,7 @@ class _JoinCommunityScreenState extends State<JoinCommunityScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      
-      FirebaseNotificationService.checkAndRequestPermission(context);
+      getIt.get<FirebaseNotificationService>().checkAndRequestPermission(context);
     });
   }
 

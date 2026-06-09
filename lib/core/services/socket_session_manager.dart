@@ -1,12 +1,16 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:injectable/injectable.dart';
+
 import '../network/socket/socket_service.dart';
-import '../storage/secure_storage.dart';
+import 'secure_storage.dart';
 import 'package:flutter/material.dart';
 
+@singleton
 class SocketSessionManager with WidgetsBindingObserver {
   final SocketService _socketService;
+  final SecureStorage _secureStorage;
 
   static final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey<NavigatorState>();
@@ -14,7 +18,7 @@ class SocketSessionManager with WidgetsBindingObserver {
   bool _isDisposed = false;
   String? _currentUserId;
 
-  SocketSessionManager(this._socketService) {
+  SocketSessionManager(this._socketService, this._secureStorage) {
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -57,7 +61,7 @@ class SocketSessionManager with WidgetsBindingObserver {
     await clearSession();
 
     // 2. Clear All Storage (Redundant but safe)
-    await SecureStorage.clearAll();
+    await _secureStorage.clearAll();
 
     // 3. Navigate to Login
     final context = navigatorKey.currentContext;

@@ -6,12 +6,12 @@ import 'package:dating_app/di/injection.dart';
 import 'package:dating_app/features/onboarding/widgets/onboarding_content/onboarding_action_button.dart';
 import 'package:dating_app/features/onboarding/widgets/onboarding_content/onboarding_terms_text.dart';
 import 'package:dating_app/features/splash/user_auth/presentation/cubit/mobile_number_cubit.dart';
-import 'package:dating_app/features/splash/user_auth/presentation/screens/mobile_number_screen.dart';
+import 'package:dating_app/features/authentication/presentation/pages/mobile_number_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../splash/user_auth/presentation/screens/google_sign_in_screen.dart';
+import '../../../authentication/presentation/pages/google_sign_in_screen.dart';
 
 class OnboardingFooter extends StatelessWidget {
   const OnboardingFooter({super.key});

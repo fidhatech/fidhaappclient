@@ -1,8 +1,9 @@
-import 'package:dating_app/core/services/firebase_notification_service.dart';
-import 'package:dating_app/core/storage/secure_storage.dart';
-import 'package:dating_app/features/splash/user_auth/data/datasources/auth_remote_datasource.dart';
-import 'package:dating_app/features/splash/user_auth/data/models/auth_response_model.dart';
-import 'package:dating_app/features/splash/user_auth/data/repositories/user_auth_repository.dart';
+import '../../../../../core/di/di.dart';
+import '../../../../../core/services/firebase_notification_service.dart';
+import '../../../../../core/services/secure_storage.dart';
+import '../datasources/auth_remote_datasource.dart';
+import '../models/auth_response_model.dart';
+import 'user_auth_repository.dart';
 
 import '../models/abroad_user_login_model.dart';
 
@@ -19,11 +20,11 @@ class UserAuthRepositoryImpl implements UserAuthRepository {
   Future<VerifyOtpResponse> verifyOtp(String phone, String otp) async {
     final result = await remote.verifyOtp(phone, otp);
 
-    await SecureStorage.saveTokens(
+    await getIt.get<SecureStorage>().saveTokens(
       accessToken: result.accessToken,
       refreshToken: result.refreshToken,
     );
-    await FirebaseNotificationService.registerTokenWithBackend();
+    await getIt.get<FirebaseNotificationService>().registerTokenWithBackend();
 
     return result;
   }

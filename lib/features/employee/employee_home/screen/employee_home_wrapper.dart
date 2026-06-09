@@ -1,15 +1,17 @@
 import 'dart:developer';
 import 'dart:async';
 
-import 'package:dating_app/core/services/firebase_notification_service.dart';
-import 'package:dating_app/core/services/incoming_call_notification_bridge.dart';
-import 'package:dating_app/core/services/local_notification_service.dart';
-import 'package:dating_app/features/employee/employee_home/screen/employee_home_screen.dart';
-import 'package:dating_app/features/employee/employee_home/widgets/employee_call_listener.dart';
-import 'package:dating_app/features/employee/call/cubit/employee_call_cubit.dart';
-import 'package:dating_app/features/employee/home/cubit/employee_cubit.dart';
-import 'package:dating_app/features/employee/session/cubit/employee_session_cubit.dart';
-import 'package:dating_app/features/employee/home/screens/offline_screen.dart';
+import '../../../../core/di/di.dart';
+import '../../../../core/services/firebase_notification_service.dart';
+import '../../../../core/services/incoming_call_notification_bridge.dart';
+import '../../../../core/services/local_notification_service.dart';
+import '../../../../core/utils/logger.dart';
+import 'employee_home_screen.dart';
+import '../widgets/employee_call_listener.dart';
+import '../../call/cubit/employee_call_cubit.dart';
+import '../../home/cubit/employee_cubit.dart';
+import '../../session/cubit/employee_session_cubit.dart';
+import '../../home/screens/offline_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/services.dart';
@@ -144,12 +146,13 @@ class _EmployeeHomeWrapperState extends State<EmployeeHomeWrapper> {
   @override
   void initState() {
     super.initState();
-    log("EmployeeHomeWrapper: initState called");
+    logger.i('EmployeeHomeWrapper: initState called');
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      log("EmployeeHomeWrapper: checking permissions...");
-      FirebaseNotificationService.registerTokenWithBackend();
-      FirebaseNotificationService.checkAndRequestPermission(context);
+      logger.i('EmployeeHomeWrapper: checking permissions...');
+      
+      getIt.get<FirebaseNotificationService>().registerTokenWithBackend();
+      getIt.get<FirebaseNotificationService>().checkAndRequestPermission(context);
     });
 
     // Trigger initial data load

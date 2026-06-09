@@ -1,11 +1,11 @@
 import 'dart:developer';
 
-import 'package:dating_app/features/splash/user_auth/domain/usecases/resend_otp_usecase.dart';
-import 'package:dating_app/features/splash/user_auth/domain/usecases/send_otp_usecase.dart';
-import 'package:dating_app/features/splash/user_auth/domain/usecases/verify_otp_usecase.dart';
-import 'package:dating_app/features/splash/user_auth/presentation/cubit/otp_state.dart';
+import '../../domain/usecases/resend_otp_usecase.dart';
+import '../../domain/usecases/send_otp_usecase.dart';
+import '../../domain/usecases/verify_otp_usecase.dart';
+import 'otp_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:dating_app/core/utils/error_mapper.dart';
+import '../../../../../core/utils/error_mapper.dart';
 
 class OtpCubit extends Cubit<OtpState> {
   final SendOtpUsecase sendOtpUsecase;

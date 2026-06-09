@@ -1,0 +1,1 @@
+class NoReturn { const NoReturn(); }

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:auto_route/auto_route.dart';
-import '../../../core/app/app_start_decider.dart';
+import '../../../core/utils/app_start_decider.dart';
 import '../../../core/network/http/dio_client.dart';
 import '../../../core/services/app_update_service.dart';
 import '../../../core/widgets/app_update_dialog/app_update_dialog.dart';

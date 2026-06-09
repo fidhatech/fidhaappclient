@@ -1,21 +1,23 @@
-import 'package:dating_app/features/user/features/home/bloc/home_bloc.dart';
-import 'package:dating_app/features/user/features/home/bloc/home_event.dart';
-import 'package:dating_app/features/user/features/navigation/cubit/navigator_cubit.dart';
-import 'package:dating_app/features/user/features/call/cubit/client_call_cubit.dart';
+import '../../home/bloc/home_bloc.dart';
+import '../../home/bloc/home_event.dart';
+import '../cubit/navigator_cubit.dart';
+import '../../call/cubit/client_call_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:dating_app/features/user/cubit/user_cubit.dart';
-import 'package:dating_app/features/user/features/navigation/widgets/bottom_nav_bar_content.dart';
-import 'package:dating_app/core/widgets/socket/socket_error_listener.dart';
-import 'package:dating_app/core/services/firebase_notification_service.dart';
+import '../../../cubit/user_cubit.dart';
+import '../widgets/bottom_nav_bar_content.dart';
+import '../../../../../core/widgets/socket/socket_error_listener.dart';
+import '../../../../../core/services/firebase_notification_service.dart';
 
-import 'package:dating_app/core/widgets/offer_popup_card/offer_popup_card.dart';
-import 'package:dating_app/di/injection.dart';
-import 'package:dating_app/features/payment/service/payment_service.dart';
-import 'package:dating_app/features/user/features/promotion/cubit/popup_offer_cubit.dart';
-import 'package:dating_app/features/wallet/cubit/wallet_cubit.dart';
-import 'package:dating_app/features/wallet/screen/wallet_screen.dart';
+import '../../../../../core/widgets/offer_popup_card/offer_popup_card.dart';
+import '../../../../../di/injection.dart';
+import '../../../../payment/service/payment_service.dart';
+import '../../promotion/cubit/popup_offer_cubit.dart';
+import '../../../../wallet/cubit/wallet_cubit.dart';
+import '../../../../wallet/screen/wallet_screen.dart';
 import 'package:dio/dio.dart';
+
+import '../../../../../core/di/di.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -52,7 +54,7 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      FirebaseNotificationService.checkAndRequestPermission(context);
+      getIt.get<FirebaseNotificationService>().checkAndRequestPermission(context);
     });
   }
 
@@ -124,7 +126,7 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                                 context.read<NavigatorCubit>().changePage(0);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content: Text("Payment Successful!"),
+                                    content: Text('Payment Successful!'),
                                     backgroundColor: Colors.green,
                                   ),
                                 );
@@ -137,16 +139,16 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                  "Payment Failed: ${response.message}",
+                                  'Payment Failed: ${response.message}',
                                 ),
                               ),
                             );
                           };
                         } catch (e) {
-                          String message = "Something went wrong";
+                          String message = 'Something went wrong';
                           if (e is DioException) {
                             if (e.response?.statusCode == 500) {
-                              message = "Server error. Please try again later.";
+                              message = 'Server error. Please try again later.';
                             } else if (e.response?.data != null &&
                                 e.response!.data is Map &&
                                 e.response!.data['error'] != null) {

@@ -24,7 +24,7 @@ import 'core/di/di.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  configureDependencies();
+  await configureDependencies();
 
   await Firebase.initializeApp();
 
@@ -33,7 +33,8 @@ Future<void> main() async {
   await LocalNotificationService.restorePendingNotificationAction(
     forceLaunchDetailsCheck: true,
   );
-  await FirebaseNotificationService.init();
+  
+  await getIt.get<FirebaseNotificationService>().init();
   await FirebaseAnalyticsService.init();
   await MetaAppEventsService.init();
   await MetaAppEventsService.logAppOpened();

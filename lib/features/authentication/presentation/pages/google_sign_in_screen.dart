@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/app/app_start_decider.dart';
-import '../../../../../core/utils/mediaquery.dart';
-import '../../../../../core/widgets/app_snackBar/show_snackbar.dart';
-import '../../../../../core/widgets/custom_elevated_button/custom_elevated_button.dart';
-import '../../../../../core/widgets/gradient_scaffold/gradient_scaffold.dart';
-import '../../../../employee/main/employee_scope.dart';
-import '../../../../onboarding/screens/abroad_user_details_entry_screen.dart';
-import '../../../../user/features/navigation/user_scope.dart';
-import '../cubit/google_signin_cubit/google_signin_cubit.dart';
+import '../../../../core/di/di.dart';
+import '../../../../core/utils/app_start_decider.dart';
+import '../../../../core/utils/mediaquery.dart';
+import '../../../../core/widgets/app_snackBar/show_snackbar.dart';
+import '../../../../core/widgets/custom_elevated_button/custom_elevated_button.dart';
+import '../../../../core/widgets/gradient_scaffold/gradient_scaffold.dart';
+import '../../../employee/main/employee_scope.dart';
+import '../../../onboarding/screens/abroad_user_details_entry_screen.dart';
+import '../../../user/features/navigation/user_scope.dart';
+import '../../../splash/user_auth/presentation/cubit/google_signin_cubit/google_signin_cubit.dart';
 
 class GoogleSignInScreen extends StatefulWidget {
   const GoogleSignInScreen({super.key});
@@ -27,7 +28,7 @@ class _GoogleSignInScreenState extends State<GoogleSignInScreen> {
       //Navigator.pop(context);
       showAppSnackbar(
         context,
-        message: "Logged in successfully",
+        message: 'Logged in successfully',
         icon: Icons.check_circle_outline,
         backgroundColor: Colors.green,
       );
@@ -35,7 +36,7 @@ class _GoogleSignInScreenState extends State<GoogleSignInScreen> {
       if (state.userExists) {
         ScaffoldMessenger.of(context).clearSnackBars();
 
-        final status = await AppStartDecider.determineStartStatus();
+        final status = await getIt.get<AppStartDecider>().determineStartStatus();
 
         if (!context.mounted) return;
 
@@ -48,13 +49,13 @@ class _GoogleSignInScreenState extends State<GoogleSignInScreen> {
         } else if (status == AppStartStatus.client) {
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => UserScope()),
+            MaterialPageRoute(builder: (context) => const UserScope()),
             (route) => false,
           );
         } else {
           showAppSnackbar(
             context,
-            message: "Could not determine user role",
+            message: 'Could not determine user role',
             icon: Icons.error,
           );
         }
@@ -86,7 +87,7 @@ class _GoogleSignInScreenState extends State<GoogleSignInScreen> {
     return GradientScaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(
+          padding: const .symmetric(
             horizontal: 20,
           ),
           child: Column(

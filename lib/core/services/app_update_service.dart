@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:dating_app/core/constants/api_constants.dart';
-import 'package:dating_app/core/models/app_update_config_model.dart';
+import '../constants/api_constants.dart';
+import '../models/app_update_config_model.dart';
 
 class AppUpdateService {
   final Dio _dio;

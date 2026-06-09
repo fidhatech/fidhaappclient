@@ -5,13 +5,12 @@ import 'dart:developer';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:dating_app/firebase_options.dart';
 import 'package:flutter/material.dart';
 
 // Top-level function for handling background messages
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp();
   log('Handling a background message: ${message.messageId}');
   log('Background message data: ${message.data}');
 
@@ -34,9 +33,7 @@ class NotificationService {
 
   static Future<void> init() async {
     // 1. Initialize Firebase
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+    await Firebase.initializeApp();
 
     // 2. Request Permissions (Removed auto-request)
     final messaging = FirebaseMessaging.instance;

@@ -10,7 +10,7 @@ import '../../../../../../core/widgets/app_snackBar/show_snackbar.dart';
 import '../../../../../../core/widgets/custom_elevated_button/custom_elevated_button.dart';
 import '../../../../../../di/injection.dart';
 import '../../../../../onboarding/widgets/onboarding_content/onboarding_action_button.dart';
-import '../../screens/google_sign_in_screen.dart';
+import '../../../../../authentication/presentation/pages/google_sign_in_screen.dart';
 
 /// Main body widget for the Mobile Number Screen
 /// Contains a stack with scrollable content and fixed bottom section

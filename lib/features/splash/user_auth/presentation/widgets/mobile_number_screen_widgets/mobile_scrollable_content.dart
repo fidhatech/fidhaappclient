@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import '../../../../../../core/utils/network_checker.dart';
 import '../../../../../../core/widgets/app_snackBar/show_snackbar.dart';
 import '../../../../../../di/injection.dart';
-import '../../screens/google_sign_in_screen.dart';
+import '../../../../../authentication/presentation/pages/google_sign_in_screen.dart';
 
 /// Scrollable content section containing header, input field, and illustration
 class MobileScrollableContent extends StatelessWidget {

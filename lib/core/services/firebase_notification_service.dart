@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:dating_app/config/theme/app_color.dart';
-import 'package:dating_app/core/widgets/app_confirmation%20dialog.dart/app_confirmation.dart';
+import 'package:injectable/injectable.dart';
 
-import 'package:dating_app/core/network/http/dio_client.dart';
-import 'package:dating_app/core/services/incoming_call_notification_bridge.dart';
-import 'package:dating_app/core/services/local_notification_service.dart';
-import 'package:dating_app/core/storage/secure_storage.dart';
-import 'package:dating_app/firebase_options.dart';
+import '../../config/theme/app_color.dart';
+import '../widgets/app_confirmation%20dialog.dart/app_confirmation.dart';
+
+import '../network/http/dio_client.dart';
+import 'incoming_call_notification_bridge.dart';
+import 'local_notification_service.dart';
+import 'secure_storage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ const int _staleCallGraceMs = 90 * 1000;
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp();
   log('Handling a background message: ${message.messageId}');
   log('Background message data: ${message.data}');
 
@@ -58,17 +59,21 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   }
 }
 
+@singleton
 class FirebaseNotificationService {
+
+  final SecureStorage _secureStorage;
+
   static const MethodChannel _nativeNotificationActionChannel = MethodChannel(
     'fidha.app/notification_actions',
   );
   static bool _nativeActionHandlerAttached = false;
 
-  static Future<void> init() async {
+  const FirebaseNotificationService(this._secureStorage);
+
+  Future<void> init() async {
     // 1. Initialize Firebase
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+    await Firebase.initializeApp();
 
     // 2. Setup Background Handler
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -154,18 +159,18 @@ class FirebaseNotificationService {
 
     // 4.1 Always sync token on app init for logged-in users.
     // This recovers from backend token drift even when token value didn't change.
-    final accessToken = await SecureStorage.getAccessToken();
+    final accessToken = await _secureStorage.getAccessToken();
     if (accessToken != null) {
       await registerTokenWithBackend();
     }
 
     // 5. Setup Token Refresh Listener
     FirebaseMessaging.instance.onTokenRefresh.listen((newToken) async {
-      log("🔄 FCM Token Refreshed: $newToken");
-      await SecureStorage.saveFcmToken(newToken);
+      log('🔄 FCM Token Refreshed: $newToken');
+      await _secureStorage.saveFcmToken(newToken);
 
       // If user is logged in, sync with backend immediately
-      final token = await SecureStorage.getAccessToken();
+      final token = await _secureStorage.getAccessToken();
       if (token != null) {
         await registerTokenWithBackend();
       }
@@ -211,35 +216,35 @@ class FirebaseNotificationService {
   }
 
   /// Gets token from Firebase and saves to SecureStorage
-  static Future<void> _cacheTokenInternal() async {
+  Future<void> _cacheTokenInternal() async {
     try {
       final newToken = await FirebaseMessaging.instance.getToken();
       if (newToken != null) {
-        final oldToken = await SecureStorage.getFcmToken();
+        final oldToken = await _secureStorage.getFcmToken();
 
         if (oldToken != newToken) {
-          log("🔄 FCM Token changed from stored version. Updating...");
-          await SecureStorage.saveFcmToken(newToken);
+          log('🔄 FCM Token changed from stored version. Updating...');
+          await _secureStorage.saveFcmToken(newToken);
 
           // If we are already logged in, we need to inform backend of this change immediately
-          final accessToken = await SecureStorage.getAccessToken();
+          final accessToken = await _secureStorage.getAccessToken();
           if (accessToken != null) {
             await registerTokenWithBackend();
           }
         } else {
-          log("✅ FCM Token matches stored version. No update needed.");
+          log('✅ FCM Token matches stored version. No update needed.');
         }
       }
     } catch (e) {
-      log("❌ Failed to cache FCM token: $e");
+      log('❌ Failed to cache FCM token: $e');
     }
   }
 
   /// Call this when User is Logged In + On Home Screen
-  static Future<void> registerTokenWithBackend() async {
-    final token = await SecureStorage.getFcmToken();
+  Future<void> registerTokenWithBackend() async {
+    final token = await _secureStorage.getFcmToken();
     if (token == null) {
-      log("⚠️ No FCM token to register");
+      log('⚠️ No FCM token to register');
       return;
     }
 
@@ -249,17 +254,17 @@ class FirebaseNotificationService {
         'user/fcm-token',
         data: {'fcmToken': token},
       );
-      log("🚀 FCM Token successfully registered with backend");
+      log('🚀 FCM Token successfully registered with backend');
     } catch (e) {
       if (e.toString().contains('403')) {
-        log("⚠️ FCM Backend registration skipped (403 Forbidden)");
+        log('⚠️ FCM Backend registration skipped (403 Forbidden)');
       } else {
-        log("❌ Backend registration failed: $e");
+        log('❌ Backend registration failed: $e');
       }
     }
   }
 
-  static Future<void> requestPermissions() async {
+  Future<void> requestPermissions() async {
     final messaging = FirebaseMessaging.instance;
     final settings = await messaging.requestPermission(
       alert: true,
@@ -278,12 +283,12 @@ class FirebaseNotificationService {
     }
   }
 
-  static Future<void> checkAndRequestPermission(BuildContext context) async {
-    log("FirebaseNotificationService: checkAndRequestPermission started");
+  Future<void> checkAndRequestPermission(BuildContext context) async {
+    log('FirebaseNotificationService: checkAndRequestPermission started');
     final messaging = FirebaseMessaging.instance;
     final settings = await messaging.getNotificationSettings();
     log(
-      "FirebaseNotificationService: Current status: ${settings.authorizationStatus}",
+      'FirebaseNotificationService: Current status: ${settings.authorizationStatus}',
     );
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {

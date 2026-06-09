@@ -1,11 +1,12 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:dating_app/core/services/firebase_notification_service.dart';
-import 'package:dating_app/core/storage/secure_storage.dart';
-import 'package:dating_app/di/injection.dart';
-import 'package:dating_app/features/onboarding/models/on_boarding_model.dart';
-import 'package:dating_app/features/onboarding/service/onboarding_service.dart';
+import '../../../core/di/di.dart';
+import '../../../core/services/firebase_notification_service.dart';
+import '../../../core/services/secure_storage.dart';
+import '../../../di/injection.dart';
+import '../models/on_boarding_model.dart';
+import '../service/onboarding_service.dart';
 
 import 'package:dio/dio.dart';
 
@@ -57,14 +58,14 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
       try {
         final maleRequest = MaleOnboarding(
           name: state.name ?? '',
-          gender: state.gender ?? "",
+          gender: state.gender ?? '',
           dob: state.dob ?? '',
           phone: state.phone ?? '',
           avatar: event.avatar,
         );
         await sl<OnboardingService>().sendOnboardData(maleRequest.toJson());
         // Save Role for Offline Access
-        await SecureStorage.saveUserRole('client');
+        await getIt.get<SecureStorage>().saveUserRole('client');
         emit(state.copyWith(status: OnboardingStatus.success));
       } catch (e) {
         emit(state.copyWith(status: OnboardingStatus.failure));
@@ -111,7 +112,7 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
     try {
       // Create the final data map for multipart
       final femaleModel = FemaleOnboarding(
-        age: state.age ?? "",
+        age: state.age ?? '',
         name: state.name ?? '',
         gender: state.gender ?? 'female',
         dob: state.dob ?? '',
@@ -128,21 +129,22 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
       // 3. Replace the audio path string with the actual MultipartFile
       payload['audio'] = await MultipartFile.fromFile(
         event.audioPath,
-        filename: "voice_auth.m4a",
+        filename: 'voice_auth.m4a',
       );
-      log("after audio bengn form data ${payload.toString()}");
+      log('after audio bengn form data ${payload.toString()}');
       final tokens = await sl<OnboardingService>().sendOnboardEmployeeData(
         payload,
       );
 
-      log("tokens ${tokens.toString()}");
-      await SecureStorage.saveTokens(
+      log('tokens ${tokens.toString()}');
+      await getIt.get<SecureStorage>().saveTokens(
         accessToken: tokens['accessToken']!,
         refreshToken: tokens['refreshToken']!,
       );
-      await FirebaseNotificationService.registerTokenWithBackend();
+      
+      await getIt.get<FirebaseNotificationService>().registerTokenWithBackend();
       // Save Role for Offline Access
-      await SecureStorage.saveUserRole('employee');
+      await getIt.get<SecureStorage>().saveUserRole('employee');
       emit(state.copyWith(status: OnboardingStatus.moreDetailsRequired));
     } catch (e) {
       emit(state.copyWith(status: OnboardingStatus.onDioError));
@@ -156,11 +158,11 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
     emit(state.copyWith(status: OnboardingStatus.loading));
     try {
       final userInfo = {
-        "phone": state.phone,
-        "name": state.name,
-        "gender": state.gender,
-        "dob": state.dob,
-        "avatar": state.avatar,
+        'phone': state.phone,
+        'name': state.name,
+        'gender': state.gender,
+        'dob': state.dob,
+        'avatar': state.avatar,
       };
 
       final response = await sl<OnboardingService>().checkVerificationStatus(
