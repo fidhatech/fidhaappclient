@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/di/di.dart';
+import '../../../../core/routes/app_router.dart';
 import '../../../../core/utils/app_start_decider.dart';
 import '../../../../core/utils/mediaquery.dart';
 import '../../../../core/widgets/app_snackBar/show_snackbar.dart';
 import '../../../../core/widgets/custom_elevated_button/custom_elevated_button.dart';
 import '../../../../core/widgets/gradient_scaffold/gradient_scaffold.dart';
 import '../../../employee/main/employee_scope.dart';
-import '../../../onboarding/presentation/pages/abroad_user_details_entry_screen.dart';
 import '../../../user/features/navigation/user_scope.dart';
 import '../../../splash/user_auth/presentation/cubit/google_signin_cubit/google_signin_cubit.dart';
 
@@ -62,13 +62,10 @@ class _GoogleSignInScreenState extends State<GoogleSignInScreen> {
           );
         }
       } else {
-        Navigator.pushReplacement(
-          context, 
-          MaterialPageRoute(builder: (context) => AbroadUserDetailsEntryScreen(
-            email: state.email,
-            name: '',
-          ))
-        );
+        context.router.replace(AbroadUserDetailsEntryRoute(
+          email: state.email,
+          name: '',
+        ));
       }
     } else if (state is GoogleSigninFailure) {
       ScaffoldMessenger.of(context).showSnackBar(

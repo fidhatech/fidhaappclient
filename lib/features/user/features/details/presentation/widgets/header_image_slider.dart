@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dating_app/config/theme/app_color.dart';
 import '../../../../models/employee_model.dart';
-import '../cubit/user_details_cubit.dart';
+import '../../../../presentation/cubit/user_details_cubit/user_details_cubit.dart';
 
 class HeaderImageSlider extends StatelessWidget {
   final EmployeeModel employee;

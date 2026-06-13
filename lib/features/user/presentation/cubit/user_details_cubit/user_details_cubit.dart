@@ -1,6 +1,6 @@
-import 'package:dating_app/features/user/features/details/repository/user_details_repository.dart';
+import '../../../features/details/repository/user_details_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../models/employee_model.dart';
+import '../../../models/employee_model.dart';
 import 'user_details_state.dart';
 
 class UserDetailsCubit extends Cubit<UserDetailsState> {

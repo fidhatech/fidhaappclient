@@ -32,7 +32,7 @@ class WalletScreen extends StatelessWidget {
             Navigator.of(context).pop();
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text("Payment Successful! Coins added to your wallet."),
+                content: Text('Payment Successful! Coins added to your wallet.'),
                 backgroundColor: Colors.green,
               ),
             );
@@ -98,10 +98,10 @@ class WalletScreen extends StatelessWidget {
                       );
                     } else if (state is WalletLoaded || state is WalletPaymentSuccess) {
                       final packages = state is WalletPaymentSuccess
-                          ? (state as WalletPaymentSuccess).packages
+                          ? state.packages
                           : (state as WalletLoaded).packages;
                       final balance = state is WalletPaymentSuccess
-                          ? (state as WalletPaymentSuccess).balance
+                          ? state.balance
                           : (state as WalletLoaded).balance;
                       // Find best value package (highest coins per rupee)
                       int bestValueIndex = -1;

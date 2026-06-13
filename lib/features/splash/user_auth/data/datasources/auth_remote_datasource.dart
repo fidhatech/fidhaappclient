@@ -8,7 +8,7 @@ import '../models/abroad_user_login_model.dart';
 class AuthRemoteDatasource {
   final Dio dio;
 
-  AuthRemoteDatasource(this.dio);
+  const AuthRemoteDatasource(this.dio);
 
   Future<AbroadUserLoginModel> checkUserExists(String email) async {
     try {
@@ -26,6 +26,7 @@ class AuthRemoteDatasource {
       throw Exception('Something went wrong');
     }
   }
+
 
   Future<String> sendOtp(String phone) async {
     try {

@@ -9,7 +9,8 @@ import '../models/abroad_user_login_model.dart';
 
 class UserAuthRepositoryImpl implements UserAuthRepository {
   final AuthRemoteDatasource remote;
-  UserAuthRepositoryImpl(this.remote);
+  
+  const UserAuthRepositoryImpl(this.remote);
 
   @override
   Future<String> sendOtp(String phone) {

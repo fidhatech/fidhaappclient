@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../constants/api_constants.dart';
 import '../../services/secure_storage.dart';
 
 @singleton
@@ -25,6 +26,7 @@ class DioProvider {
 
   Future<void> initialize() async {
     final options = BaseOptions(
+      baseUrl: ApiConstants.apiUrl,
       connectTimeout: const Duration(seconds: 15),
       receiveTimeout: const Duration(seconds: 60),
       contentType: ContentType.json.mimeType,
@@ -32,15 +34,25 @@ class DioProvider {
 
     _dio = Dio(options);
 
-    final accessToken = await _storage.getAccessToken();
+    // final accessToken = await _storage.getAccessToken();
 
-    if (accessToken != null) {
-      _dio!.options.headers['Authorization'] = 'Bearer $accessToken';
-    }
+    // if (accessToken != null) {
+    //   _dio!.options.headers['Authorization'] = 'Bearer $accessToken';
+    // }
 
     _dio!.interceptors.add(LogInterceptor(
       requestBody: true,
       responseBody: true,
+    ));
+
+    _dio!.interceptors.add(InterceptorsWrapper(
+      onRequest: (options, handler) async {
+        final accessToken = await _storage.getAccessToken();
+        if (accessToken != null) {
+          options.headers['Authorization'] = 'Bearer $accessToken';
+        }
+        return handler.next(options);
+      },
     ));
   }
 }

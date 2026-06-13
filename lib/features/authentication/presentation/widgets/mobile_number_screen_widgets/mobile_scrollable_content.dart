@@ -1,13 +1,8 @@
-import 'package:dating_app/core/utils/mediaquery.dart';
-import 'package:dating_app/features/authentication/presentation/widgets/mobile_number_screen_widgets/mobile_header.dart';
-import 'package:dating_app/features/authentication/presentation/widgets/mobile_number_screen_widgets/mobile_illustration.dart';
-import 'package:dating_app/features/authentication/presentation/widgets/mobile_number_screen_widgets/mobile_input.dart';
+import '../../../../../core/utils/mediaquery.dart';
+import 'mobile_header.dart';
+import 'mobile_illustration.dart';
+import 'mobile_input.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../../core/utils/network_checker.dart';
-import '../../../../../core/widgets/app_snackBar/show_snackbar.dart';
-import '../../../../../di/injection.dart';
-import '../../pages/google_sign_in_screen.dart';
 
 /// Scrollable content section containing header, input field, and illustration
 class MobileScrollableContent extends StatelessWidget {

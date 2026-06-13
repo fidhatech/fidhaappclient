@@ -1,10 +1,10 @@
-import 'package:dating_app/features/wallet/wallet.dart';
+import '../wallet.dart';
 import 'package:dio/dio.dart';
 
 class WalletService {
   final Dio _dio;
 
-  WalletService(this._dio);
+  const WalletService(this._dio);
 
   Future<List<CoinPackage>> getCoinPackages() async {
     try {
@@ -27,9 +27,9 @@ class WalletService {
       final data = response.data;
       if (data != null && data['user'] != null) {
         final coins = data['user']['coins'] ?? 0;
-        return WalletBalance(coins: coins, message: "Fetched from home");
+        return WalletBalance(coins: coins, message: 'Fetched from home');
       }
-      return WalletBalance(coins: 0, message: "Failed to fetch balance");
+      return WalletBalance(coins: 0, message: 'Failed to fetch balance');
     } catch (e) {
       rethrow;
     }
@@ -39,7 +39,7 @@ class WalletService {
     try {
       final response = await _dio.post(
         'user/payment/create-order',
-        data: {"packageId": packageId},
+        data: {'packageId': packageId},
       );
       return response.data;
     } catch (e) {
@@ -56,9 +56,9 @@ class WalletService {
       final response = await _dio.post(
         'user/payment/verify',
         data: {
-          "razorpay_order_id": orderId,
-          "razorpay_payment_id": paymentId,
-          "razorpay_signature": signature,
+          'razorpay_order_id': orderId,
+          'razorpay_payment_id': paymentId,
+          'razorpay_signature': signature,
         },
       );
       return response.data['success'] ?? false;

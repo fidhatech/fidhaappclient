@@ -4,7 +4,8 @@ import 'package:dio/dio.dart';
 
 class OnboardingService {
   final Dio _dio;
-  OnboardingService(this._dio);
+  
+  const OnboardingService(this._dio);
 
   Future<void> submitAbroadUserDetails({
     required String email,

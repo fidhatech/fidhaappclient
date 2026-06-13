@@ -1,15 +1,9 @@
-import 'package:dating_app/features/user/features/call/cubit/client_call_cubit.dart';
-import 'package:dating_app/features/user/features/call/model/call_type.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:dating_app/config/theme/app_color.dart';
-import '../../../../models/employee_model.dart';
+part of '../pages/user_details_screen.dart';
 
-class ActionButtonsBar extends StatelessWidget {
+class _ActionButtonsBar extends StatelessWidget {
   final EmployeeModel employee;
 
-  const ActionButtonsBar({super.key, required this.employee});
+  const _ActionButtonsBar({required this.employee});
 
   @override
   Widget build(BuildContext context) {
@@ -90,13 +84,13 @@ class _BuildActionButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SvgPicture.asset(
-                "assets/icons/coin-stack.svg",
+                Assets.icons.coinStack,
                 height: 20,
                 width: 20,
               ),
               const SizedBox(width: 8),
               Text(
-                "$rate/min",
+                '$rate/min',
                 style: const TextStyle(
                   color: AppColor.primaryText,
                   fontWeight: FontWeight.bold,

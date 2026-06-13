@@ -20,6 +20,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'core/di/di.dart';
+import 'features/user/features/call/cubit/client_call_cubit.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -59,6 +60,7 @@ Future<void> main() async {
           ),
         ),
         BlocProvider(create: (_) => sl<NetworkStatusCubit>()),
+        BlocProvider(create:(context) => ClientCallCubit())
       ],
 
       child: BlocBuilder<NetworkStatusCubit, NetworkStatusState>(

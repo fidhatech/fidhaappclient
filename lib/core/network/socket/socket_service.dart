@@ -5,7 +5,6 @@ import 'dart:developer';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:injectable/injectable.dart';
 import '../../constants/api_constants.dart';
-import '../../di/di.dart';
 import 'socket_events.dart';
 import '../../services/local_notification_service.dart';
 import '../../services/secure_storage.dart';

@@ -1,4 +1,5 @@
-import 'package:dating_app/features/onboarding/presentation/pages/dob_screen.dart';
+import 'package:auto_route/auto_route.dart';
+import '../../../../core/routes/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phone_form_field/phone_form_field.dart';
@@ -10,6 +11,7 @@ import '../../../../core/widgets/custom_textfield/custom_textfield_styles.dart';
 import '../../../../core/widgets/gradient_scaffold/gradient_scaffold.dart';
 import '../../cubit/onboard_abroad_user_cubit/onboard_abroad_user_cubit.dart';
 
+@RoutePage()
 class AbroadUserDetailsEntryScreen extends StatefulWidget {
 
   final String email;
@@ -35,13 +37,7 @@ class _AbroadUserDetailsEntryScreenState extends State<AbroadUserDetailsEntryScr
 
   void _listenOnboardUserCubit(BuildContext context, OnboardAbroadUserState state) { 
     if (state is OnboardAbroadUserSuccess) {
-      Navigator
-        .of(context)
-        .push(
-          MaterialPageRoute(
-            builder: (_) => const DobScreen(),
-          ),
-        );
+      context.router.push(const DobRoute());
     } else if (state is OnboardAbroadUserFailure) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(state.message)),
@@ -73,7 +69,7 @@ class _AbroadUserDetailsEntryScreenState extends State<AbroadUserDetailsEntryScr
     return GradientScaffold(
       body: SafeArea(
         child: Padding(
-          padding: .symmetric(
+          padding: const .symmetric(
             horizontal: 20,
             vertical: 20,
           ),
@@ -81,7 +77,7 @@ class _AbroadUserDetailsEntryScreenState extends State<AbroadUserDetailsEntryScr
             child: Column(
               children: [
                 const SizedBox(height: 40),
-                Text(
+                const Text(
                   'Abroad User Details Entry',
                   style: TextStyle(
                     fontSize: 24,
@@ -130,7 +126,7 @@ class _AbroadUserDetailsEntryScreenState extends State<AbroadUserDetailsEntryScr
                     fontSize: getResponsiveFontSize(context, mobile: 16),
                   ),
                   decoration: InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(
+                    contentPadding: const EdgeInsets.symmetric(
                       vertical: 15,
                       horizontal: 15,
                     ),
@@ -165,7 +161,7 @@ class _AbroadUserDetailsEntryScreenState extends State<AbroadUserDetailsEntryScr
                         phone: '${_phoneController.value.countryCode}-${_phoneController.value.nsn}',
                       );
                     },
-                    text: "Continue",
+                    text: 'Continue',
                     heightMultiplier: 16,
                     textSize: getResponsiveFontSize(context, mobile: 16),
                     isLoading: state is OnboardAbroadUserLoading,

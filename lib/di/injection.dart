@@ -11,7 +11,6 @@ import '../features/employee/service/employee_service.dart';
 import '../features/payment/service/payment_service.dart';
 import '../features/splash/user_auth/data/repositories/user_auth_repository.dart';
 import '../features/user/cubit/user_cubit.dart';
-import '../features/user/features/call/cubit/client_call_cubit.dart';
 import '../features/user/features/call/service/client_call_service.dart';
 import '../features/user/features/history/cubit/history_cubit.dart';
 import '../features/user/features/history/service/history_service.dart';
@@ -25,7 +24,6 @@ import '../features/user/features/user_profile/cubit/profile_cubit.dart';
 import '../features/user/features/user_profile/services/profile_service.dart';
 import '../features/user/features/promotion/service/popup_offer_service.dart';
 import 'package:get_it/get_it.dart';
-import '../core/network/http/dio_client.dart';
 import '../features/splash/user_auth/data/datasources/auth_remote_datasource.dart';
 import '../features/splash/user_auth/data/repositories/user_auth_repository_impl.dart';
 import '../features/splash/user_auth/domain/usecases/send_otp_usecase.dart';
@@ -37,7 +35,6 @@ import '../features/user/features/home/bloc/home_bloc.dart';
 import '../features/user/features/home/repository/home_repo.dart';
 import '../features/user/features/home/repository/home_services.dart';
 import '../features/user/features/details/repository/user_details_repository.dart';
-import '../features/user/features/details/presentation/cubit/user_details_cubit.dart';
 
 import '../features/onboarding/data/onboarding_datasource.dart';
 
@@ -104,11 +101,9 @@ void init() {
   );
   sl.registerFactory(() => HistoryCubit(sl()));
   sl.registerFactory(() => EmployeeCallCubit(sl()));
-  sl.registerFactory(() => ClientCallCubit(sl(), sl()));
   sl.registerFactory(() => WalletCubit(sl(), sl(), sl()));
   sl.registerFactory(() => ProfileCubit(profileService: sl()));
   sl.registerFactory(() => PopupOfferCubit(sl()));
-  sl.registerFactory(() => UserDetailsCubit(repository: sl()));
 
   // 6) Core
   sl.registerLazySingleton<NetworkChecker>(() => NetworkCheckerImpl(sl()));

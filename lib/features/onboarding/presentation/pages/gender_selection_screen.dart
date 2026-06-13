@@ -1,3 +1,5 @@
+import 'package:auto_route/auto_route.dart';
+
 import '../../../../core/constants/app_urls.dart';
 import '../../../../core/utils/mediaquery.dart';
 import '../../../../core/utils/url_helper.dart';
@@ -18,6 +20,7 @@ import '../../../user/features/navigation/user_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+@RoutePage()
 class GenderSelectionScreen extends StatefulWidget {
   const GenderSelectionScreen({super.key});
 
@@ -29,8 +32,7 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
   String? selectedGender = 'Male';
   String? selectedAvatar;
 
-  bool get _isFemaleSelected =>
-      (selectedGender ?? '').toLowerCase() == 'female';
+  bool get _isFemaleSelected => (selectedGender ?? '').toLowerCase() == 'female';
 
   @override
   Widget build(BuildContext context) {
@@ -75,21 +77,19 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
                     ),
 
                     SizedBox(height: controlHeight(context, 40)),
-                    if (!_isFemaleSelected)
-                      GenderAvatarSelector(
-                        gender: selectedGender,
-                        selectedAvatar: selectedAvatar,
-                        onAvatarSelected: (avatar) {
-                          setState(() {
-                            selectedAvatar = avatar;
-                          });
-                        },
-                      )
-                    else
-                      const Text(
-                        'Avatar selection is disabled for female users. You can set your profile photo later in profile edit.',
-                        style: TextStyle(color: Colors.white70, fontSize: 13),
-                      ),
+                    if (!_isFemaleSelected) GenderAvatarSelector(
+                      gender: selectedGender,
+                      selectedAvatar: selectedAvatar,
+                      onAvatarSelected: (avatar) {
+                        setState(() {
+                          selectedAvatar = avatar;
+                        });
+                      },
+                    )
+                    else const Text(
+                      'Avatar selection is disabled for female users. You can set your profile photo later in profile edit.',
+                      style: TextStyle(color: Colors.white70, fontSize: 13),
+                    ),
                     SizedBox(height: controlHeight(context, 20)),
                   ],
                 ),
@@ -103,10 +103,10 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
                   padding: EdgeInsets.only(bottom: safeBottomInset),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
+                      begin: .topCenter,
+                      end: .bottomCenter,
                       colors: [
-                        Colors.transparent,
+                        Colors.transparent, 
                         Colors.black.withValues(alpha: 0.5),
                       ],
                     ),
@@ -117,44 +117,31 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
                       MultiBlocListener(
                         listeners: [
                           BlocListener<OnboardingBloc, OnboardingState>(
-                            listenWhen: (previous, current) =>
-                                previous.status != current.status,
+                            listenWhen: (previous, current) => previous.status != current.status,
                             listener: (context, state) {
-                              if (state.status ==
-                                  OnboardingStatus.moreDetailsRequired) {
+                              if (state.status == OnboardingStatus.moreDetailsRequired) {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => MultiBlocProvider(
                                       providers: [
-                                        BlocProvider(
-                                          create: (context) =>
-                                              EmployeeInfoCubit(),
-                                        ),
-                                        BlocProvider(
-                                          create: (context) =>
-                                              sl<EmployeeLanguageCubit>(),
-                                        ),
+                                        BlocProvider(create: (context) => EmployeeInfoCubit()),
+                                        BlocProvider(create: (context) => sl<EmployeeLanguageCubit>()),
                                       ],
                                       child: const EmployeeInfoScreen(),
                                     ),
                                   ),
                                 );
-                              } else if (state.status ==
-                                  OnboardingStatus.success) {
+                              } else if (state.status == OnboardingStatus.success) {
                                 Navigator.pushAndRemoveUntil(
                                   context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const UserScope(),
-                                  ),
+                                  MaterialPageRoute(builder: (context) => const UserScope()),
                                   (route) => false,
                                 );
-                              } else if (state.status ==
-                                  OnboardingStatus.failure) {
+                              } else if (state.status == OnboardingStatus.failure) {
                                 showAppSnackbar(
                                   context,
-                                  message:
-                                      "Submission failed. Please try again.",
+                                  message: 'Submission failed. Please try again.',
                                   icon: Icons.error,
                                 );
                               }
@@ -163,23 +150,17 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
                         ],
                         child: ConfirmButtonWithText(
                           buttonText: 'Confirm',
-                          bottomText:
-                              'By continuing, you agree to our Terms & Conditions',
-                          onBottomTextTap: () =>
-                              UrlHelper.launchURL(AppUrls.termsAndConditions),
+                          bottomText: 'By continuing, you agree to our Terms & Conditions',
+                          onBottomTextTap: () => UrlHelper.launchURL(AppUrls.termsAndConditions),
                           isEnabled: _isFemaleSelected
                               ? selectedGender != null
-                              : (selectedGender != null &&
-                                    selectedAvatar != null),
+                              : (selectedGender != null && selectedAvatar != null),
                           onTap: () {
-                            if (selectedGender != null &&
-                                (_isFemaleSelected || selectedAvatar != null)) {
+                            if (selectedGender != null && (_isFemaleSelected || selectedAvatar != null)) {
                               context.read<OnboardingBloc>().add(
                                 GenderAvatarSubmitted(
                                   gender: selectedGender!,
-                                  avatar: _isFemaleSelected
-                                      ? ''
-                                      : selectedAvatar!,
+                                  avatar: _isFemaleSelected ? '' : selectedAvatar!,
                                 ),
                               );
                             }

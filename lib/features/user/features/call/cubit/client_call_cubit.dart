@@ -3,23 +3,52 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
-import 'package:dating_app/core/network/socket/socket_service.dart';
-import 'package:dating_app/features/call/model/join_call_model.dart';
-import 'package:dating_app/features/user/features/call/model/call_type.dart';
-import 'package:dating_app/features/user/features/call/service/client_call_service.dart';
-import 'package:dating_app/features/user/features/call/model/call_status.dart';
+import '../../../../../core/network/socket/socket_service.dart';
+import '../../../../../di/injection.dart';
+import '../../../../call/model/join_call_model.dart';
+import '../model/call_type.dart';
+import '../service/client_call_service.dart';
+import '../model/call_status.dart';
 import 'package:meta/meta.dart';
 
 part 'client_call_state.dart';
 
 class ClientCallCubit extends Cubit<ClientCallState> {
-  final ClientCallService _service;
-  final SocketService _socketService;
+  late final ClientCallService _service;
+  late final SocketService _socketService;
   StreamSubscription? _joinSub;
   StreamSubscription? _endedSub;
   bool _isInitiating = false;
   // Single cancellable timer for all "reset to idle after 2s" paths.
   Timer? _resetTimer;
+
+  ClientCallCubit(
+    //this._service, this._socketService
+  )
+    : super(ClientCallInitial()) {
+    _service = sl<ClientCallService>();
+    _socketService = sl<SocketService>();
+    
+    _joinSub = _socketService.joinCallStream.listen((data) {
+      if (state.status == CallStatus.initiating ||
+          state.status == CallStatus.ringing) {
+        String callId = '';
+        if (state is ClientCallWaiting) {
+          callId = (state as ClientCallWaiting).callId ?? '';
+        }
+        if (callId.isNotEmpty) {
+          emit(ClientCallJoined(data, callId: callId));
+        }
+      }
+    });
+
+    _endedSub = _socketService.callEndedStream.listen((data) {
+      if (state.status != CallStatus.idle && state.status != CallStatus.ended) {
+        emit(ClientCallEnded(data['reason'] ?? 'rejected'));
+        _scheduleReset();
+      }
+    });
+  }
 
   void _scheduleReset() {
     _resetTimer?.cancel();
@@ -71,29 +100,6 @@ class ClientCallCubit extends Cubit<ClientCallState> {
       default:
         return 'Call failed. Please try again.';
     }
-  }
-
-  ClientCallCubit(this._service, this._socketService)
-    : super(ClientCallInitial()) {
-    _joinSub = _socketService.joinCallStream.listen((data) {
-      if (state.status == CallStatus.initiating ||
-          state.status == CallStatus.ringing) {
-        String callId = '';
-        if (state is ClientCallWaiting) {
-          callId = (state as ClientCallWaiting).callId ?? '';
-        }
-        if (callId.isNotEmpty) {
-          emit(ClientCallJoined(data, callId: callId));
-        }
-      }
-    });
-
-    _endedSub = _socketService.callEndedStream.listen((data) {
-      if (state.status != CallStatus.idle && state.status != CallStatus.ended) {
-        emit(ClientCallEnded(data['reason'] ?? 'rejected'));
-        _scheduleReset();
-      }
-    });
   }
 
   void initiateCall(

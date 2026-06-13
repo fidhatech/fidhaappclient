@@ -1,3 +1,5 @@
+import 'package:auto_route/auto_route.dart';
+
 import '../../../../core/widgets/app_confirmation%20dialog.dart/app_confirmation.dart';
 import '../../../../core/widgets/gradient_scaffold/gradient_scaffold.dart';
 import '../widgets/name_entry_screen_widgets/name_body.dart';
@@ -5,6 +7,7 @@ import '../../../authentication/presentation/pages/mobile_number_screen.dart';
 
 import 'package:flutter/material.dart';
 
+@RoutePage()
 class NameEntryScreen extends StatelessWidget {
   const NameEntryScreen({super.key});
 

@@ -1,16 +1,20 @@
+import 'package:auto_route/auto_route.dart';
+
+import '../../../../assets_gen/assets.gen.dart';
 import '../../../../config/theme/app_color.dart';
 import '../../../../core/constants/app_urls.dart';
+import '../../../../core/routes/app_router.dart';
 import '../../../../core/utils/mediaquery.dart';
 import '../../../../core/utils/url_helper.dart';
 import '../../../../core/widgets/confirm_button_with_text/confirm_button_with_text.dart';
 import '../../../../core/widgets/gradient_scaffold/gradient_scaffold.dart';
 import '../../bloc/onboarding_bloc.dart';
-import 'gender_selection_screen.dart';
 import '../widgets/dob_screen_widgets/dob_header.dart';
 import '../widgets/dob_screen_widgets/dob_selector_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+@RoutePage()
 class DobScreen extends StatefulWidget {
   const DobScreen({super.key});
 
@@ -31,11 +35,10 @@ class _DobScreenState extends State<DobScreen> {
 
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate:
-          selectedDate ??
-          (eighteenYearsAgo.isBefore(DateTime(2000))
-              ? eighteenYearsAgo
-              : DateTime(2000)),
+      initialDate: selectedDate ?? (
+          eighteenYearsAgo.isBefore(DateTime(2000)
+        ) ? eighteenYearsAgo : DateTime(2000)
+      ),
       firstDate: DateTime(1900),
       lastDate: eighteenYearsAgo,
       builder: (context, child) {
@@ -47,7 +50,9 @@ class _DobScreenState extends State<DobScreen> {
               surface: AppColor.secondary,
               onSurface: Colors.white,
             ),
-            dialogTheme: DialogThemeData(backgroundColor: AppColor.secondary),
+            dialogTheme: const DialogThemeData(
+              backgroundColor: AppColor.secondary,
+            ),
           ),
           child: child!,
         );
@@ -96,8 +101,7 @@ class _DobScreenState extends State<DobScreen> {
                       child: Stack(
                         clipBehavior: Clip.none,
                         children: [
-                          Image.asset(
-                            'assets/images/onboarding_images/girl_sketch1.png',
+                          Assets.images.onboardingImages.girlSketch1.image(
                             height: MediaQuery.of(context).size.height * 0.30,
                             fit: BoxFit.contain,
                           ),
@@ -164,11 +168,8 @@ class _DobScreenState extends State<DobScreen> {
                             context.read<OnboardingBloc>().add(
                               DobSubmitted(selectedDate!),
                             );
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => const GenderSelectionScreen(),
-                              ),
-                            );
+
+                            context.router.push(const GenderSelectionRoute());
                           }
                         },
                       ),

@@ -22,6 +22,8 @@ class JoinCommunityScreen extends StatefulWidget {
 
 class _JoinCommunityScreenState extends State<JoinCommunityScreen> {
 
+  final CarouselCubit _carouselCubit = CarouselCubit(totalPages: 3);
+
   final List<String> _carouselImages = [
     Assets.images.onboardingImages.carouselIm1.path,
     Assets.images.onboardingImages.carouselIm2.path,
@@ -39,10 +41,17 @@ class _JoinCommunityScreenState extends State<JoinCommunityScreen> {
   }
 
   @override
+  void dispose() {
+    _carouselCubit.close();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final double carouselHeight = screenHeightPercentage(context, 0.65);
-    return BlocProvider(
-      create: (context) => CarouselCubit(totalPages: 3),
+    return BlocProvider.value(
+      value: _carouselCubit,
       child: Scaffold(
         backgroundColor: Colors.black,
         body: Stack(
@@ -68,7 +77,7 @@ class _JoinCommunityScreenState extends State<JoinCommunityScreen> {
                   scrollDirection: Axis.horizontal,
                   enlargeCenterPage: false,
                   onPageChanged: (index, reason) {
-                    context.read<CarouselCubit>().onPageChanged(index);
+                    _carouselCubit.onPageChanged(index);
                   },
                 ),
               ),
